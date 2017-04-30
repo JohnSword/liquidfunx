@@ -3,6 +3,10 @@ package box2d.collision;
 import box2d.common.MathUtils;
 import box2d.common.Settings;
 import box2d.common.Vec2;
+import box2d.pooling.IWorldPool;
+import box2d.pooling.normal.DefaultWorldPool;
+
+import haxe.ds.Vector;
 
 /** An axis-aligned bounding box. */
 class AABB {
@@ -76,7 +80,7 @@ class AABB {
         return center;
     }
 
-    public function getCenterToOut(final Vec2 out : Vec2) : Void {
+    public function getCenterToOut(out : Vec2) : Void {
         out.x = (lowerBound.x + upperBound.x) * .5;
         out.y = (lowerBound.y + upperBound.y) * .5;
     }
@@ -93,12 +97,12 @@ class AABB {
         return center;
     }
 
-    public function getExtentsToOut(final Vec2 out) : Void {
-        out.x = (upperBound.x - lowerBound.x) * .5f;
-        out.y = (upperBound.y - lowerBound.y) * .5f; // thanks FDN1
+    public function getExtentsToOut(out : Vec2) : Void {
+        out.x = (upperBound.x - lowerBound.x) * .5;
+        out.y = (upperBound.y - lowerBound.y) * .5; // thanks FDN1
     }
 
-    public function getVertices(argRay : Array<Vec2>) : Void {
+    public function getVertices(argRay : Vector<Vec2>) : Void {
         argRay[0].setVec(lowerBound);
         argRay[1].setVec(lowerBound);
         argRay[1].x += upperBound.x - lowerBound.x;
@@ -176,8 +180,10 @@ class AABB {
      * @param input
      */
      public function raycast(output : RayCastOutput, input : RayCastInput, argPool : IWorldPool) : Bool {
-        var tmin : Float = -Float.MAX_VALUE;
-        var tmax : Float = Float.MAX_VALUE;
+        var tmin : Float = Settings.MIN_VALUE_FLOAT;
+        var tmax : Float = Settings.MAX_VALUE_FLOAT;
+        // var tmin : Float = -Float.MAX_VALUE;
+        // var tmax : Float = Float.MAX_VALUE;
 
         var p : Vec2 = argPool.popVec2();
         var d : Vec2 = argPool.popVec2();

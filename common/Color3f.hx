@@ -18,7 +18,7 @@ class Color3f {
         this.z = b;
     }
 
-    public function set(float r, float g, float b) : Void {
+    public function set(r : Float, g : Float, b : Float) : Void {
 		x = r;
 		y = g;
 		z = b;

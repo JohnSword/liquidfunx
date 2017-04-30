@@ -17,9 +17,9 @@ class MathUtils extends PlatformMathUtils {
     /**
     * Radians to degrees conversion factor
     */
-    public static RAD2DEG : Float = 180 / PI;
+    public static var RAD2DEG : Float = 180 / PI;
 
-    public static var sinLUT : Array<Float> = new Array<Float>(Settings.SINCOS_LUT_LENGTH);
+    public static var sinLUT : Array<Float> = new Array<Float>();
 
     // TODO: some sort of static stuff
     // static {
@@ -175,8 +175,8 @@ class MathUtils extends PlatformMathUtils {
         return max(low, min(a, high));
     }
 
-    public static function Vec2 clampVec(a:Vec2, low:Vec2, high:Vec2) : Vec2 {
-        var min : :Vec2 = new Vec2();
+    public static function clampVec(a:Vec2, low:Vec2, high:Vec2) : Vec2 {
+        var min : Vec2 = new Vec2();
         min.x = a.x < high.x ? a.x : high.x;
         min.y = a.y < high.y ? a.y : high.y;
         min.x = low.x > min.x ? low.x : min.x;
@@ -184,7 +184,7 @@ class MathUtils extends PlatformMathUtils {
         return min;
     }
 
-    public static function clampToOut(a::Vec2, low:Vec2, high:Vec2, dest:Vec2) : Void {
+    public static function clampToOut(a:Vec2, low:Vec2, high:Vec2, dest:Vec2) : Void {
         dest.x = a.x < high.x ? a.x : high.x;
         dest.y = a.y < high.y ? a.y : high.y;
         dest.x = low.x > dest.x ? low.x : dest.x;
@@ -211,11 +211,11 @@ class MathUtils extends PlatformMathUtils {
     }
 
     public static function pow(a:Float, b:Float) : Float {
-        if (Settings.FAST_POW) {
-            return fastPow(a, b);
-        } else {
-            return Math.pow(a, b);
-        }
+        // TODO: fast pow function call
+        // if (Settings.FAST_POW) {
+        //     return MathUtils.fastPow(a, b);
+        // }
+        return Math.pow(a, b);
     }
 
     public static function atan2(y:Float, x:Float) :Float {
@@ -236,7 +236,7 @@ class MathUtils extends PlatformMathUtils {
         var z : Float = y / x;
         if (abs(z) < 1.0) {
             atan = z / (1.0 + 0.28 * z * z);
-            if (x < 0.0f) {
+            if (x < 0.0) {
                 if (y < 0.0) return atan - PI;
                 return atan + PI;
             }
@@ -279,5 +279,29 @@ class MathUtils extends PlatformMathUtils {
     public static function distance(v1:Vec2, v2:Vec2) :Float {
         return sqrt(distanceSquared(v1, v2));
     }
+
+    public static var MIN_VALUE (get, null):Float;
+	public static var MAX_VALUE (get, null):Float;
+	
+	private static inline function get_MIN_VALUE ():Float {
+		#if flash
+		return untyped __global__ ["Number"].MIN_VALUE;
+		#elseif js
+		return untyped __js__ ("Number.MIN_VALUE");
+		#else
+		return 2.2250738585072014e-308;
+		#end
+	}
+	
+	
+	private static inline function get_MAX_VALUE ():Float {
+		#if flash
+		return untyped __global__ ["Number"].MAX_VALUE;
+		#elseif js
+		return untyped __js__ ("Number.MAX_VALUE");
+		#else
+		return 1.7976931348623158e+308;
+		#end
+	}
 
 }

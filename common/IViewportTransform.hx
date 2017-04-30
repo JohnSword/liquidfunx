@@ -54,18 +54,18 @@ interface IViewportTransform {
   /**
    * Sets the transform's center to the given x and y coordinates, and using the given scale.
    */
-  function setCamera(x:Float, y:Float, scale:Float) : Void;;
+  function setCamera(x:Float, y:Float, scale:Float) : Void;
 
   /**
    * Transforms the given directional vector by the viewport transform (not positional)
    */
-  function getWorldVectorToScreen(world:Vec2, screen:Vec2) : Void;;
+  function getWorldVectorToScreen(world:Vec2, screen:Vec2) : Void;
 
 
   /**
    * Transforms the given directional screen vector back to the world direction.
    */
-  function getScreenVectorToWorld(screen:Vec2, world:Vec2) : Void;;
+  function getScreenVectorToWorld(screen:Vec2, world:Vec2) : Void;
   
   function getMat22Representation() : Mat22;
 

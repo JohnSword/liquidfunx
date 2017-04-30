@@ -2,7 +2,7 @@ package box2d.common;
 
 class Mat22 {
 
-    private static var serialVersionUID : Int = 2L;
+    private static var serialVersionUID : Int = 2;
 
     public var ex:Vec2;
     public var ey:Vec2;
@@ -427,7 +427,7 @@ class Mat22 {
         out.x = v.x * R.ex.x + v.y * R.ex.y;
     }
 
-    public static function Mat22 mulTrans2(A : Mat22, B : Mat22) {
+    public static function mulTrans3(A : Mat22, B : Mat22) : Mat22 {
         var C : Mat22 = new Mat22();
         C.ex.x = A.ex.x * B.ex.x + A.ex.y * B.ex.y;
         C.ex.y = A.ey.x * B.ex.x + A.ey.y * B.ex.y;
@@ -488,18 +488,19 @@ class Mat22 {
         out.ey.y = scale;
     }
 
-    public function equals(Object obj): Bool{
-        // TODO: equals not implemented
-        // if (this == obj) return true;
-        // if (obj == null) return false;
+    public function equals(obj : Dynamic): Bool {
+        // TODO: equals not implemented?
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if(Type.getClass(this) != Type.getClass(obj)) return false;
         // if (getClass() != obj.getClass()) return false;
-        // var other : Mat22 = (Mat22) obj;
-        // if (ex == null) {
-        // if (other.ex != null) return false;
-        // } else if (!ex.equals(other.ex)) return false;
-        // if (ey == null) {
-        // if (other.ey != null) return false;
-        // } else if (!ey.equals(other.ey)) return false;
+        var other : Mat22 = cast obj;
+        if (ex == null) {
+            if (other.ex != null) return false;
+        } else if (!ex.equals(other.ex)) return false;
+        if (ey == null) {
+            if (other.ey != null) return false;
+        } else if (!ey.equals(other.ey)) return false;
         return true;
     }
 

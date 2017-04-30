@@ -1,16 +1,18 @@
 package box2d.common;
 
+import box2d.common.Vec3;
+
 class Mat33 {
 
-    private static var serialVersionUID : Int = 2L;
+    private static var serialVersionUID : Int = 2;
 
-    public static var IDENTITY : Mat33 = new Mat33(new Vec3(1, 0, 0), new Vec3(0, 1, 0), new Vec3(0, 0, 1));
+    public static var IDENTITY : Mat33 = new Mat33(new Vec3().set(1, 0, 0), new Vec3().set(0, 1, 0), new Vec3().set(0, 0, 1));
 
     public var ex : Vec3;
     public var ey : Vec3;
     public var ez : Vec3;
     
-    public function new(argCol1:Vec3=null, argCol2::Vec3=null, argCol3:Vec3=null) {
+    public function new(argCol1:Vec3=null, argCol2:Vec3=null, argCol3:Vec3=null) {
         if(argCol1!=null) {
             ex = argCol1.clone();
         } else {
@@ -29,9 +31,9 @@ class Mat33 {
     }
 
     public function setFloats (exx:Float, exy:Float, exz:Float, eyx:Float, eyy:Float, eyz:Float, ezx:Float, ezy:Float, ezz:Float) : Void {
-        ex = new Vec3(exx, exy, exz);
-        ey = new Vec3(eyx, eyy, eyz);
-        ez = new Vec3(ezx, ezy, ezz);
+        ex = new Vec3().set(exx, exy, exz);
+        ey = new Vec3().set(eyx, eyy, eyz);
+        ez = new Vec3().set(ezx, ezy, ezz);
     }
 
      public function setZero() : Void {
@@ -52,7 +54,7 @@ class Mat33 {
         ez.z = eyz;
     }
 
-    public function set(mat:Mat33) : Void {
+    public function setMat(mat:Mat33) : Void {
         var vec : Vec3 = mat.ex;
         ex.x = vec.x;
         ex.y = vec.y;
@@ -81,7 +83,7 @@ class Mat33 {
 
     // / Multiply a matrix times a vector.
     public static function mul(A : Mat33, v : Vec3) : Vec3 {
-        return new Vec3(v.x * A.ex.x + v.y * A.ey.x + v.z + A.ez.x, v.x * A.ex.y + v.y * A.ey.y + v.z
+        return new Vec3().set(v.x * A.ex.x + v.y * A.ey.x + v.z + A.ez.x, v.x * A.ex.y + v.y * A.ey.y + v.z
             * A.ez.y, v.x * A.ex.z + v.y * A.ey.z + v.z * A.ez.z);
     }
 
@@ -101,7 +103,7 @@ class Mat33 {
         out.x = A.ex.x * v.x + A.ey.x * v.y;
     }
 
-    public static function mulToOut(A : Mat33, v : Vec2, out : Vec2) : Void {
+    public static function mulToOut(A : Mat33, v : Vec3, out : Vec3) : Void {
         var tempy : Float = v.x * A.ex.y + v.y * A.ey.y + v.z * A.ez.y;
         var tempz : Float = v.x * A.ex.z + v.y * A.ey.z + v.z * A.ez.z;
         out.x = v.x * A.ex.x + v.y * A.ey.x + v.z * A.ez.x;
@@ -172,7 +174,7 @@ class Mat33 {
         Vec3.crossToOutUnsafe(ey, ez, out);
         var det : Float = Vec3.dot(ex, out);
         if (det != 0.0) {
-            det = 1.0f / det;
+            det = 1.0 / det;
         }
         Vec3.crossToOutUnsafe(ey, ez, out);
         var x : Float = det * Vec3.dot(b, out);
@@ -189,17 +191,17 @@ class Mat33 {
         var a : Float = ex.x, b = ey.x, c = ex.y, d = ey.y;
         var det : Float = a * d - b * c;
         if (det != 0.0) {
-            det = 1.0f / det;
+            det = 1.0 / det;
         }
         M.ex.x = det * d;
         M.ey.x = -det * b;
-        M.ex.z = 0.0f;
+        M.ex.z = 0.0;
         M.ex.y = -det * c;
         M.ey.y = det * a;
-        M.ey.z = 0.0f;
-        M.ez.x = 0.0f;
-        M.ez.y = 0.0f;
-        M.ez.z = 0.0f;
+        M.ey.z = 0.0;
+        M.ez.x = 0.0;
+        M.ez.y = 0.0;
+        M.ez.z = 0.0;
     }
 
     // / Returns the zero matrix if singular.

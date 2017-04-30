@@ -25,7 +25,7 @@ class ContactID {
         return (indexA) << 24 | (indexB) << 16 | (typeA) << 8 | (typeB);
     }
 
-    public function isEqual(final ContactID cid) : Bool {
+    public function isEqual(cid : ContactID) : Bool {
         return getKey() == cid.getKey();
     }
 
@@ -48,7 +48,7 @@ class ContactID {
     /**
      * zeros out the data
      */
-     public function void zero() {
+     public function zero() : Void {
         indexA = 0;
         indexB = 0;
         typeA = 0;

@@ -2,12 +2,69 @@ package box2d.collision;
 
 import box2d.common.Vec2;
 import box2d.common.Transform;
+import box2d.common.Settings;
+import box2d.common.Rot;
+import box2d.common.MathUtils;
 import box2d.pooling.IWorldPool;
+import box2d.collision.shapes.Shape;
+import box2d.collision.shapes.EdgeShape;
+import box2d.collision.shapes.PolygonShape;
+import box2d.collision.shapes.CircleShape;
+import box2d.collision.ContactID;
+import box2d.collision.Manifold;
+
+import haxe.ds.Vector;
+
+ /**
+ * This is used for determining the state of contact points.
+ * 
+ * @author Daniel Murphy
+ */
+ enum PointState {
+    /**
+     * point does not exist
+     */
+    NULL_STATE;
+    /**
+     * point was added in the update
+     */
+    ADD_STATE;
+    /**
+     * point persisted across the update
+     */
+    PERSIST_STATE;
+    /**
+     * point was removed in the update
+     */
+    REMOVE_STATE;
+}
+
+enum EdgeType {
+    UNKNOWN;
+    EDGE_A;
+    EDGE_B;
+}
+
+enum VertexType {
+    ISOLATED; 
+    CONCAVE; 
+    CONVEX;
+}
+
+/**
+* This structure is used to keep track of the best separating axis.
+*/
+class EPAxis { 
+    public var type : EdgeType;
+    public var index : Int;
+    public var separation : Float;
+    public function new() {}
+}
 
 
 class Collision {
 
-    public static var NULL_FEATURE : Int = Int.MAX_VALUE;
+    public static var NULL_FEATURE : Int = Settings.MAX_VALUE_INT;
 
     private var pool : IWorldPool;
 
@@ -42,10 +99,10 @@ class Collision {
         input.useRadii = true;
 
         cache.count = 0;
-
+        
         pool.getDistance().distance(output, cache, input);
         // djm note: anything significant about 10.0f?
-        return output.distance < 10.0f * Settings.EPSILON;
+        return output.distance < 10.0 * Settings.EPSILON;
     }
 
     /**
@@ -67,7 +124,7 @@ class Collision {
 
         // Detect persists and removes.
         for (i in 0...manifold1.pointCount) {
-            ContactID id = manifold1.points[i].id;
+            var id : ContactID = manifold1.points[i].id;
 
             state1[i] = PointState.REMOVE_STATE;
 
@@ -81,7 +138,7 @@ class Collision {
 
         // Detect persists and adds
         for (i in 0...manifold2.pointCount) {
-            ContactID id = manifold2.points[i].id;
+            var id : ContactID = manifold2.points[i].id;
 
             state2[i] = PointState.ADD_STATE;
 
@@ -103,7 +160,7 @@ class Collision {
      * @param offset
      * @return
      */
-     public static function clipSegmentToLine(vOut : Array<ClipVertex>, vIn : Array<ClipVertex>, normal : Vec2, offset : Float, vertexIndexA : Int) : Int {
+     public static function clipSegmentToLine(vOut : Vector<ClipVertex>, vIn : Vector<ClipVertex>, normal : Vec2, offset : Float, vertexIndexA : Int) : Int {
         // Start with no output points
         var numOut : Int = 0;
         var vIn0 : ClipVertex = vIn[0];
@@ -136,8 +193,8 @@ class Collision {
             // VertexA is hitting edgeB.
             vOutNO.id.indexA = vertexIndexA;
             vOutNO.id.indexB = vIn0.id.indexB;
-            vOutNO.id.typeA = ContactID.Type.VERTEX.ordinal();
-            vOutNO.id.typeB = ContactID.Type.FACE.ordinal();
+            vOutNO.id.typeA = ContactType.VERTEX.getIndex();
+            vOutNO.id.typeB = ContactType.FACE.getIndex();
             ++numOut;
         }
 
@@ -180,11 +237,11 @@ class Collision {
         }
 
         manifold.type = ManifoldType.CIRCLES;
-        manifold.localPoint.set(circle1p);
+        manifold.localPoint.setVec(circle1p);
         manifold.localNormal.setZero();
         manifold.pointCount = 1;
 
-        manifold.points[0].localPoint.set(circle2p);
+        manifold.points[0].localPoint.setVec(circle2p);
         manifold.points[0].id.zero();
     }
 
@@ -218,12 +275,14 @@ class Collision {
 
         // Find the min separating edge.
         var normalIndex : Int = 0;
-        var separation : Float = -Float.MAX_VALUE;
+        // TODO: float max value
+        // var separation : Float = -Float.MAX_VALUE;
+        var separation : Float = -MathUtils.MAX_VALUE;
         var radius : Float = polygon.m_radius + circle.m_radius;
         var vertexCount : Int = polygon.m_count;
         var s : Float;
-        var vertices : Array<Vec2> = polygon.m_vertices;
-        var normals : Array<Vec2> = polygon.m_normals;
+        var vertices : Vector<Vec2> = polygon.m_vertices;
+        var normals : Vector<Vec2> = polygon.m_normals;
 
         for(i in 0...vertexCount) {
             // after inline
@@ -258,8 +317,8 @@ class Collision {
             var normal : Vec2 = normals[normalIndex];
             manifold.localNormal.x = normal.x;
             manifold.localNormal.y = normal.y;
-            manifold.localPoint.x = (v1.x + v2.x) * .5f;
-            manifold.localPoint.y = (v1.y + v2.y) * .5f;
+            manifold.localPoint.x = (v1.x + v2.x) * .5;
+            manifold.localPoint.y = (v1.y + v2.y) * .5;
             var mpoint : ManifoldPoint = manifold.points[0];
             mpoint.localPoint.x = circlep.x;
             mpoint.localPoint.y = circlep.y;
@@ -301,8 +360,8 @@ class Collision {
             manifold.localNormal.y = cLocaly - v1.y;
             // end inline
             manifold.localNormal.normalize();
-            manifold.localPoint.set(v1);
-            manifold.points[0].localPoint.set(circlep);
+            manifold.localPoint.setVec(v1);
+            manifold.points[0].localPoint.setVec(circlep);
             manifold.points[0].id.zero();
         } else if (u2 <= 0.0) {
             // inlined
@@ -319,17 +378,17 @@ class Collision {
             manifold.localNormal.y = cLocaly - v2.y;
             // end inline
             manifold.localNormal.normalize();
-            manifold.localPoint.set(v2);
-            manifold.points[0].localPoint.set(circlep);
+            manifold.localPoint.setVec(v2);
+            manifold.points[0].localPoint.setVec(circlep);
             manifold.points[0].id.zero();
             } else {
             // after inline:
-            var fcx : Float = (v1.x + v2.x) * .5f;
-            var fcy : Float = (v1.y + v2.y) * .5f;
+            var fcx : Float = (v1.x + v2.x) * .5;
+            var fcy : Float = (v1.y + v2.y) * .5;
 
-            var float tx : Float = cLocalx - fcx;
-            var float ty : Float = cLocaly - fcy;
-            var Vec2 normal = normals[vertIndex1];
+            var tx : Float = cLocalx - fcx;
+            var ty : Float = cLocaly - fcy;
+            var normal : Vec2 = normals[vertIndex1];
             separation = tx * normal.x + ty * normal.y;
             if (separation > radius) {
                 return;
@@ -338,10 +397,10 @@ class Collision {
 
             manifold.pointCount = 1;
             manifold.type = ManifoldType.FACE_A;
-            manifold.localNormal.set(normals[vertIndex1]);
+            manifold.localNormal.setVec(normals[vertIndex1]);
             manifold.localPoint.x = fcx; // (faceCenter)
             manifold.localPoint.y = fcy;
-            manifold.points[0].localPoint.set(circlep);
+            manifold.points[0].localPoint.setVec(circlep);
             manifold.points[0].id.zero();
         }
     }
@@ -366,22 +425,22 @@ class Collision {
         xf1 : Transform, poly2 : PolygonShape, xf2 : Transform) : Void {
         var count1 : Int = poly1.m_count;
         var count2 : Int = poly2.m_count;
-        var n1s : Array<Vec2> = poly1.m_normals;
-        var v1s : Array<Vec2> = poly1.m_vertices;
-        var v2s : Array<Vec2> = poly2.m_vertices;
+        var n1s : Vector<Vec2> = poly1.m_normals;
+        var v1s : Vector<Vec2> = poly1.m_vertices;
+        var v2s : Vector<Vec2> = poly2.m_vertices;
         
-        Transform.mulTransToOutUnsafe(xf2, xf1, xf);
+        Transform.mulTransToOutUnsafe2(xf2, xf1, xf);
         var xfq : Rot = xf.q;
 
         var bestIndex : Int = 0;
-        var maxSeparation : Float = -Float.MAX_VALUE;
+        var maxSeparation : Float = -MathUtils.MAX_VALUE;
         for(i in 0...count1) {
             // Get poly1 normal in frame2.
             Rot.mulToOutUnsafe(xfq, n1s[i], n);
             Transform.mulToOutUnsafe(xf, v1s[i], v1);
 
             // Find deepest point for normal i.
-            var si : Float = Float.MAX_VALUE;
+            var si : Float = MathUtils.MAX_VALUE;
             for(j in 0...count2) {
                 var v2sj : Vec2 = v2s[j];
                 var sij : Float = n.x * (v2sj.x - v1.x) + n.y * (v2sj.y - v1.y);
@@ -400,16 +459,14 @@ class Collision {
         results.separation = maxSeparation;
     }
 
-    public function findIncidentEdge(c : Array<ClipVertex>, poly1 : PolygonShape,
+    public function findIncidentEdge(c : Vector<ClipVertex>, poly1 : PolygonShape,
         xf1 : Transform , edge1 : Int, poly2 : PolygonShape, xf2 : Transform) : Void {
         var count1 : Int = poly1.m_count;
-        var normals1 : Array<Vec2> = poly1.m_normals;
+        var normals1 : Vector<Vec2> = poly1.m_normals;
 
         var count2 : Int = poly2.m_count;
-        var vertices2 : Array<Vec2> = poly2.m_vertices;
-        var normals2 : Array<Vec2> = poly2.m_normals;
-
-        // assert (0 <= edge1 && edge1 < count1);
+        var vertices2 : Vector<Vec2> = poly2.m_vertices;
+        var normals2 : Vector<Vec2> = poly2.m_normals;
 
         var c0 : ClipVertex = c[0];
         var c1 : ClipVertex = c[1];
@@ -428,7 +485,7 @@ class Collision {
 
         // Find the incident edge on poly2.
         var index : Int = 0;
-        var minDot : Float = Float.MAX_VALUE;
+        var minDot : Float = MathUtils.MAX_VALUE;
         for(i in 0...count2) {
             var b : Vec2 = normals2[i];
             var dot : Float = normal1x * b.x + normal1y * b.y;
@@ -448,8 +505,8 @@ class Collision {
         out.y = (xf2q.s * v1.x + xf2q.c * v1.y) + xf2.p.y;
         c0.id.indexA = edge1;
         c0.id.indexB = i1;
-        c0.id.typeA = ContactID.Type.FACE.ordinal();
-        c0.id.typeB = ContactID.Type.VERTEX.ordinal();
+        c0.id.typeA = ContactType.FACE.getIndex();
+        c0.id.typeB = ContactType.VERTEX.getIndex();
 
         var v2 : Vec2 = vertices2[i2];
         var out1 : Vec2 = c1.v;
@@ -457,21 +514,21 @@ class Collision {
         out1.y = (xf2q.s * v2.x + xf2q.c * v2.y) + xf2.p.y;
         c1.id.indexA = edge1;
         c1.id.indexB = i2;
-        c1.id.typeA = ContactID.Type.FACE.ordinal();
-        c1.id.typeB = ContactID.Type.VERTEX.ordinal();
+        c1.id.typeA = ContactType.FACE.getIndex();
+        c1.id.typeB = ContactType.VERTEX.getIndex();
     }
 
     private var results1 : EdgeResults = new EdgeResults();
     private var results2 : EdgeResults = new EdgeResults();
-    private var incidentEdge : Array<ClipVertex> = new Array<ClipVertex>();
+    private var incidentEdge : Vector<ClipVertex>;
     private var localTangent : Vec2 = new Vec2();
     private var localNormal : Vec2 = new Vec2();
     private var planePoint : Vec2 = new Vec2();
     private var tangent : Vec2 = new Vec2();
     private var v11 : Vec2 = new Vec2();
     private var v12 : Vec2 = new Vec2();
-    private var clipPoints1 : Array<ClipVertex> = new ClipVertex();
-    private var clipPoints2 : Array<ClipVertex> = new ClipVertex();
+    private var clipPoints1 : Vector<ClipVertex>;
+    private var clipPoints2 : Vector<ClipVertex>;
 
     /**
      * Compute the collision manifold between two polygons.
@@ -534,23 +591,23 @@ class Collision {
         findIncidentEdge(incidentEdge, poly1, xf1, edge1, poly2, xf2);
 
         var count1 : Int = poly1.m_count;
-        var vertices1 : Array<Vec2> = poly1.m_vertices;
+        var vertices1 : Vector<Vec2> = poly1.m_vertices;
 
         var iv1 : Int = edge1;
         var iv2 : Int = edge1 + 1 < count1 ? edge1 + 1 : 0;
-        v11.set(vertices1[iv1]);
-        v12.set(vertices1[iv2]);
+        v11.setVec(vertices1[iv1]);
+        v12.setVec(vertices1[iv2]);
         localTangent.x = v12.x - v11.x;
         localTangent.y = v12.y - v11.y;
         localTangent.normalize();
 
         // Vec2 localNormal = Vec2.cross(dv, 1.0f);
-        localNormal.x = 1f * localTangent.y;
-        localNormal.y = -1f * localTangent.x;
+        localNormal.x = 1 * localTangent.y;
+        localNormal.y = -1 * localTangent.x;
 
         // Vec2 planePoint = 0.5f * (v11+ v12);
-        planePoint.x = (v11.x + v12.x) * .5f;
-        planePoint.y = (v11.y + v12.y) * .5f;
+        planePoint.x = (v11.x + v12.x) * .5;
+        planePoint.y = (v11.y + v12.y) * .5;
 
         // Rot.mulToOutUnsafe(xf1.q, localTangent, tangent);
         tangent.x = xf1q.c * localTangent.x - xf1q.s * localTangent.y;
@@ -599,8 +656,8 @@ class Collision {
         }
 
         // Now clipPoints2 contains the clipped points.
-        manifold.localNormal.set(localNormal);
-        manifold.localPoint.set(planePoint);
+        manifold.localNormal.setVec(localNormal);
+        manifold.localPoint.setVec(planePoint);
 
         var pointCount : Int = 0;
         for(i in 0...Settings.maxManifoldPoints) {
@@ -647,22 +704,22 @@ class Collision {
 
         var A : Vec2 = edgeA.m_vertex1;
         var B : Vec2 = edgeA.m_vertex2;
-        e.set(B).subLocal(A);
+        e.setVec(B).subLocal(A);
 
         // Barycentric coordinates
-        var u : Float = Vec2.dot(e, temp.set(B).subLocal(Q));
-        var v : Float = Vec2.dot(e, temp.set(Q).subLocal(A));
+        var u : Float = Vec2.dot(e, temp.setVec(B).subLocal(Q));
+        var v : Float = Vec2.dot(e, temp.setVec(Q).subLocal(A));
 
         var radius : Float = edgeA.m_radius + circleB.m_radius;
 
         // ContactFeature cf;
         cf.indexB = 0;
-        cf.typeB = (byte) ContactID.Type.VERTEX.ordinal();
+        cf.typeB = cast ContactType.VERTEX.getIndex();
 
         // Region A
         if (v <= 0.0) {
             var P : Vec2 = A;
-            d.set(Q).subLocal(P);
+            d.setVec(Q).subLocal(P);
             var dd : Float = Vec2.dot(d, d);
             if (dd > radius * radius) {
                 return;
@@ -672,8 +729,8 @@ class Collision {
             if (edgeA.m_hasVertex0) {
                 var A1 : Vec2 = edgeA.m_vertex0;
                 var B1 : Vec2 = A;
-                e1.set(B1).subLocal(A1);
-                var u1 : Float = Vec2.dot(e1, temp.set(B1).subLocal(Q));
+                e1.setVec(B1).subLocal(A1);
+                var u1 : Float = Vec2.dot(e1, temp.setVec(B1).subLocal(Q));
 
                 // Is the circle in Region AB of the previous edge?
                 if (u1 > 0.0) {
@@ -682,21 +739,21 @@ class Collision {
             }
 
             cf.indexA = 0;
-            cf.typeA = ContactID.Type.VERTEX.ordinal();
+            cf.typeA = ContactType.VERTEX.getIndex();
             manifold.pointCount = 1;
             manifold.type = Manifold.ManifoldType.CIRCLES;
             manifold.localNormal.setZero();
-            manifold.localPoint.set(P);
+            manifold.localPoint.setVec(P);
             // manifold.points[0].id.key = 0;
             manifold.points[0].id.set(cf);
-            manifold.points[0].localPoint.set(circleB.m_p);
+            manifold.points[0].localPoint.setVec(circleB.m_p);
             return;
         }
 
         // Region B
         if (u <= 0.0) {
             var P : Vec2 = B;
-            d.set(Q).subLocal(P);
+            d.setVec(Q).subLocal(P);
             var dd : Float = Vec2.dot(d, d);
             if (dd > radius * radius) {
                 return;
@@ -707,8 +764,8 @@ class Collision {
                 var B2 : Vec2 = edgeA.m_vertex3;
                 var A2 : Vec2 = B;
                 var e2 : Vec2 = e1;
-                e2.set(B2).subLocal(A2);
-                var v2 : Float = Vec2.dot(e2, temp.set(Q).subLocal(A2));
+                e2.setVec(B2).subLocal(A2);
+                var v2 : Float = Vec2.dot(e2, temp.setVec(Q).subLocal(A2));
 
                 // Is the circle in Region AB of the next edge?
                 if (v2 > 0.0) {
@@ -717,14 +774,14 @@ class Collision {
             }
 
             cf.indexA = 1;
-            cf.typeA = (byte) ContactID.Type.VERTEX.ordinal();
+            cf.typeA = cast ContactType.VERTEX.getIndex();
             manifold.pointCount = 1;
-            manifold.type = Manifold.ManifoldType.CIRCLES;
+            manifold.type = ManifoldType.CIRCLES;
             manifold.localNormal.setZero();
-            manifold.localPoint.set(P);
+            manifold.localPoint.setVec(P);
             // manifold.points[0].id.key = 0;
             manifold.points[0].id.set(cf);
-            manifold.points[0].localPoint.set(circleB.m_p);
+            manifold.points[0].localPoint.setVec(circleB.m_p);
             return;
         }
 
@@ -733,9 +790,9 @@ class Collision {
         // assert (den > 0.0f);
 
         // Vec2 P = (1.0f / den) * (u * A + v * B);
-        P.set(A).mulLocal(u).addLocal(temp.set(B).mulLocal(v));
+        P.setVec(A).mulLocal(u).addLocalVec(temp.setVec(B).mulLocal(v));
         P.mulLocal(1.0 / den);
-        d.set(Q).subLocal(P);
+        d.setVec(Q).subLocal(P);
         var dd : Float = Vec2.dot(d, d);
         if (dd > radius * radius) {
             return;
@@ -743,20 +800,20 @@ class Collision {
 
         n.x = -e.y;
         n.y = e.x;
-        if (Vec2.dot(n, temp.set(Q).subLocal(A)) < 0.0) {
+        if (Vec2.dot(n, temp.setVec(Q).subLocal(A)) < 0.0) {
             n.set(-n.x, -n.y);
         }
         n.normalize();
 
         cf.indexA = 0;
-        cf.typeA = ContactID.Type.FACE.ordinal();
+        cf.typeA = ContactType.FACE.getIndex();
         manifold.pointCount = 1;
         manifold.type = Manifold.ManifoldType.FACE_A;
-        manifold.localNormal.set(n);
-        manifold.localPoint.set(A);
+        manifold.localNormal.setVec(n);
+        manifold.localPoint.setVec(A);
         // manifold.points[0].id.key = 0;
         manifold.points[0].id.set(cf);
-        manifold.points[0].localPoint.set(circleB.m_p);
+        manifold.points[0].localPoint.setVec(circleB.m_p);
     }
 
     private var collider : EPCollider = new EPCollider();
@@ -768,36 +825,6 @@ class Collision {
 
 }
 
-
- /**
- * This is used for determining the state of contact points.
- * 
- * @author Daniel Murphy
- */
- enum PointState {
-    /**
-     * point does not exist
-     */
-    NULL_STATE;
-    /**
-     * point was added in the update
-     */
-    ADD_STATE;
-    /**
-     * point persisted across the update
-     */
-    PERSIST_STATE;
-    /**
-     * point was removed in the update
-     */
-    REMOVE_STATE;
-}
-
-enum Type {
-    UNKNOWN;
-    EDGE_A;
-    EDGE_B;
-}
 
  /**
  * Java-specific class for returning edge results
@@ -833,21 +860,12 @@ class ClipVertex {
 }
 
 /**
-* This structure is used to keep track of the best separating axis.
-*/
-typedef EPAxis = { 
-    type : Type, 
-    index : Int,
-    separation : Float
-}
-
-/**
  * This holds polygon B expressed in frame A.
  */
  class TempPolygon {
-    var vertices : Array<Vec2> = new Array<Vec2>(Settings.maxPolygonVertices);
-    var normals : Array<Vec2> = new Array<Vec2>(Settings.maxPolygonVertices);
-    var count : Int;
+    public var vertices : Vector<Vec2> = new Vector<Vec2>(Settings.maxPolygonVertices);
+    public var normals : Vector<Vec2> = new Vector<Vec2>(Settings.maxPolygonVertices);
+    public var count : Int;
 
     public function new() {
         for(i in 0...vertices.length) {
@@ -857,29 +875,26 @@ typedef EPAxis = {
     }
 }
 
+
  /**
  * Reference face used for clipping
  */
  class ReferenceFace {
-    var i1 : Int, i2 : Int;
-    var v1 : Vec2 = new Vec2();
-    var v2 : Vec2 = new Vec2();
-    var normal : Vec2 = new Vec2();
+    public var i1 : Int; 
+    public var i2 : Int;
+    public var v1 : Vec2 = new Vec2();
+    public var v2 : Vec2 = new Vec2();
+    public var normal : Vec2 = new Vec2();
 
-    var sideNormal1 : : Vec2 = new Vec2();
-    var sideOffset1 : Float;
+    public var sideNormal1 : Vec2 = new Vec2();
+    public var sideOffset1 : Float;
 
-    var sideNormal2 : Vec2 = new Vec2();
-    var sideOffset2 : Float;
+    public var sideNormal2 : Vec2 = new Vec2();
+    public var sideOffset2 : Float;
 
     public function new() {}
 }
 
-enum VertexType {
-    ISOLATED; 
-    CONCAVE; 
-    CONVEX;
-}
 
 /**
  * This class collides and edge and a polygon, taking into account edge adjacency.
@@ -899,15 +914,16 @@ class EPCollider {
     var m_normal2 : Vec2 = new Vec2();
     var m_normal : Vec2 = new Vec2();
 
-    var m_type1 : VertexType, m_type2 : VertexType;
+    var m_type1 : VertexType;
+    var m_type2 : VertexType;
 
     var m_lowerLimit : Vec2 = new Vec2();
     var m_upperLimit : Vec2 = new Vec2();
     var m_radius : Float;
     var m_front : Bool;
 
-    public EPCollider() {
-        for(i in 0..2) {
+    public function new() {
+        for(i in 0 ... 2) {
         // for (int i = 0; i < 2; i++) {
             ie[i] = new ClipVertex();
             clipPoints1[i] = new ClipVertex();
@@ -919,17 +935,16 @@ class EPCollider {
     private var temp : Vec2 = new Vec2();
     private var edge0 : Vec2 = new Vec2();
     private var edge2 : Vec2 = new Vec2();
-    private var ie : Array<ClipVertex> = new Array<ClipVertex>(2);
-    private var clipPoints1 : Array<ClipVertex> = new Array<ClipVertex>(2);
-    private var clipPoints2 : Array<ClipVertex> = new Array<ClipVertex>(2);
+    private var ie : Vector<ClipVertex> = new Vector<ClipVertex>(2);
+    private var clipPoints1 : Vector<ClipVertex> = new Vector<ClipVertex>(2);
+    private var clipPoints2 : Vector<ClipVertex> = new Vector<ClipVertex>(2);
     private var rf : ReferenceFace = new ReferenceFace();
     private var edgeAxis : EPAxis = new EPAxis();
     private var polygonAxis : EPAxis = new EPAxis();
 
-    public function collide(manifold : Manifold, edgeA : EdgeShape, xfA : Transform,
-        polygonB : PolygonShape, xfB : Transform) {
+    public function collide(manifold : Manifold, edgeA : EdgeShape, xfA : Transform, polygonB : PolygonShape, xfB : Transform) {
 
-        Transform.mulTransToOutUnsafe(xfA, xfB, m_xf);
+        Transform.mulTransToOutUnsafe2(xfA, xfB, m_xf);
         Transform.mulToOutUnsafe(m_xf, polygonB.m_centroid, m_centroidB);
 
         m_v0 = edgeA.m_vertex0;
@@ -940,29 +955,29 @@ class EPCollider {
         var hasVertex0 : Bool = edgeA.m_hasVertex0;
         var hasVertex3 : Bool = edgeA.m_hasVertex3;
 
-        edge1.set(m_v2).subLocal(m_v1);
+        edge1.setVec(m_v2).subLocal(m_v1);
         edge1.normalize();
         m_normal1.set(edge1.y, -edge1.x);
-        var offset1 : Float = Vec2.dot(m_normal1, temp.set(m_centroidB).subLocal(m_v1));
+        var offset1 : Float = Vec2.dot(m_normal1, temp.setVec(m_centroidB).subLocal(m_v1));
         var offset0 : Float = 0.0, offset2 : Float = 0.0;
         var convex1 : Bool = false, convex2 : Bool = false;
 
         // Is there a preceding edge?
         if (hasVertex0) {
-            edge0.set(m_v1).subLocal(m_v0);
+            edge0.setVec(m_v1).subLocal(m_v0);
             edge0.normalize();
             m_normal0.set(edge0.y, -edge0.x);
-            convex1 = Vec2.cross(edge0, edge1) >= 0.0f;
-            offset0 = Vec2.dot(m_normal0, temp.set(m_centroidB).subLocal(m_v0));
+            convex1 = Vec2.crossVec(edge0, edge1) >= 0.0;
+            offset0 = Vec2.dot(m_normal0, temp.setVec(m_centroidB).subLocal(m_v0));
         }
 
         // Is there a following edge?
         if (hasVertex3) {
-            edge2.set(m_v3).subLocal(m_v2);
+            edge2.setVec(m_v3).subLocal(m_v2);
             edge2.normalize();
             m_normal2.set(edge2.y, -edge2.x);
-            convex2 = Vec2.cross(edge1, edge2) > 0.0;
-            offset2 = Vec2.dot(m_normal2, temp.set(m_centroidB).subLocal(m_v2));
+            convex2 = Vec2.crossVec(edge1, edge2) > 0.0;
+            offset2 = Vec2.dot(m_normal2, temp.setVec(m_centroidB).subLocal(m_v2));
         }
 
         // Determine front or back collision. Determine collision normal limits.
@@ -1142,7 +1157,7 @@ class EPCollider {
         computeEdgeSeparation(edgeAxis);
 
         // If no valid normal can be found than this edge should not collide.
-        if (edgeAxis.type == EPAxis.Type.UNKNOWN) {
+        if (edgeAxis.type == EdgeType.UNKNOWN) {
             return;
         }
 
@@ -1151,7 +1166,7 @@ class EPCollider {
         }
 
         computePolygonSeparation(polygonAxis);
-        if (polygonAxis.type != EPAxis.Type.UNKNOWN && polygonAxis.separation > m_radius) {
+        if (polygonAxis.type != EdgeType.UNKNOWN && polygonAxis.separation > m_radius) {
             return;
         }
 
@@ -1160,7 +1175,7 @@ class EPCollider {
         var k_absoluteTol : Float = 0.001;
 
         var primaryAxis : EPAxis;
-        if (polygonAxis.type == EPAxis.Type.UNKNOWN) {
+        if (polygonAxis.type == EdgeType.UNKNOWN) {
             primaryAxis = edgeAxis;
         } else if (polygonAxis.separation > k_relativeTol * edgeAxis.separation + k_absoluteTol) {
             primaryAxis = polygonAxis;
@@ -1171,7 +1186,7 @@ class EPCollider {
         var ie0 : ClipVertex = ie[0];
         var ie1 : ClipVertex = ie[1];
 
-        if (primaryAxis.type == EPAxis.Type.EDGE_A) {
+        if (primaryAxis.type == EdgeType.EDGE_A) {
             manifold.type = Manifold.ManifoldType.FACE_A;
 
             // Search for the polygon normal that is most anti-parallel to the edge normal.
@@ -1189,55 +1204,55 @@ class EPCollider {
             var i1 : Int = bestIndex;
             var i2 : Int = i1 + 1 < m_polygonB.count ? i1 + 1 : 0;
 
-            ie0.v.set(m_polygonB.vertices[i1]);
+            ie0.v.setVec(m_polygonB.vertices[i1]);
             ie0.id.indexA = 0;
-            ie0.id.indexB = (byte) i1;
-            ie0.id.typeA = (byte) ContactID.Type.FACE.ordinal();
-            ie0.id.typeB = (byte) ContactID.Type.VERTEX.ordinal();
+            ie0.id.indexB = cast i1;
+            ie0.id.typeA = cast ContactType.FACE.getIndex();
+            ie0.id.typeB = cast ContactType.VERTEX.getIndex();
 
-            ie1.v.set(m_polygonB.vertices[i2]);
+            ie1.v.setVec(m_polygonB.vertices[i2]);
             ie1.id.indexA = 0;
-            ie1.id.indexB = (byte) i2;
-            ie1.id.typeA = (byte) ContactID.Type.FACE.ordinal();
-            ie1.id.typeB = (byte) ContactID.Type.VERTEX.ordinal();
+            ie1.id.indexB = cast i2;
+            ie1.id.typeA = cast ContactType.FACE.getIndex();
+            ie1.id.typeB = cast ContactType.VERTEX.getIndex();
 
             if (m_front) {
                 rf.i1 = 0;
                 rf.i2 = 1;
-                rf.v1.set(m_v1);
-                rf.v2.set(m_v2);
-                rf.normal.set(m_normal1);
+                rf.v1.setVec(m_v1);
+                rf.v2.setVec(m_v2);
+                rf.normal.setVec(m_normal1);
             } else {
                 rf.i1 = 1;
                 rf.i2 = 0;
-                rf.v1.set(m_v2);
-                rf.v2.set(m_v1);
-                rf.normal.set(m_normal1).negateLocal();
+                rf.v1.setVec(m_v2);
+                rf.v2.setVec(m_v1);
+                rf.normal.setVec(m_normal1).negateLocal();
             }
         } else {
-            manifold.type = Manifold.ManifoldType.FACE_B;
+            manifold.type = ManifoldType.FACE_B;
 
-            ie0.v.set(m_v1);
+            ie0.v.setVec(m_v1);
             ie0.id.indexA = 0;
-            ie0.id.indexB = (byte) primaryAxis.index;
-            ie0.id.typeA = (byte) ContactID.Type.VERTEX.ordinal();
-            ie0.id.typeB = (byte) ContactID.Type.FACE.ordinal();
+            ie0.id.indexB = cast primaryAxis.index;
+            ie0.id.typeA = cast ContactType.VERTEX.getIndex();
+            ie0.id.typeB = cast ContactType.FACE.getIndex();
 
-            ie1.v.set(m_v2);
+            ie1.v.setVec(m_v2);
             ie1.id.indexA = 0;
-            ie1.id.indexB = (byte) primaryAxis.index;
-            ie1.id.typeA = (byte) ContactID.Type.VERTEX.ordinal();
-            ie1.id.typeB = (byte) ContactID.Type.FACE.ordinal();
+            ie1.id.indexB = cast primaryAxis.index;
+            ie1.id.typeA = cast ContactType.VERTEX.getIndex();
+            ie1.id.typeB = cast ContactType.FACE.getIndex();
 
             rf.i1 = primaryAxis.index;
             rf.i2 = rf.i1 + 1 < m_polygonB.count ? rf.i1 + 1 : 0;
-            rf.v1.set(m_polygonB.vertices[rf.i1]);
-            rf.v2.set(m_polygonB.vertices[rf.i2]);
-            rf.normal.set(m_polygonB.normals[rf.i1]);
+            rf.v1.setVec(m_polygonB.vertices[rf.i1]);
+            rf.v2.setVec(m_polygonB.vertices[rf.i2]);
+            rf.normal.setVec(m_polygonB.normals[rf.i1]);
         }
 
         rf.sideNormal1.set(rf.normal.y, -rf.normal.x);
-        rf.sideNormal2.set(rf.sideNormal1).negateLocal();
+        rf.sideNormal2.setVec(rf.sideNormal1).negateLocal();
         rf.sideOffset1 = Vec2.dot(rf.sideNormal1, rf.v1);
         rf.sideOffset2 = Vec2.dot(rf.sideNormal2, rf.v2);
 
@@ -1245,26 +1260,26 @@ class EPCollider {
         var np : Int;
 
         // Clip to box side 1
-        np = clipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1);
+        np = Collision.clipSegmentToLine(clipPoints1, ie, rf.sideNormal1, rf.sideOffset1, rf.i1);
 
         if (np < Settings.maxManifoldPoints) {
             return;
         }
 
         // Clip to negative box side 1
-        np = clipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2);
+        np = Collision.clipSegmentToLine(clipPoints2, clipPoints1, rf.sideNormal2, rf.sideOffset2, rf.i2);
 
         if (np < Settings.maxManifoldPoints) {
             return;
         }
 
         // Now clipPoints2 contains the clipped points.
-        if (primaryAxis.type == EPAxis.Type.EDGE_A) {
-            manifold.localNormal.set(rf.normal);
-            manifold.localPoint.set(rf.v1);
+        if (primaryAxis.type == EdgeType.EDGE_A) {
+            manifold.localNormal.setVec(rf.normal);
+            manifold.localPoint.setVec(rf.v1);
         } else {
-            manifold.localNormal.set(polygonB.m_normals[rf.i1]);
-            manifold.localPoint.set(polygonB.m_vertices[rf.i1]);
+            manifold.localNormal.setVec(polygonB.m_normals[rf.i1]);
+            manifold.localPoint.setVec(polygonB.m_vertices[rf.i1]);
         }
 
         var pointCount : Int = 0;
@@ -1272,16 +1287,16 @@ class EPCollider {
         // for (int i = 0; i < Settings.maxManifoldPoints; ++i) {
             var separation : Float;
 
-            separation = Vec2.dot(rf.normal, temp.set(clipPoints2[i].v).subLocal(rf.v1));
+            separation = Vec2.dot(rf.normal, temp.setVec(clipPoints2[i].v).subLocal(rf.v1));
 
             if (separation <= m_radius) {
                 var cp : ManifoldPoint = manifold.points[pointCount];
 
-                if (primaryAxis.type == EPAxis.Type.EDGE_A) {
+                if (primaryAxis.type == EdgeType.EDGE_A) {
                     Transform.mulTransToOutUnsafe(m_xf, clipPoints2[i].v, cp.localPoint);
                     cp.id.set(clipPoints2[i].id);
                 } else {
-                    cp.localPoint.set(clipPoints2[i].v);
+                    cp.localPoint.setVec(clipPoints2[i].v);
                     cp.id.typeA = clipPoints2[i].id.typeB;
                     cp.id.typeB = clipPoints2[i].id.typeA;
                     cp.id.indexA = clipPoints2[i].id.indexB;
@@ -1297,9 +1312,9 @@ class EPCollider {
 
 
     public function computeEdgeSeparation(axis : EPAxis) : Void {
-        axis.type = EPAxis.Type.EDGE_A;
+        axis.type = EdgeType.EDGE_A;
         axis.index = m_front ? 0 : 1;
-        axis.separation = Float.MAX_VALUE;
+        axis.separation = MathUtils.MAX_VALUE;
         var nx : Float = m_normal.x;
         var ny : Float = m_normal.y;
 
@@ -1319,9 +1334,9 @@ class EPCollider {
     private var n : Vec2 = new Vec2();
 
     public function computePolygonSeparation(axis : EPAxis) : Void {
-        axis.type = EPAxis.Type.UNKNOWN;
+        axis.type = EdgeType.UNKNOWN;
         axis.index = -1;
-        axis.separation = -Float.MAX_VALUE;
+        axis.separation = -MathUtils.MAX_VALUE;
 
         perp.x = -m_normal.y;
         perp.y = m_normal.x;
@@ -1343,7 +1358,7 @@ class EPCollider {
 
             if (s > m_radius) {
                 // No collision
-                axis.type = EPAxis.Type.EDGE_B;
+                axis.type = EdgeType.EDGE_B;
                 axis.index = i;
                 axis.separation = s;
                 return;
@@ -1351,17 +1366,17 @@ class EPCollider {
 
             // Adjacency
             if (n.x * perp.x + n.y * perp.y >= 0.0) {
-                if (Vec2.dot(temp.set(n).subLocal(m_upperLimit), m_normal) < -Settings.angularSlop) {
+                if (Vec2.dot(temp.setVec(n).subLocal(m_upperLimit), m_normal) < -Settings.angularSlop) {
                 continue;
                 }
             } else {
-                if (Vec2.dot(temp.set(n).subLocal(m_lowerLimit), m_normal) < -Settings.angularSlop) {
+                if (Vec2.dot(temp.setVec(n).subLocal(m_lowerLimit), m_normal) < -Settings.angularSlop) {
                 continue;
                 }
             }
 
             if (s > axis.separation) {
-                axis.type = EPAxis.Type.EDGE_B;
+                axis.type = EdgeType.EDGE_B;
                 axis.index = i;
                 axis.separation = s;
             }

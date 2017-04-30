@@ -1,5 +1,8 @@
 package box2d.callbacks;
 
+import box2d.dynamics.contacts.Contact;
+import box2d.collision.Manifold;
+
 // updated to rev 100
 /**
  * Implement this class to get contact information. You can use these results for
