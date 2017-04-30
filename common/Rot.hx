@@ -2,7 +2,7 @@ package box2d.common;
 
 class Rot {
 
-    private static var serialVersionUID : Int = 1L;
+    private static var serialVersionUID : Int = 1;
 
     // sin and cos
     public var s : Float;

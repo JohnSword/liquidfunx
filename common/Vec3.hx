@@ -2,7 +2,7 @@ package box2d.common;
 
 class Vec3 {
 
-    private static var serialVersionUID : Int = 1L;
+    private static var serialVersionUID : Int = 1;
 
     public var x : Float;
     public var y : Float;
@@ -54,7 +54,7 @@ class Vec3 {
         return v;
     }
 
-    public function mulLocal(float argScalar) : Vec3 {
+    public function mulLocal(argScalar:Float) : Vec3 {
         x *= argScalar;
         y *= argScalar;
         z *= argScalar;
@@ -103,6 +103,9 @@ class Vec3 {
     public function hashCode() : Int {
         var prime : Int = 31;
         var result : Int = 1;
+        result = prime * result + Std.int(x);
+        result = prime * result + Std.int(y);
+        result = prime * result + Std.int(z);
         // result = prime * result + Float.floatToIntBits(x);
         // result = prime * result + Float.floatToIntBits(y);
         // result = prime * result + Float.floatToIntBits(z);
@@ -110,11 +113,15 @@ class Vec3 {
     }
 
     public function equals(obj : Dynamic) : Bool {
-        // TODO: unimplemented
-        // if (this == obj) return true;
-        // if (obj == null) return false;
+        // TODO: unimplemented?
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if(Type.getClass(this) != Type.getClass(obj)) return false;
         // if (getClass() != obj.getClass()) return false;
-        // Vec3 other = (Vec3) obj;
+        var other : Vec3 = cast obj;
+        if (Std.int(x) != Std.int(other.x)) return false;
+        if (Std.int(y) != Std.int(other.x)) return false;
+        if (Std.int(z) != Std.int(other.x)) return false;
         // if (Float.floatToIntBits(x) != Float.floatToIntBits(other.x)) return false;
         // if (Float.floatToIntBits(y) != Float.floatToIntBits(other.y)) return false;
         // if (Float.floatToIntBits(z) != Float.floatToIntBits(other.z)) return false;
@@ -142,8 +149,6 @@ class Vec3 {
     }
     
     public static function crossToOutUnsafe(a: Vec3, b: Vec3, out: Vec3) : Void {
-        // assert(out != b);
-        // assert(out != a);
         out.x = a.y * b.z - a.z * b.y;
         out.y = a.z * b.x - a.x * b.z;
         out.z = a.x * b.y - a.y * b.x;

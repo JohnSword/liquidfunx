@@ -7,7 +7,7 @@ class Random {
 
     private var seed : Float;
     private var M : Float = 2147483647;
-    private var A : Float = 16807
+    private var A : Float = 16807;
     private var Q : Float;
     private var R : Float;
     private var low : Float;
@@ -142,7 +142,7 @@ class Random {
      * Pick a random element from the specified Array and remove it from the list, or return
      * <code>ifEmpty</code> if it is empty.
      */
-    public function pluck (arr :Array, ifEmpty :* = undefined) : Dynamic {
+    public function pluck (arr : Array<Dynamic>, ifEmpty : Dynamic = null) : Dynamic {
         if (arr == null || arr.length == 0) {
             return ifEmpty;
         }

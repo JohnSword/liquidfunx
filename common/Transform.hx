@@ -2,7 +2,7 @@ package box2d.common;
 
 class Transform {
 
-    private static var serialVersionUID : Int = 1L;
+    private static var serialVersionUID : Int = 1;
 
     /** The translation caused by the transform */
     public var p : Vec2;
@@ -98,38 +98,32 @@ class Transform {
     }
 
     public static function mulToOut2(A : Transform, B : Transform, out : Transform) : Void {
-        // assert (out != A);
         Rot.mul(A.q, B.q, out.q);
         Rot.mulToOut(A.q, B.p, out.p);
         out.p.addLocalVec(A.p);
     }
 
     public static function mulToOutUnsafe2(A : Transform, B : Transform, out : Transform) : Void {
-        // assert (out != B);
-        // assert (out != A);
         Rot.mulUnsafe(A.q, B.q, out.q);
         Rot.mulToOutUnsafe(A.q, B.p, out.p);
         out.p.addLocalVec(A.p);
     }
 
-    public static function Transform mulTrans(A : Transform, B : Transform) {
-        Transform C = new Transform();
+    public static function mulTrans2(A : Transform, B : Transform) : Transform {
+        var C : Transform = new Transform();
         Rot.mulTransUnsafe(A.q, B.q, C.q);
-        pool.set(B.p).subLocal(A.p);
-        Rot.mulTransUnsafe(A.q, pool, C.p);
+        pool.setVec(B.p).subLocal(A.p);
+        Rot.mulTransUnsafe2(A.q, pool, C.p);
         return C;
     }
 
     public static function mulTransToOut2(A : Transform, B : Transform, out : Transform) : Void {
-        // assert (out != A);
         Rot.mulTrans(A.q, B.q, out.q);
         pool.setVec(B.p).subLocal(A.p);
         Rot.mulTrans2(A.q, pool, out.p);
     }
 
     public static function mulTransToOutUnsafe2(A : Transform, B : Transform, out : Transform) : Void {
-        // assert (out != A);
-        // assert (out != B);
         Rot.mulTransUnsafe(A.q, B.q, out.q);
         pool.setVec(B.p).subLocal(A.p);
         Rot.mulTransUnsafe2(A.q, pool, out.p);

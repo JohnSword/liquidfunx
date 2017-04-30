@@ -3,7 +3,14 @@ package box2d.common;
 class Settings {
 
      /** A "close to zero" float epsilon value for use */
-    public static var EPSILON : Float = 1.1920928955078125E-7f;
+    // public static var EPSILON : Float = 1.1920928955078125E-7f;
+    public static var EPSILON:Float = 0.0000001;
+
+    public static var MAX_VALUE_FLOAT:Float = 1.79e+308;
+    public static var MAX_VALUE_INT:Int = 0x7FFFFFFF;
+    public static var MIN_VALUE_FLOAT:Float = 0.0000000000000001;
+    public static var MIN_VALUE_INT:Int = -MAX_VALUE_INT;
+    public static var SQUARE_ROOT_OF_TWO:Float = 1.41421356237;
 
     /** Pi. */
     public static var PI : Float = Math.PI;
@@ -86,7 +93,7 @@ class Settings {
      * A small angle used as a collision and constraint tolerance. Usually it is chosen to be
      * numerically significant, but visually insignificant.
      */
-    public static var angularSlop : Float = (2.0 / 180.0f * PI);
+    public static var angularSlop : Float = (2.0 / 180 * PI);
 
     /**
      * The radius of the polygon/edge shape skin. This should not be modified. Making this smaller
@@ -173,7 +180,7 @@ class Settings {
     /**
      * The standard distance between particles, divided by the particle radius.
      */
-    public static var particleStride : Float = 0.75f;
+    public static var particleStride : Float = 0.75;
 
     /**
      * The minimum particle weight that produces pressure.

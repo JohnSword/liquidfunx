@@ -7,21 +7,28 @@ package box2d.common;
  */
 class Timer {
 
-    private var resetNanos : Int;
+    private var resetNanos : Float;
 
     public function new() {
         reset();
     }
 
     public function reset() : Void {
-        // resetNanos = Sys.time();
         // TODO: resetNanos = System.nanoTime();
+        #if cpp
+        resetNanos = Sys.time();
+        #else
+        resetNanos = Date.now().getTime();
+        #end 
     }
 
     public function getMilliseconds() : Float {
-        // return (Sys.time() - resetNanos) / 1000 * 1 / 1000;
         // TODO: return (System.nanoTime() - resetNanos) / 1000 * 1 / 1000;
-        return 0;
+        #if cpp
+        return (Sys.time() - resetNanos) / 1000 * 1 / 1000;
+        #else
+        return (Date.now().getTime() - resetNanos) / 1000 * 1 / 1000;
+        #end 
     }
 
 }

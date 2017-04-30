@@ -2,7 +2,7 @@ package box2d.common;
 
 class Sweep {
 
-    private static var serialVersionUID : Int = 1L;
+    private static var serialVersionUID : Int = 1;
 
     /** Local center of mass position */
     public var localCenter : Vec2;
@@ -30,8 +30,8 @@ class Sweep {
         return s;
     }
 
-    public function void normalize() {
-        float d = MathUtils.TWOPI * MathUtils.floor(a0 / MathUtils.TWOPI);
+    public function normalize() : Void {
+        var d : Float = MathUtils.TWOPI * MathUtils.floor(a0 / MathUtils.TWOPI);
         a0 -= d;
         a -= d;
     }

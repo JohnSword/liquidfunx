@@ -4,23 +4,28 @@ import box2d.common.Vec2;
 import box2d.common.Vec3;
 import box2d.common.Mat22;
 import box2d.common.Mat33;
+import box2d.common.Rot;
 import box2d.collision.AABB;
+import box2d.collision.Collision;
+import box2d.collision.TimeOfImpact;
+import box2d.collision.Distance;
+import box2d.dynamics.contacts.Contact;
 
 interface IWorldPool {
 
-	function IDynamicStack<Contact> getPolyContactStack();
+	function getPolyContactStack() : IDynamicStack<Contact>;
 
-	function IDynamicStack<Contact> getCircleContactStack();
+	function getCircleContactStack() : IDynamicStack<Contact>;
 
-	function IDynamicStack<Contact> getPolyCircleContactStack();
+	function getPolyCircleContactStack() : IDynamicStack<Contact>;
 	
-    function IDynamicStack<Contact> getEdgeCircleContactStack();
+    function getEdgeCircleContactStack() : IDynamicStack<Contact>;
     
-    function IDynamicStack<Contact> getEdgePolyContactStack();
+    function getEdgePolyContactStack() : IDynamicStack<Contact>;
 
-    function IDynamicStack<Contact> getChainCircleContactStack();
+    function getChainCircleContactStack() : IDynamicStack<Contact>;
     
-    function IDynamicStack<Contact> getChainPolyContactStack();
+    function getChainPolyContactStack() : IDynamicStack<Contact>;
     
 	function popVec2() : Vec2;
 
