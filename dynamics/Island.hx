@@ -28,7 +28,7 @@ import box2d.callbacks.ContactListener;
 import box2d.common.MathUtils;
 import box2d.common.Settings;
 import box2d.common.Sweep;
-import box2d.common.Timer;
+import box2d.common.TimerB2d;
 import box2d.common.Vec2;
 import box2d.dynamics.contacts.Contact;
 import box2d.dynamics.contacts.ContactSolver;
@@ -239,7 +239,7 @@ import haxe.ds.Vector;
   }
 
   private var contactSolver : ContactSolver = new ContactSolver();
-  private var timer : Timer = new Timer();
+  private var timer : TimerB2d = new TimerB2d();
   private var solverData : SolverData = new SolverData();
   private var solverDef : ContactSolverDef = new ContactSolverDef();
 

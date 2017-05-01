@@ -44,6 +44,6 @@ package box2d.dynamics;
 	
 	public var warmStarting : Bool;
 
-	 public function new() {}
+	public function new() {}
 }
 

@@ -133,26 +133,21 @@ import haxe.ds.Vector;
             ? vecPool.get(Settings.maxPolygonVertices)
             : new Vector<Vec2>(Settings.maxPolygonVertices);
     var tempCount : Int = 0;
-    var i : Int = 0;
-    while (i < n) {
+    for (i in 0 ... n) {
     // for (int i = 0; i < n; ++i) {
       var v : Vec2 = verts[i];
       var unique : Bool = true;
-      var j : Int = 0;
-      while (j < tempCount) {
+      for (j in 0 ... tempCount) {
       // for (int j = 0; j < tempCount; ++j) {
         if (MathUtils.distanceSquared(v, ps[j]) < 0.5 * Settings.linearSlop) {
           unique = false;
           break;
         }
-        ++j;
       }
 
       if (unique) {
         ps[tempCount++] = v;
       }
-
-      ++i;
     }
 
     n = tempCount;
@@ -169,15 +164,13 @@ import haxe.ds.Vector;
     var i0 : Int = 0;
     var x0 : Float = ps[0].x;
     
-    var i : Int = 0;
-    while (i < n) {
+    for(i in 1 ... n) {
     // for (int i = 1; i < n; ++i) {
       var x : Float = ps[i].x;
       if (x > x0 || (x == x0 && ps[i].y < ps[i0].y)) {
         i0 = i;
         x0 = x;
       }
-      ++i;
     }
 
     var hull : Vector<Int> =
@@ -191,8 +184,7 @@ import haxe.ds.Vector;
       hull[m] = ih;
 
       var ie : Int = 0;
-      var j : Int = 1;
-      while (j < n) {
+      for (j in 1 ... n) {
       // for (int j = 1; j < n; ++j) {
         if (ie == ih) {
           ie = j;
@@ -211,7 +203,6 @@ import haxe.ds.Vector;
           ie = j;
         }
 
-        ++j;
       }
 
       ++m;
@@ -225,21 +216,18 @@ import haxe.ds.Vector;
     this.m_count = m;
 
     // Copy vertices.
-    var i : Int = 0;
-    while (i < m_count) {
+    for(i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       if (m_vertices[i] == null) {
         m_vertices[i] = new Vec2();
       }
       m_vertices[i].setVec(ps[hull[i]]);
-      ++i;
     }
 
     var edge : Vec2 = pool1;
 
     // Compute normals. Ensure the edges have non-zero length.
-    var i : Int = 0;
-    while (i < m_count) {
+    for(i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       var i1 : Int = i;
       var i2 : Int = i + 1 < m_count ? i + 1 : 0;
@@ -247,7 +235,6 @@ import haxe.ds.Vector;
 
       Vec2.crossToOutUnsafe(edge, 1, m_normals[i]);
       m_normals[i].normalize();
-      ++i;
     }
 
     // Compute the polygon centroid.
@@ -298,12 +285,10 @@ import haxe.ds.Vector;
     xf.q.set(angle);
 
     // Transform vertices and normals.
-    var i : Int = 0;
-    while (i < m_count) {
+    for(i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       Transform.mulToOut(xf, m_vertices[i], m_vertices[i]);
       Rot.mulToOut(xf.q, m_normals[i], m_normals[i]);
-      ++i;
     }
   }
 
@@ -335,8 +320,7 @@ import haxe.ds.Vector;
       // System.out.println("pLocal: " + pLocalx + ", " + pLocaly);
     }
 
-    var i : Int = 0;
-    while (i < m_count) {
+    for(i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       var vertex : Vec2 = m_vertices[i];
       var normal : Vec2 = m_normals[i];
@@ -346,7 +330,6 @@ import haxe.ds.Vector;
       if (dot > 0.0) {
         return false;
       }
-      ++i;
     }
 
     return true;
@@ -365,8 +348,7 @@ import haxe.ds.Vector;
     upper.x = lower.x;
     upper.y = lower.y;
 
-    var i : Int = 1;
-    while (i < m_count) {
+    for(i in 1 ... m_count) {
     // for (int i = 1; i < m_count; ++i) {
       var v2 : Vec2 = m_vertices[i];
       var vx : Float = (xfqc * v2.x - xfqs * v2.y) + xfpx;
@@ -375,7 +357,6 @@ import haxe.ds.Vector;
       lower.y = lower.y < vy ? lower.y : vy;
       upper.x = upper.x > vx ? upper.x : vx;
       upper.y = upper.y > vy ? upper.y : vy;
-      ++i;
     }
 
     lower.x -= m_radius;
@@ -412,12 +393,11 @@ import haxe.ds.Vector;
     var pLocaly : Float = -xfqs * tx + xfqc * ty;
 
     // var maxDistance : Float = -Float.MAX_VALUE;
-    var maxDistance : Float = -Settings.MAX_VALUE_FLOAT;
+    var maxDistance : Float = -MathUtils.MAX_VALUE;
     var normalForMaxDistanceX : Float = pLocalx;
     var normalForMaxDistanceY : Float = pLocaly;
 
-    var i : Int = 0;
-    while (i < m_count) {
+    for (i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       var vertex : Vec2 = m_vertices[i];
       var normal : Vec2 = m_normals[i];
@@ -429,7 +409,6 @@ import haxe.ds.Vector;
         normalForMaxDistanceX = normal.x;
         normalForMaxDistanceY = normal.y;
       }
-      ++i;
     }
 
     var distance : Float;
@@ -437,8 +416,7 @@ import haxe.ds.Vector;
       var minDistanceX : Float = normalForMaxDistanceX;
       var minDistanceY : Float = normalForMaxDistanceY;
       var minDistance2 : Float = maxDistance * maxDistance;
-      var i : Int = 0;
-      while (i < m_count) {
+      for (i in 0 ... m_count) {
       // for (int i = 0; i < m_count; ++i) {
         var vertex : Vec2 = m_vertices[i];
         var distanceVecX : Float = pLocalx - vertex.x;
@@ -449,7 +427,6 @@ import haxe.ds.Vector;
           minDistanceY = distanceVecY;
           minDistance2 = distance2;
         }
-        ++i;
       }
       distance = MathUtils.sqrt(minDistance2);
       normalOut.x = xfqc * minDistanceX - xfqs * minDistanceY;
@@ -488,8 +465,7 @@ import haxe.ds.Vector;
 
     var index : Int = -1;
 
-    var i : Int = 0;
-    while (i < m_count) {
+    for (i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       var normal : Vec2 = m_normals[i];
       var vertex : Vec2 = m_vertices[i];
@@ -527,7 +503,6 @@ import haxe.ds.Vector;
         return false;
       }
 
-      ++i;
     }
 
 
@@ -558,8 +533,7 @@ import haxe.ds.Vector;
 
     var inv3 : Float = 1.0 / 3.0;
 
-    var i : Int = 0;
-    while (i < count) {
+    for (i in 0 ... count) {
     // for (int i = 0; i < count; ++i) {
       // Triangle vertices.
       var p1 : Vec2 = pRef;
@@ -577,7 +551,6 @@ import haxe.ds.Vector;
       // Area weighted centroid
       e1.setVec(p1).addLocalVec(p2).addLocalVec(p3).mulLocal(triangleArea * inv3);
       out.addLocalVec(e1);
-      ++i;
     }
 
     // Centroid
@@ -620,11 +593,9 @@ import haxe.ds.Vector;
     var s : Vec2 = pool2;
     s.setZero();
     // This code would put the reference point inside the polygon.
-    var i : Int = 0;
-    while (i < m_count) {
+    for (i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       s.addLocalVec(m_vertices[i]);
-      ++i;
     }
     s.mulLocal(1.0 / m_count);
 
@@ -633,8 +604,7 @@ import haxe.ds.Vector;
     var e1 : Vec2 = pool3;
     var e2 : Vec2 = pool4;
 
-    var i : Int = 0;
-    while (i < m_count) {
+    for (i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       // Triangle vertices.
       e1.setVec(m_vertices[i]).subLocal(s);
@@ -656,7 +626,6 @@ import haxe.ds.Vector;
       var inty2 : Float = ey1 * ey1 + ey2 * ey1 + ey2 * ey2;
 
       I += (0.25 * k_inv3 * D) * (intx2 + inty2);
-      ++i;
     }
 
     // Total mass
@@ -679,16 +648,14 @@ import haxe.ds.Vector;
    * @return
    */
   public function validate() : Bool {
-    var i : Int = 0;
-    while (i < m_count) {
+    for (i in 0 ... m_count) {
     // for (int i = 0; i < m_count; ++i) {
       var i1 : Int = i;
       var i2 : Int = i < m_count - 1 ? i1 + 1 : 0;
       var p : Vec2 = m_vertices[i1];
       var e : Vec2 = pool1.setVec(m_vertices[i2]).subLocal(p);
 
-      var j : Int = 0;
-      while (j < m_count) {
+      for (j in 0 ... m_count) {
       // for (int j = 0; j < m_count; ++j) {
         if (j == i1 || j == i2) {
           continue;
@@ -699,9 +666,7 @@ import haxe.ds.Vector;
         if (c < 0.0) {
           return false;
         }
-        ++j;
       }
-      ++i;
     }
 
     return true;

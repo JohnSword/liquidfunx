@@ -675,6 +675,7 @@ import box2d.dynamics.joints.JointEdge;
     var f : Fixture = m_fixtureList;
     while (f != null) {
       if (f.m_density == 0.0) {
+        f = f.m_next;
         continue;
       }
       f.getMassData(massData);

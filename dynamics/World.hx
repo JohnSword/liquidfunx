@@ -54,7 +54,7 @@ import box2d.common.Color3f;
 import box2d.common.MathUtils;
 import box2d.common.Settings;
 import box2d.common.Sweep;
-import box2d.common.Timer;
+import box2d.common.TimerB2d;
 import box2d.common.Transform;
 import box2d.common.Vec2;
 import box2d.dynamics.contacts.Contact;
@@ -584,8 +584,8 @@ import haxe.ds.Vector;
 
   // djm pooling
   private var timestep : TimeStep = new TimeStep();
-  private var stepTimer : Timer = new Timer();
-  private var tempTimer : Timer = new Timer();
+  private var stepTimer : TimerB2d = new box2d.common.TimerB2d();
+  private var tempTimer : TimerB2d = new box2d.common.TimerB2d();
 
   /**
    * Take a time step. This performs collision detection, integration, and constraint solution.
@@ -747,6 +747,7 @@ import haxe.ds.Vector;
       var b : Body = m_bodyList;
       while (b != null) {
         if (b.isActive() == false) {
+          b = b.getNext();
           continue;
         }
 
@@ -1074,7 +1075,7 @@ import haxe.ds.Vector;
 
   private var island : Island = new Island();
   private var stack : Vector<Body> = new Vector<Body>(10); // TODO djm find a good initial stack number;
-  private var broadphaseTimer : Timer = new Timer();
+  private var broadphaseTimer : TimerB2d = new TimerB2d();
 
   private function solve(step : TimeStep) : Void {
     m_profile.solveInit.startAccum();
@@ -1117,15 +1118,18 @@ import haxe.ds.Vector;
     var seed : Body = m_bodyList;
     while (seed != null) {
       if ((seed.m_flags & Body.e_islandFlag) == Body.e_islandFlag) {
+        seed = seed.m_next;
         continue;
       }
 
       if (seed.isAwake() == false || seed.isActive() == false) {
+        seed = seed.m_next;
         continue;
       }
 
       // The seed can be dynamic or kinematic.
       if (seed.getType() == BodyType.STATIC) {
+        seed = seed.m_next;
         continue;
       }
 
@@ -1157,11 +1161,13 @@ import haxe.ds.Vector;
 
           // Has this contact already been added to an island?
           if ((contact.m_flags & Contact.ISLAND_FLAG) == Contact.ISLAND_FLAG) {
+            ce = ce.next;
             continue;
           }
 
           // Is this contact solid and touching?
           if (contact.isEnabled() == false || contact.isTouching() == false) {
+            ce = ce.next;
             continue;
           }
 
@@ -1169,6 +1175,7 @@ import haxe.ds.Vector;
           var sensorA : Bool = contact.m_fixtureA.m_isSensor;
           var sensorB : Bool = contact.m_fixtureB.m_isSensor;
           if (sensorA || sensorB) {
+            ce = ce.next;
             continue;
           }
 
@@ -1179,6 +1186,7 @@ import haxe.ds.Vector;
 
           // Was the other body already added to this island?
           if ((other.m_flags & Body.e_islandFlag) == Body.e_islandFlag) {
+            ce = ce.next;
             continue;
           }
 
@@ -1192,6 +1200,7 @@ import haxe.ds.Vector;
         var je : JointEdge = b.m_jointList;
         while (je != null) {
           if (je.joint.m_islandFlag == true) {
+            je = je.next;
             continue;
           }
 
@@ -1199,6 +1208,7 @@ import haxe.ds.Vector;
 
           // Don't simulate joints connected to inactive bodies.
           if (other.isActive() == false) {
+            je = je.next;
             continue;
           }
 
@@ -1206,6 +1216,7 @@ import haxe.ds.Vector;
           je.joint.m_islandFlag = true;
 
           if ((other.m_flags & Body.e_islandFlag) == Body.e_islandFlag) {
+            je = je.next;
             continue;
           }
 
@@ -1238,16 +1249,18 @@ import haxe.ds.Vector;
     while (b != null) {
       // If a body was not in an island then it did not move.
       if ((b.m_flags & Body.e_islandFlag) == 0) {
+        b = b.m_next;
         continue;
       }
 
       if (b.getType() == BodyType.STATIC) {
+        b = b.m_next;
         continue;
       }
 
       // Update fixtures (for broad-phase).
       b.synchronizeFixtures();
-      b = b.getNext();
+      b = b.m_next;
     }
 
     // Look for new contacts.
@@ -1296,11 +1309,13 @@ import haxe.ds.Vector;
       while (c != null) {
         // Is this contact disabled?
         if (c.isEnabled() == false) {
+          c = c.m_next;
           continue;
         }
 
         // Prevent excessive sub-stepping.
         if (c.m_toiCount > Settings.maxSubSteps) {
+          c = c.m_next;
           continue;
         }
 
@@ -1314,6 +1329,7 @@ import haxe.ds.Vector;
 
           // Is there a sensor?
           if (fA.isSensor() || fB.isSensor()) {
+            c = c.m_next;
             continue;
           }
 
@@ -1328,6 +1344,7 @@ import haxe.ds.Vector;
 
           // Is at least one body active (awake and dynamic or kinematic)?
           if (activeA == false && activeB == false) {
+            c = c.m_next;
             continue;
           }
 
@@ -1336,6 +1353,7 @@ import haxe.ds.Vector;
 
           // Are these two non-bullet dynamic bodies?
           if (collideA == false && collideB == false) {
+            c = c.m_next;
             continue;
           }
 
@@ -1454,6 +1472,7 @@ import haxe.ds.Vector;
 
             // Has this contact already been added to the island?
             if ((contact.m_flags & Contact.ISLAND_FLAG) != 0) {
+              ce = ce.next;
               continue;
             }
 
@@ -1461,6 +1480,7 @@ import haxe.ds.Vector;
             var other : Body = ce.other;
             if (other.m_type == BodyType.DYNAMIC && body.isBullet() == false
                 && other.isBullet() == false) {
+              ce = ce.next;
               continue;
             }
 
@@ -1468,6 +1488,7 @@ import haxe.ds.Vector;
             var sensorA : Bool = contact.m_fixtureA.m_isSensor;
             var sensorB : Bool = contact.m_fixtureB.m_isSensor;
             if (sensorA || sensorB) {
+              ce = ce.next;
               continue;
             }
 
@@ -1484,6 +1505,7 @@ import haxe.ds.Vector;
             if (contact.isEnabled() == false) {
               other.m_sweep.set(backup1);
               other.synchronizeTransform();
+              ce = ce.next;
               continue;
             }
 
@@ -1491,6 +1513,7 @@ import haxe.ds.Vector;
             if (contact.isTouching() == false) {
               other.m_sweep.set(backup1);
               other.synchronizeTransform();
+              ce = ce.next;
               continue;
             }
 
@@ -1500,6 +1523,7 @@ import haxe.ds.Vector;
 
             // Has the other body already been added to the island?
             if ((other.m_flags & Body.e_islandFlag) != 0) {
+              ce = ce.next;
               continue;
             }
 

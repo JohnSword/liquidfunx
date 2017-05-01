@@ -29,11 +29,12 @@ class MathUtils extends PlatformMathUtils {
     // }
 
     public static function sin(x : Float) : Float {
-        if (Settings.SINCOS_LUT_ENABLED) {
-            return sinLUTf(x);
-        } else {
-            return Math.sin(x);
-        }
+        return Math.sin(x);
+        // if (Settings.SINCOS_LUT_ENABLED) {
+        //     return sinLUTf(x);
+        // } else {
+        //     return Math.sin(x);
+        // }
     }
 
     public static function sinLUTf(x : Float) : Float {
@@ -45,7 +46,8 @@ class MathUtils extends PlatformMathUtils {
 
         if (Settings.SINCOS_LUT_LERP) {
 
-        x /= Settings.SINCOS_LUT_PRECISION;
+        x /= .00011;
+        // x /= Settings.SINCOS_LUT_PRECISION;
 
         // TODO: cast to int
         var index : Int = Std.int(x);
@@ -55,23 +57,25 @@ class MathUtils extends PlatformMathUtils {
         }
 
         // the next index is 0
-        if (index == Settings.SINCOS_LUT_LENGTH - 1) {
+        if (index ==  Std.int(Math.ceil(Math.PI * 2 / .00011)) - 1) {
             return ((1 - x) * sinLUT[index] + x * sinLUT[0]);
         } else {
             return ((1 - x) * sinLUT[index] + x * sinLUT[index + 1]);
         }
 
         } else {
-        return sinLUT[MathUtils.round(x / Settings.SINCOS_LUT_PRECISION) % Settings.SINCOS_LUT_LENGTH];
+            // return sinLUT[MathUtils.round(x / .00011) % (Math.ceil(Math.PI * 2 / .00011 - 1)];
+            return 0;
         }
     }
 
     public static function cos(x:Float) : Float {
-        if (Settings.SINCOS_LUT_ENABLED) {
-            return sinLUTf(HALF_PI - x);
-        } else {
-            return Math.cos(x);
-        }
+        return Math.cos(x);
+        // if (Settings.SINCOS_LUT_ENABLED) {
+        //     return sinLUTf(HALF_PI - x);
+        // } else {
+        //     return Math.cos(x);
+        // }
     }
 
     // public static function abs(x:Float) : Float {

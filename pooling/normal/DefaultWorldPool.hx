@@ -108,7 +108,7 @@ import haxe.ds.Vector;
     ecstack.newInstance = function() : Contact {
       return cast new EdgeAndCircleContact(world);
     }
-    ecstack.newArray = function(size : Int) : Vector<Contact> {
+    ecstack.newArray = function(size : Int) : Vector<EdgeAndCircleContact> {
       return cast new Vector<EdgeAndCircleContact>(size);
     }
 

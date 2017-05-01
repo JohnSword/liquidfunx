@@ -36,7 +36,7 @@ class MutableStack<E> implements IDynamicStack<E> {
     index = 0;
     stack = null;
     index = 0;
-    // extendStack(argInitSize);
+    extendStack(argInitSize);
   }
 
   private function extendStack(argSize : Int) : Void {
@@ -57,7 +57,12 @@ class MutableStack<E> implements IDynamicStack<E> {
     if (index >= size) {
       extendStack(size * 2);
     }
-    return stack[index++];
+    var idx : Int = index++;
+    if(stack[idx] == null) {
+      stack[idx] = newInstance();
+    }
+    return stack[idx];
+    // return stack[index++];
   }
 
   public function push(argObject : E) : Void {
@@ -69,8 +74,8 @@ class MutableStack<E> implements IDynamicStack<E> {
     return null;
   }
   
-  dynamic public function newArray(size : Int) : Vector<E> {
-    return new Vector<E>(size);
+  dynamic public function newArray<E>(size : Int) : Vector<E> {
+    return cast new Vector<Dynamic>(size);
   }
 }
 

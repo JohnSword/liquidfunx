@@ -64,7 +64,7 @@ enum TOIOutputState {
   private var xfB : Transform = new Transform();
   private var distanceOutput : DistanceOutput = new DistanceOutput();
   private var fcn : SeparationFunction = new SeparationFunction();
-  private var indexes : Vector<Int>;
+  private var indexes : Vector<Int> = new Vector<Int>(2);
   private var sweepA : Sweep = new Sweep();
   private var sweepB : Sweep = new Sweep();
 

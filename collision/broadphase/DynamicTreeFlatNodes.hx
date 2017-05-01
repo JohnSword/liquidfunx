@@ -34,25 +34,28 @@ import box2d.common.MathUtils;
 import box2d.common.Settings;
 import box2d.common.Vec2;
 
+import haxe.ds.Vector;
+
  class DynamicTreeFlatNodes implements BroadPhaseStrategy {
+
   public static var MAX_STACK_SIZE : Int = 64;
   public static var NULL_NODE : Int = -1;
   public static var INITIAL_BUFFER_LENGTH : Int = 16;
 
   public var m_root : Int;
-  public var m_aabb : Array<AABB>;
+  public var m_aabb : Vector<AABB>;
   public var m_userData : Dynamic;
-  public var m_parent : Int;
-  public var m_child1 : Int;
-  public var m_child2 : Int;
-  public var m_height : Int;
+  public var m_parent : Vector<Int>;
+  public var m_child1 : Vector<Int>;
+  public var m_child2 : Vector<Int>;
+  public var m_height : Vector<Int>;
 
   private var m_nodeCount : Int;
   private var m_nodeCapacity : Int;
 
   private var m_freeList : Int;
 
-  private var drawVecs : Array<Vec2> = new Array<Vec2>(4);
+  private var drawVecs : Vector<Vec2> = new Vector<Vec2>(4);
 
   public function new() {
     m_root = NULL_NODE;

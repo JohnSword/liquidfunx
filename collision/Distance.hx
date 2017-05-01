@@ -29,6 +29,8 @@ import box2d.common.Settings;
 import box2d.common.Vec2;
 import box2d.common.Transform;
 
+import haxe.ds.Vector;
+
 // updated to rev 100
 /**
  * This is non-static for faster pooling. To get an instance, use the {@link SingletonPool}, don't
@@ -44,8 +46,8 @@ import box2d.common.Transform;
   public static var GJK_MAX_ITERS : Int = 20;
 
   private var simplex : Simplex = new Simplex();
-  private var saveA : Array<Int> = new Array<Int>();
-  private var saveB : Array<Int> = new Array<Int>();
+  private var saveA : Vector<Int> = new Vector<Int>(3);
+  private var saveB : Vector<Int> = new Vector<Int>(3);
   private var closestPoint : Vec2 = new Vec2();
   private var d : Vec2 = new Vec2();
   private var temp : Vec2 = new Vec2();

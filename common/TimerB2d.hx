@@ -5,7 +5,7 @@ package box2d.common;
  * 
  * @author Daniel
  */
-class Timer {
+class TimerB2d {
 
     private var resetNanos : Float;
 
@@ -27,7 +27,7 @@ class Timer {
         #if cpp
         return (Sys.time() - resetNanos) / 1000 * 1 / 1000;
         #else
-        return (Date.now().getTime() - resetNanos) / 1000 * 1 / 1000;
+        return (Date.now().getTime() - resetNanos) / 1000 * 1;
         #end 
     }
 

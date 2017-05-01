@@ -25,9 +25,7 @@ class Simplex {
       // Copy data from cache.
       m_count = cache.count;
 
-      var i:Int = 0;
-      while(i < m_count) {
-    //   for (int i = 0; i < m_count; ++i) {
+      for(i in 0 ... m_count) {
         var v : SimplexVertex = vertices[i];
         v.indexA = cache.indexA[i];
         v.indexB = cache.indexB[i];
@@ -37,7 +35,6 @@ class Simplex {
         Transform.mulToOutUnsafe(transformB, wBLocal, v.wB);
         v.w.setVec(v.wB).subLocal(v.wA);
         v.a = 0.0;
-        ++i;
       }
 
       // Compute the new simplex metric, if it is substantially different than
@@ -69,9 +66,7 @@ class Simplex {
       cache.metric = getMetric();
       cache.count = m_count;
 
-      var i:Int = 0;
-      while(i < m_count) {
-    //   for (int i = 0; i < m_count; ++i) {
+      for(i in 0 ... m_count) {
         cache.indexA[i] = (vertices[i].indexA);
         cache.indexB[i] = (vertices[i].indexB);
       }

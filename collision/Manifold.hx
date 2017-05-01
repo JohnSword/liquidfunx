@@ -26,6 +26,8 @@ package box2d.collision;
 import box2d.common.Settings;
 import box2d.common.Vec2;
 
+import haxe.ds.Vector;
+
 enum ManifoldType {
   CIRCLES; 
   FACE_A; 
@@ -57,7 +59,7 @@ enum ManifoldType {
  class Manifold {
 
   /** The points of contact. */
-  public var points : Array<ManifoldPoint>;
+  public var points : Vector<ManifoldPoint>;
 
   /** not use for Type::e_points */
   public var localNormal : Vec2;
@@ -74,7 +76,7 @@ enum ManifoldType {
    * creates a manifold with 0 points, with it's points array full of instantiated ManifoldPoints.
    */
   public function new() {
-    points = new Array<ManifoldPoint>();
+    points = new Vector<ManifoldPoint>(Settings.maxManifoldPoints);
     for(i in 0 ... Settings.maxManifoldPoints) {
       points[i] = new ManifoldPoint();
     }
@@ -89,7 +91,7 @@ enum ManifoldType {
    * @param other
    */
   public function copy(other : Manifold) : Void {
-    points = new Array<ManifoldPoint>();
+    points = new Vector<ManifoldPoint>(Settings.maxManifoldPoints);
     localNormal = other.localNormal.clone();
     localPoint = other.localPoint.clone();
     pointCount = other.pointCount;
