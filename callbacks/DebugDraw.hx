@@ -167,7 +167,7 @@ class DebugDraw {
    * 
    * @param colors can be null
    */
-  public function drawParticles(centers : Array<Vec2>, radius : Float, colors : Array<ParticleColor>, count : Int) : Void {
+  public function drawParticles(centers : Vector<Vec2>, radius : Float, colors : Vector<ParticleColor>, count : Int) : Void {
     
   }
 
@@ -176,7 +176,7 @@ class DebugDraw {
    * 
    * @param colors can be null
    */
-  public function drawParticlesWireframe(centers : Array<Vec2>, radius : Float, colors : Array<ParticleColor>, count : Int) : Void {
+  public function drawParticlesWireframe(centers : Vector<Vec2>, radius : Float, colors : Vector<ParticleColor>, count : Int) : Void {
     
   }
 

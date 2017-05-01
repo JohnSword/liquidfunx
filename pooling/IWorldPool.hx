@@ -11,6 +11,8 @@ import box2d.collision.TimeOfImpact;
 import box2d.collision.Distance;
 import box2d.dynamics.contacts.Contact;
 
+import haxe.ds.Vector;
+
 interface IWorldPool {
 
 	function getPolyContactStack() : IDynamicStack<Contact>;
@@ -29,19 +31,19 @@ interface IWorldPool {
     
 	function popVec2() : Vec2;
 
-	function popVec2s(num : Int) : Array<Vec2>;
+	function popVec2s(num : Int) : Vector<Vec2>;
 
 	function pushVec2(num : Int) : Void;
 
 	function popVec3() : Vec3;
 
-	function popVec3s(num : Int) : Array<Vec3> ;
+	function popVec3s(num : Int) : Vector<Vec3>;
 
 	function pushVec3(num : Int) : Void;
 
 	function popMat22() : Mat22;
 
-	function popMat22s(num : Int) : Array<Mat22>;
+	function popMat22s(num : Int) : Vector<Mat22>;
 
 	function pushMat22(num : Int) : Void;
 	
@@ -51,7 +53,7 @@ interface IWorldPool {
 
 	function popAABB() : AABB;
 
-	function popAABBs(num : Int) : Array<AABB>;
+	function popAABBs(num : Int) : Vector<AABB>;
 
 	function pushAABB(num : Int) : Void;
 	
@@ -65,9 +67,9 @@ interface IWorldPool {
 
 	function getDistance() : Distance;
 
-	function getFloatArray(argLength : Int) : Array<Float>;
+	function getFloatArray(argLength : Int) : Vector<Float>;
 
-	function getIntArray(argLength : Int) : Array<Int>;
+	function getIntArray(argLength : Int) : Vector<Int>;
 
-	function getVec2Array(argLength : Int) : Array<Vec2>;
+	function getVec2Array(argLength : Int) : Vector<Vec2>;
 }

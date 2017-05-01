@@ -1,11 +1,13 @@
 package box2d.particle;
 
-class ParticleBuffer<T> {
-    public var data : Array<T>;
-    public var dataClass : Array<Dynamic>;
+import haxe.ds.Vector;
+
+class ParticleBuffer {
+    public var data : Vector<Dynamic>;
+    public var dataClass : Class<Dynamic>;
     public var userSuppliedCapacity : Int;
 
-    public function new(dataClass : Array<T>) {
+    public function new(dataClass : Class<Dynamic>) {
       this.dataClass = dataClass;
     }
   }

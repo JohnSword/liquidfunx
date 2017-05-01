@@ -26,8 +26,6 @@ package box2d.dynamics.contacts;
 import box2d.collision.Manifold;
 import box2d.collision.shapes.ChainShape;
 import box2d.collision.shapes.EdgeShape;
-import box2d.collision.shapes.PolygonShape;
-import box2d.collision.shapes.ShapeType;
 import box2d.common.Transform;
 import box2d.dynamics.Fixture;
 import box2d.pooling.IWorldPool;

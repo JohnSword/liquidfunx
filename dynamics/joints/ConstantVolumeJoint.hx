@@ -124,7 +124,7 @@ import haxe.ds.Vector;
     return area;
   }
 
-  private function getSolverArea(positions : Array<Position>) : Float {
+  private function getSolverArea(positions : Vector<Position>) : Float {
     var area : Float = 0.0;
     for (i in 0 ... bodies.length) {
     // for (int i = 0; i < bodies.length; ++i) {
@@ -137,7 +137,7 @@ import haxe.ds.Vector;
     return area;
   }
 
-  private function constrainEdges(positions : Array<Position>) : Bool {
+  private function constrainEdges(positions : Vector<Position>) : Bool {
     var perimeter : Float = 0.0;
     for (i in 0 ... bodies.length) {
       var next : Int = (i == bodies.length - 1) ? 0 : i + 1;
@@ -183,9 +183,10 @@ import haxe.ds.Vector;
   }
 
   override public function initVelocityConstraints(step : SolverData) : Void {
-    var velocities : Array<Velocity> = step.velocities;
-    var positions : Array<Position> = step.positions;
-    var d : Array<Vec2> = pool.getVec2Array(bodies.length);
+    var velocities : Vector<Velocity> = step.velocities;
+    var positions : Vector<Position> = step.positions;
+    
+    var d : Vector<Vec2> = pool.getVec2Array(bodies.length);
 
     for (i in 0 ... bodies.length) {
     // for (int i = 0; i < bodies.length; ++i) {
@@ -220,9 +221,9 @@ import haxe.ds.Vector;
     var crossMassSum : Float = 0.0;
     var dotMassSum : Float = 0.0;
 
-    var velocities : Array<Velocity> = step.velocities;
-    var positions : Array<Position> = step.positions;
-    var d : Array<Vec2> = pool.getVec2Array(bodies.length);
+    var velocities : Vector<Velocity> = step.velocities;
+    var positions : Vector<Position> = step.positions;
+    var d : Vector<Vec2> = pool.getVec2Array(bodies.length);
 
     for (i in 0 ... bodies.length) {
     // for (int i = 0; i < bodies.length; ++i) {
@@ -247,13 +248,13 @@ import haxe.ds.Vector;
   }
 
   /** No-op */
-  public function getAnchorA(argOut:Vec2) : Void {}
+  override public function getAnchorA(argOut:Vec2) : Void {}
 
   /** No-op */
-  public function getAnchorB(argOut:Vec2) : Void {}
+  override public function getAnchorB(argOut:Vec2) : Void {}
 
   /** No-op */
-  public function getReactionForce(inv_dt : Float, argOut : Vec2) : Void {}
+  override public function getReactionForce(inv_dt : Float, argOut : Vec2) : Void {}
 
   /** No-op */
   override public function getReactionTorque(inv_dt : Float) : Float {

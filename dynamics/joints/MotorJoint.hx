@@ -72,11 +72,11 @@ import box2d.pooling.IWorldPool;
     out.setVec(m_bodyB.getPosition());
   }
 
-  public function getReactionForce(inv_dt : Float, out : Vec2) : Void {
+  override public function getReactionForce(inv_dt : Float, out : Vec2) : Void {
     out.setVec(m_linearImpulse).mulLocal(inv_dt);
   }
 
-  public function getReactionTorque(inv_dt : Float) : Float {
+  override public function getReactionTorque(inv_dt : Float) : Float {
     return m_angularImpulse * inv_dt;
   }
 

@@ -49,11 +49,17 @@ class OrderedStack<E> {
   }
 
   public function pop() : E {
-    return cast pool[index++];
+    var idx :Int = index++;
+    var o : E = pool[idx];
+    if(o == null) {
+      pool[idx] = newInstance();
+    }
+    return pool[idx];
   }
 
-  public function popArray(argNum : Int) : Array<E> {
+  public function popArray(argNum : Int) : Vector<E> {
     // TODO: array copy
+    Vector.blit(pool, index, container, 0, argNum);
     // System.arraycopy(pool, index, container, 0, argNum);
     index += argNum;
     return cast container;
@@ -64,7 +70,7 @@ class OrderedStack<E> {
   }
 
   /** Creates a new instance of the object contained by this stack. */
-  public function newInstance() : E {
+  dynamic public function newInstance() : E {
     return null;
   }
 }

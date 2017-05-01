@@ -34,7 +34,7 @@ class CreateParticleGroupCallback implements VoronoiDiagramCallback {
                   ? 2 * system.m_triadCount
                   : Settings.minParticleBufferCapacity;
           system.m_triadBuffer =
-              BufferUtils.reallocateBuffer(Triad, system.m_triadBuffer, oldCapacity,
+              cast BufferUtils.reallocateBuffer(Triad, system.m_triadBuffer, oldCapacity,
                   newCapacity);
           system.m_triadCapacity = newCapacity;
         }
@@ -57,7 +57,7 @@ class CreateParticleGroupCallback implements VoronoiDiagramCallback {
         triad.ka = -(dcax * dabx + dcay * daby);
         triad.kb = -(dabx * dbcx + daby * dbcy);
         triad.kc = -(dbcx * dcax + dbcy * dcay);
-        triad.s = Vec2.crossVec(pa, pb) + Vec2.cross(pb, pc) + Vec2.cross(pc, pa);
+        triad.s = Vec2.crossVec(pa, pb) + Vec2.crossVec(pb, pc) + Vec2.crossVec(pc, pa);
         system.m_triadCount++;
       }
     }

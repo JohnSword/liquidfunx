@@ -1,9 +1,9 @@
 package box2d.particle;
 
 class NewIndices {
-    private var start : Int;
-    private var mid : Int;
-    private var end : Int;
+    public var start : Int;
+    public var mid : Int;
+    public var end : Int;
 
     public function new() {}
 

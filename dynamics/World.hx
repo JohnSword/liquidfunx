@@ -1693,8 +1693,8 @@ import haxe.ds.Vector;
     var particleCount : Int = system.getParticleCount();
     if (particleCount != 0) {
       var particleRadius : Float = system.getParticleRadius();
-      var positionBuffer : Array<Vec2> = system.getParticlePositionBuffer();
-      var colorBuffer : Array<ParticleColor> = null;
+      var positionBuffer : Vector<Vec2> = system.getParticlePositionBuffer();
+      var colorBuffer : Vector<ParticleColor> = null;
       if (system.m_colorBuffer.data != null) {
         colorBuffer = system.getParticleColorBuffer();
       }
@@ -1834,7 +1834,7 @@ import haxe.ds.Vector;
    * 
    * @return the head of the world particle group list.
    */
-  public function getParticleGroupList() : Array<ParticleGroup> {
+  public function getParticleGroupList() : Vector<ParticleGroup> {
     return m_particleSystem.getParticleGroupList();
   }
 
@@ -1956,27 +1956,27 @@ import haxe.ds.Vector;
    * 
    * @return
    */
-  public function getParticleFlagsBuffer() : Int {
+  public function getParticleFlagsBuffer() : Vector<Int> {
     return m_particleSystem.getParticleFlagsBuffer();
   }
 
-  public function getParticlePositionBuffer() : Array<Vec2> {
+  public function getParticlePositionBuffer() : Vector<Vec2> {
     return m_particleSystem.getParticlePositionBuffer();
   }
 
-  public function getParticleVelocityBuffer() : Array<Vec2> {
+  public function getParticleVelocityBuffer() : Vector<Vec2> {
     return m_particleSystem.getParticleVelocityBuffer();
   }
 
-  public function getParticleColorBuffer() : Array<ParticleColor> {
+  public function getParticleColorBuffer() : Vector<ParticleColor> {
     return m_particleSystem.getParticleColorBuffer();
   }
 
-  public function getParticleGroupBuffer() : Array<ParticleGroup> {
+  public function getParticleGroupBuffer() : Vector<ParticleGroup> {
     return m_particleSystem.getParticleGroupBuffer();
   }
 
-  public function getParticleUserDataBuffer() : Dynamic {
+  public function getParticleUserDataBuffer() : Vector<Dynamic> {
     return m_particleSystem.getParticleUserDataBuffer();
   }
 
@@ -1986,21 +1986,21 @@ import haxe.ds.Vector;
    * @param buffer is a pointer to a block of memory.
    * @param size is the number of values in the block.
    */
-  public function setParticleFlagsBuffer(buffer : Int, capacity : Int) : Void {
+  public function setParticleFlagsBuffer(buffer : Vector<Int>, capacity : Int) : Void {
     m_particleSystem.setParticleFlagsBuffer(buffer, capacity);
   }
 
-  public function setParticlePositionBuffer(buffer : Array<Vec2>, capacity : Int) : Void {
+  public function setParticlePositionBuffer(buffer : Vector<Vec2>, capacity : Int) : Void {
     m_particleSystem.setParticlePositionBuffer(buffer, capacity);
 
   }
 
-  public function setParticleVelocityBuffer(buffer : Array<Vec2>, capacity : Int) : Void {
+  public function setParticleVelocityBuffer(buffer : Vector<Vec2>, capacity : Int) : Void {
     m_particleSystem.setParticleVelocityBuffer(buffer, capacity);
 
   }
 
-  public function setParticleColorBuffer(buffer : Array<ParticleColor>, capacity : Int) : Void {
+  public function setParticleColorBuffer(buffer : Vector<ParticleColor>, capacity : Int) : Void {
     m_particleSystem.setParticleColorBuffer(buffer, capacity);
 
   }
@@ -2014,7 +2014,7 @@ import haxe.ds.Vector;
    * 
    * @return
    */
-  public function getParticleContacts() : Array<ParticleContact> {
+  public function getParticleContacts() : Vector<ParticleContact> {
     return m_particleSystem.m_contactBuffer;
   }
 
@@ -2027,7 +2027,7 @@ import haxe.ds.Vector;
    * 
    * @return
    */
-  public function getParticleBodyContacts() : Array<ParticleBodyContact> {
+  public function getParticleBodyContacts() : Vector<ParticleBodyContact> {
     return m_particleSystem.m_bodyContactBuffer;
   }
 

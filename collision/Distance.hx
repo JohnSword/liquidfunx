@@ -23,11 +23,6 @@
  ******************************************************************************/
 package box2d.collision;
 
-import box2d.collision.shapes.ChainShape;
-import box2d.collision.shapes.CircleShape;
-import box2d.collision.shapes.EdgeShape;
-import box2d.collision.shapes.PolygonShape;
-import box2d.collision.shapes.Shape;
 import box2d.common.MathUtils;
 import box2d.common.Rot;
 import box2d.common.Settings;

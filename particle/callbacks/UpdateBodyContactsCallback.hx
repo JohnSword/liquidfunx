@@ -1,16 +1,21 @@
 package box2d.particle.callbacks;
 
+import box2d.common.BufferUtils;
+import box2d.common.Settings;
 import box2d.common.Vec2;
 import box2d.callbacks.QueryCallback;
 import box2d.dynamics.Fixture;
 import box2d.collision.AABB;
 import box2d.collision.shapes.Shape;
 import box2d.dynamics.Body;
+import box2d.particle.ParticleSystem;
 
 class UpdateBodyContactsCallback implements QueryCallback {
-    private var system : ParticleSystem;
+    public var system : ParticleSystem;
 
-    private var tempVec : Vec2 = new Vec2();
+    public var tempVec : Vec2 = new Vec2();
+
+    public function new() {}
 
     public function reportFixture(fixture : Fixture) : Bool {
       if (fixture.isSensor()) {
@@ -31,16 +36,16 @@ class UpdateBodyContactsCallback implements QueryCallback {
         var aabbupperBoundx : Float = aabb.upperBound.x + system.m_particleDiameter;
         var aabbupperBoundy : Float = aabb.upperBound.y + system.m_particleDiameter;
         var firstProxy : Int =
-            lowerBound(
+            ParticleSystem.lowerBound(
                 system.m_proxyBuffer,
                 system.m_proxyCount,
-                computeTag(system.m_inverseDiameter * aabblowerBoundx, system.m_inverseDiameter
+                ParticleSystem.computeTag(system.m_inverseDiameter * aabblowerBoundx, system.m_inverseDiameter
                     * aabblowerBoundy));
         var lastProxy : Int =
-            upperBound(
+            ParticleSystem.upperBound(
                 system.m_proxyBuffer,
                 system.m_proxyCount,
-                computeTag(system.m_inverseDiameter * aabbupperBoundx, system.m_inverseDiameter
+                ParticleSystem.computeTag(system.m_inverseDiameter * aabbupperBoundx, system.m_inverseDiameter
                     * aabbupperBoundy));
 
         var proxy : Int = firstProxy;
@@ -66,7 +71,7 @@ class UpdateBodyContactsCallback implements QueryCallback {
                         ? 2 * system.m_bodyContactCount
                         : Settings.minParticleBufferCapacity;
                 system.m_bodyContactBuffer =
-                    BufferUtils.reallocateBuffer(ParticleBodyContact,
+                    cast BufferUtils.reallocateBuffer(ParticleBodyContact,
                         system.m_bodyContactBuffer, oldCapacity, newCapacity);
                 system.m_bodyContactCapacity = newCapacity;
               }

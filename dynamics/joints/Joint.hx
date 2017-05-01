@@ -183,8 +183,8 @@ class Joint {
    * @param inv_dt
    * @return
    */
-  public function getReactionTorque(inv_dt:Float) : Void {
-    
+  public function getReactionTorque(inv_dt:Float) : Float {
+    return 0;
   }
 
   /**

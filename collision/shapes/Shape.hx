@@ -78,7 +78,7 @@ class Shape {
    * @return
    */
   public function getChildCount() : Int {
-    return null;
+    return 0;
   }
 
   /**
@@ -136,7 +136,7 @@ class Shape {
    * @return distance returns the distance from the current shape.
    */
   public function computeDistanceToOut(xf : Transform, p : Vec2, childIndex : Int, normalOut : Vec2) : Float {
-    return null;
+    return 0;
   }
 
   public function clone() : Shape {

@@ -11,15 +11,18 @@ import box2d.collision.RayCastOutput;
 import box2d.collision.AABB;
 import box2d.collision.shapes.Shape;
 import box2d.dynamics.Body;
+import box2d.particle.ParticleSystem;
 
 class SolveCollisionCallback implements QueryCallback {
-    private var system : ParticleSystem;
-    private var step : TimeStep;
+    public var system : ParticleSystem;
+    public var step : TimeStep;
 
     private var input : RayCastInput = new RayCastInput();
     private var output : RayCastOutput = new RayCastOutput();
     private var tempVec : Vec2 = new Vec2();
     private var tempVec2 : Vec2 = new Vec2();
+
+    public function new() {}
 
     public function reportFixture(fixture : Fixture) : Bool {
       if (fixture.isSensor()) {
@@ -35,16 +38,16 @@ class SolveCollisionCallback implements QueryCallback {
         var aabbupperBoundx : Float = aabb.upperBound.x + system.m_particleDiameter;
         var aabbupperBoundy : Float = aabb.upperBound.y + system.m_particleDiameter;
         var firstProxy : Int =
-            lowerBound(
+            ParticleSystem.lowerBound(
                 system.m_proxyBuffer,
                 system.m_proxyCount,
-                computeTag(system.m_inverseDiameter * aabblowerBoundx, system.m_inverseDiameter
+                ParticleSystem.computeTag(system.m_inverseDiameter * aabblowerBoundx, system.m_inverseDiameter
                     * aabblowerBoundy));
         var lastProxy : Int =
-            upperBound(
+            ParticleSystem.upperBound(
                 system.m_proxyBuffer,
                 system.m_proxyCount,
-                computeTag(system.m_inverseDiameter * aabbupperBoundx, system.m_inverseDiameter
+                ParticleSystem.computeTag(system.m_inverseDiameter * aabbupperBoundx, system.m_inverseDiameter
                     * aabbupperBoundy));
         
         var proxy : Int = firstProxy;

@@ -65,7 +65,7 @@ import haxe.ds.Vector;
     m_nodes = new Vector<DynamicTreeNode>(16);
 
     // Build a linked list for the free list.
-    var i : Int = m_nodeCapacity;
+    var i : Int = m_nodeCapacity - 1;
     while(i >= 0) {
     // for (int i = m_nodeCapacity - 1; i >= 0; i--) {
       m_nodes[i] = new DynamicTreeNode(i);

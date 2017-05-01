@@ -4,6 +4,7 @@ import box2d.common.Vec2;
 import box2d.common.Settings;
 import box2d.common.BufferUtils;
 import box2d.common.MathUtils;
+import box2d.particle.ParticleSystem;
 
 // Callback used with VoronoiDiagram.
 class JoinParticleGroupsCallback implements VoronoiDiagramCallback {
@@ -19,7 +20,7 @@ class JoinParticleGroupsCallback implements VoronoiDiagramCallback {
         var af : Int = system.m_flagsBuffer.data[a];
         var bf : Int = system.m_flagsBuffer.data[b];
         var cf : Int = system.m_flagsBuffer.data[c];
-        if ((af & bf & cf & k_triadFlags) != 0) {
+        if ((af & bf & cf & ParticleSystem.k_triadFlags) != 0) {
           var pa : Vec2 = system.m_positionBuffer.data[a];
           var pb : Vec2 = system.m_positionBuffer.data[b];
           var pc : Vec2 = system.m_positionBuffer.data[c];
@@ -40,7 +41,7 @@ class JoinParticleGroupsCallback implements VoronoiDiagramCallback {
                       ? 2 * system.m_triadCount
                       : Settings.minParticleBufferCapacity;
               system.m_triadBuffer =
-                  BufferUtils.reallocateBuffer(Triad, system.m_triadBuffer, oldCapacity,
+                  cast BufferUtils.reallocateBuffer(Triad, system.m_triadBuffer, oldCapacity,
                       newCapacity);
               system.m_triadCapacity = newCapacity;
             }

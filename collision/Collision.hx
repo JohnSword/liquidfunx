@@ -461,7 +461,7 @@ class Collision {
 
     public function findIncidentEdge(c : Vector<ClipVertex>, poly1 : PolygonShape,
         xf1 : Transform , edge1 : Int, poly2 : PolygonShape, xf2 : Transform) : Void {
-        var count1 : Int = poly1.m_count;
+        // var count1 : Int = poly1.m_count;
         var normals1 : Vector<Vec2> = poly1.m_normals;
 
         var count2 : Int = poly2.m_count;
@@ -520,15 +520,15 @@ class Collision {
 
     private var results1 : EdgeResults = new EdgeResults();
     private var results2 : EdgeResults = new EdgeResults();
-    private var incidentEdge : Vector<ClipVertex>;
+    private var incidentEdge : Vector<ClipVertex> = new Vector<ClipVertex>(2);
     private var localTangent : Vec2 = new Vec2();
     private var localNormal : Vec2 = new Vec2();
     private var planePoint : Vec2 = new Vec2();
     private var tangent : Vec2 = new Vec2();
     private var v11 : Vec2 = new Vec2();
     private var v12 : Vec2 = new Vec2();
-    private var clipPoints1 : Vector<ClipVertex>;
-    private var clipPoints2 : Vector<ClipVertex>;
+    private var clipPoints1 : Vector<ClipVertex> = new Vector<ClipVertex>(2);
+    private var clipPoints2 : Vector<ClipVertex> = new Vector<ClipVertex>(2);
 
     /**
      * Compute the collision manifold between two polygons.

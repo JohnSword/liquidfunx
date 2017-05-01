@@ -221,7 +221,7 @@ import box2d.dynamics.joints.JointEdge;
    * @param density the shape density (set to zero for static bodies).
    * @warning This function is locked during callbacks.
    */
-  public function createFixture2(shape : Shape, density : Float) : Fixture {
+  public function createFixtureShape(shape : Shape, density : Float) : Fixture {
     fixDef.shape = shape;
     fixDef.density = density;
 

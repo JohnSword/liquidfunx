@@ -26,7 +26,6 @@ package box2d.dynamics.joints;
 import box2d.common.Mat22;
 import box2d.common.MathUtils;
 import box2d.common.Rot;
-import box2d.common.Settings;
 import box2d.common.Transform;
 import box2d.common.Vec2;
 import box2d.dynamics.SolverData;

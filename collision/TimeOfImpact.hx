@@ -26,11 +26,9 @@ package box2d.collision;
 import box2d.collision.DistanceProxy;
 import box2d.collision.SimplexCache;
 import box2d.common.MathUtils;
-import box2d.common.Rot;
 import box2d.common.Settings;
 import box2d.common.Sweep;
 import box2d.common.Transform;
-import box2d.common.Vec2;
 import box2d.pooling.IWorldPool;
 
 import haxe.ds.Vector;

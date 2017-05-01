@@ -36,13 +36,14 @@ class MutableStack<E> implements IDynamicStack<E> {
     index = 0;
     stack = null;
     index = 0;
-    extendStack(argInitSize);
+    // extendStack(argInitSize);
   }
 
   private function extendStack(argSize : Int) : Void {
     var newStack : Vector<E> = newArray(argSize);
     if (stack != null) {
       // TODO: array copy
+      Vector.blit(stack, 0, newStack, 0, size);
       // System.arraycopy(stack, 0, newStack, 0, size);
     }
     for(i in 0 ... newStack.length) {
@@ -64,12 +65,12 @@ class MutableStack<E> implements IDynamicStack<E> {
   }
 
   /** Creates a new instance of the object contained by this stack. */
-  public function newInstance() : E {
+  dynamic public function newInstance() : E {
     return null;
   }
   
-  public function newArray(size : Int) : Vector<E> {
-    return null;
+  dynamic public function newArray(size : Int) : Vector<E> {
+    return new Vector<E>(size);
   }
 }
 

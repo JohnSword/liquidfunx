@@ -70,137 +70,98 @@ import haxe.ds.Vector;
 
   private var world : IWorldPool = this;
 
-  private var pcstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-  //   {
-  //     public function newInstance () : Contact { 
-  //       return new PolygonContact(world); 
-  //     }
-  //     public function newArray(size : Int) : Vector<Contact> { 
-  //       return new Vector<PolygonContact>(size); 
-  //     }
-  // };
-
-  private var ccstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new CircleContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<CircleContact>(size); 
-    //   }
-    // };
-
-  private var cpstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new PolygonAndCircleContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<PolygonAndCircleContact>(size);
-    //   }
-    // };
-
-  private var ecstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new EdgeAndCircleContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<EdgeAndCircleContact>(size);
-    //   }
-    // };
-
-  private var epstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new EdgeAndPolygonContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<EdgeAndPolygonContact>(size);
-    //   }
-    // };
-
-  private var chcstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new ChainAndCircleContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<ChainAndCircleContact>(size);
-    //   }
-    // };
-
-  private var chpstack : MutableStack<Contact> =
-    new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance () : Contact { 
-    //     return new ChainAndPolygonContact(world); 
-    //   }
-    //   public function newArray(size : Int) : Vector<Contact> { 
-    //     return new Vector<ChainAndPolygonContact>(size);
-    //   }
-    // };
+  private var pcstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var ccstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var cpstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var ecstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var epstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var chcstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var chpstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
 
   private var collision : Collision;
   private var toi : TimeOfImpact;
   private var dist : Distance;
 
   public function new(argSize : Int, argContainerSize : Int) {
+
+    pcstack.newInstance = function() : Contact {
+      return new PolygonContact(world);
+    }
+    pcstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<PolygonContact>(size);
+    }
+
+    ccstack.newInstance = function() : Contact {
+      return new CircleContact(world);
+    }
+    ccstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<CircleContact>(size);
+    }
+
+    cpstack.newInstance = function() : Contact {
+      return new PolygonAndCircleContact(world);
+    }
+    cpstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<PolygonAndCircleContact>(size);
+    }
+
+    ecstack.newInstance = function() : Contact {
+      return cast new EdgeAndCircleContact(world);
+    }
+    ecstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<EdgeAndCircleContact>(size);
+    }
+
+    epstack.newInstance = function() : Contact {
+      return new EdgeAndPolygonContact(world);
+    }
+    epstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<EdgeAndPolygonContact>(size);
+    }
+
+    chcstack.newInstance = function() : Contact {
+      return new ChainAndCircleContact(world);
+    }
+    chcstack.newArray = function(size : Int) : Vector<Contact> {
+      return cast new Vector<ChainAndCircleContact>(size);
+    }
+
+    chpstack.newInstance = function() : Contact {
+      return new ChainAndPolygonContact(world);
+    }
+    chpstack.newArray = function(size : Int) : Vector<Contact> { 
+        return cast new Vector<ChainAndPolygonContact>(size);
+    }
+
     vecs = new OrderedStack<Vec2>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : Vec2 { 
-    //     return new Vec2(); 
-    //   }
-    // };
+    vecs.newInstance = function() : Vec2 {
+      return new Vec2();
+    }
+    
     vec3s = new OrderedStack<Vec3>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : Vec3 { 
-    //     return new Vec3(); 
-    //   }
-    // };
+    vec3s.newInstance = function() : Vec3 {
+      return new Vec3();
+    }
+
     mats = new OrderedStack<Mat22>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : Mat22 { 
-    //     return new Mat22(); 
-    //   }
-    // };
+    mats.newInstance = function() : Mat22 {
+      return new Mat22();
+    }
+    
     aabbs = new OrderedStack<AABB>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : AABB { 
-    //     return new AABB(); 
-    //   }
-    // };
+    aabbs.newInstance = function() : AABB {
+      return new AABB();
+    }
+
     rots = new OrderedStack<Rot>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : Rot { 
-    //     return new Rot(); 
-    //   }
-    // };
+    rots.newInstance = function() : Rot {
+      return new Rot();
+    }
+
     mat33s = new OrderedStack<Mat33>(argSize, argContainerSize);
-    // TODO: inline these functions and pass as reference?
-    // {
-    //   public function newInstance() : Mat33 { 
-    //     return new Mat33(); 
-    //   }
-    // };
+    mat33s.newInstance = function() : Mat33 {
+      return new Mat33();
+    }
 
     dist = new Distance();
     collision = new Collision(this);
@@ -211,11 +172,11 @@ import haxe.ds.Vector;
     return pcstack;
   }
 
-  function getCircleContactStack() : IDynamicStack<Contact> {
+  public function getCircleContactStack() : IDynamicStack<Contact> {
     return ccstack;
   }
 
-  function getPolyCircleContactStack() : IDynamicStack<Contact> {
+  public function getPolyCircleContactStack() : IDynamicStack<Contact> {
     return cpstack;
   }
 
@@ -239,8 +200,8 @@ import haxe.ds.Vector;
     return vecs.pop();
   }
 
-  public function popVec2Array(argNum : Int) : Array<Vec2> {
-    return vecs.pop(argNum);
+  public function popVec2Array(argNum : Int) : Vector<Vec2> {
+    return vecs.popArray(argNum);
   }
 
   public function pushVec2(argNum : Int) : Void {
@@ -251,8 +212,8 @@ import haxe.ds.Vector;
     return vec3s.pop();
   }
 
-  public function popVec3Array(argNum : Int) : Array<Vec3> {
-    return vec3s.pop(argNum);
+  public function popVec3Array(argNum : Int) : Vector<Vec3> {
+    return vec3s.popArray(argNum);
   }
 
   public function pushVec3(argNum : Int) : Void {
@@ -263,8 +224,8 @@ import haxe.ds.Vector;
     return mats.pop();
   }
 
-  public function popMat22Array(argNum : Int) : Array<Mat22> {
-    return mats.pop(argNum);
+  public function popMat22Array(argNum : Int) : Vector<Mat22> {
+    return mats.popArray(argNum);
   }
 
   public function pushMat22(argNum : Int) : Void {
@@ -283,8 +244,8 @@ import haxe.ds.Vector;
     return aabbs.pop();
   }
 
-  public function popAABBArray(argNum : Int) : Array<AABB> {
-    return aabbs.pop(argNum);
+  public function popAABBArray(argNum : Int) : Vector<AABB> {
+    return aabbs.popArray(argNum);
   }
 
   public function pushAABB(argNum : Int) : Void {
@@ -312,28 +273,45 @@ import haxe.ds.Vector;
   }
 
   public function getFloatArray(argLength : Int) : Vector<Float> {
-    if (!afloats.containsKey(argLength)) {
-      afloats.put(argLength, new Vector<Float>(argLength));
+    if (!afloats.exists(argLength)) {
+      afloats.set(argLength, new Vector<Float>(argLength));
     }
     return afloats.get(argLength);
   }
 
   public function getIntArray(argLength : Int) : Vector<Int> {
-    if (!aints.containsKey(argLength)) {
-      aints.put(argLength, new Vector<Int>(argLength));
+    if (!aints.exists(argLength)) {
+      aints.set(argLength, new Vector<Int>(argLength));
     }
     return aints.get(argLength);
   }
 
   public function getVec2Array(argLength : Int) : Vector<Vec2> {
-    if (!avecs.containsKey(argLength)) {
+    if (!avecs.exists(argLength)) {
       var ray : Vector<Vec2> = new Vector(argLength);
       for(i in 0 ... argLength) {
         ray[i] = new Vec2();
       }
-      avecs.put(argLength, ray);
+      avecs.set(argLength, ray);
     }
     return avecs.get(argLength);
   }
+
+  public function popAABBs(num : Int) : Vector<AABB> {
+    return null;
+  }
+
+  public function popMat22s(num : Int) : Vector<Mat22> {
+    return null;
+  }
+
+  public function popVec2s(num : Int) : Vector<Vec2> {
+    return null;
+  }
+
+  public function popVec3s(num : Int) : Vector<Vec3> {
+    return null;
+  }
+
 }
 
