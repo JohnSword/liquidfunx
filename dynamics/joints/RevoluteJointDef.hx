@@ -75,7 +75,7 @@ import box2d.dynamics.Body;
   /**
    * The body2 angle minus body1 angle in the reference state (radians).
    */
-  public var referenceAngle : Float;
+  public var referenceAngle : Float = 0;
 
   /**
    * A flag to enable joint limits.
@@ -85,12 +85,12 @@ import box2d.dynamics.Body;
   /**
    * The lower angle for the joint limit (radians).
    */
-  public var lowerAngle : Float;
+  public var lowerAngle : Float = 0;
 
   /**
    * The upper angle for the joint limit (radians).
    */
-  public var upperAngle : Float;
+  public var upperAngle : Float = 0;
 
   /**
    * A flag to enable the joint motor.
@@ -100,12 +100,12 @@ import box2d.dynamics.Body;
   /**
    * The desired motor speed. Usually in radians per second.
    */
-  public var motorSpeed : Float;
+  public var motorSpeed : Float = 0;
 
   /**
    * The maximum motor torque used to achieve the desired motor speed. Usually in N-m.
    */
-  public var maxMotorTorque : Float;
+  public var maxMotorTorque : Float = 0;
 
   public function new() {
     super(JointType.REVOLUTE);

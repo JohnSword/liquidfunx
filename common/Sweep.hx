@@ -10,11 +10,11 @@ class Sweep {
     public var c0 : Vec2;
     public var c : Vec2;
     /** World angles */
-    public var a0 : Float;
-    public var a : Float;
+    public var a0 : Float = 0;
+    public var a : Float = 0;
 
     /** Fraction of the current time step in the range [0,1] c0 and a0 are the positions at alpha0. */
-    public var alpha0 : Float;
+    public var alpha0 : Float = 0;
 
     public function new() {
         localCenter = new Vec2();

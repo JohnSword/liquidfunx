@@ -24,7 +24,7 @@ import box2d.common.Vec2;
    * The maximum length of the rope. Warning: this must be larger than b2_linearSlop or the joint
    * will have no effect.
    */
-  public var maxLength : Float;
+  public var maxLength : Float = 0;
 
   public function new() {
     super(JointType.ROPE);

@@ -65,9 +65,9 @@ import box2d.common.Vec2;
 	/** usage depends on manifold type */
 	public var localPoint : Vec2;
 	/** the non-penetration impulse */
-	public var normalImpulse : Float;
+	public var normalImpulse : Float = 0;
 	/** the friction impulse */
-	public var tangentImpulse : Float;
+	public var tangentImpulse : Float = 0;
 	/** uniquely identifies a contact point between two shapes */
 	public var id : ContactID;
 

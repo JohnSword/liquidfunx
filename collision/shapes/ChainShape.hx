@@ -45,7 +45,7 @@ import haxe.ds.Vector;
  class ChainShape extends Shape {
 
   public var m_vertices : Vector<Vec2>;
-  public var m_count : Int;
+  public var m_count : Int = 0;
   public var m_nextVertex : Vec2 = new Vec2();
   public var m_prevVertex : Vec2 = new Vec2();
   public var m_hasNextVertex : Bool = false;

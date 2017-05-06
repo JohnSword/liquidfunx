@@ -29,8 +29,8 @@ import haxe.ds.Vector;
 class CircleStack<E> implements IOrderedStack<E> {
 
   private var pool : Vector<Dynamic>;
-  private var index : Int;
-  private var size : Int;
+  private var index : Int = 0;
+  private var size : Int = 0;
   private var container : Vector<Dynamic>;
 
   public function new(argStackSize : Int, argContainerSize : Int) {

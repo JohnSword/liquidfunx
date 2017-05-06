@@ -82,16 +82,17 @@ class MathUtils extends PlatformMathUtils {
     // }
 
     public static function abs(x:Dynamic) : Dynamic {
-        if(Std.is(x,Float)) {
-            if (Settings.FAST_ABS) {
-                return x > 0 ? x : -x;
-            } else {
-                return Math.abs(x);
-            }
-        } else {
-            var y : Int = x >> 31;
-            return (x ^ y) - y;
-        } 
+        return Math.abs(x);
+        // if(Std.is(x,Float)) {
+        //     if (Settings.FAST_ABS) {
+        //         return x > 0 ? x : -x;
+        //     } else {
+        //         return Math.abs(x);
+        //     }
+        // } else {
+        //     var y : Int = x >> 31;
+        //     return (x ^ y) - y;
+        // } 
     }
 
     public static function fastAbs(x:Float) : Float {
@@ -99,11 +100,12 @@ class MathUtils extends PlatformMathUtils {
     }
 
     public static function floor(x:Float) : Int {
-        if (Settings.FAST_FLOOR) {
-            return fastFloor(x);
-        } else {
-            return Std.int(Math.floor(x));
-        }
+        return Std.int(Math.floor(x));
+        // if (Settings.FAST_FLOOR) {
+        //     return fastFloor(x);
+        // } else {
+        //     return Std.int(Math.floor(x));
+        // }
     }
 
     public static function fastFloor(x:Float) : Int {
@@ -156,17 +158,10 @@ class MathUtils extends PlatformMathUtils {
         return a > b ? a : b;
     }
 
-    // public static function int max(final int a, final int b) {
-    //     return a > b ? a : b;
-    // }
-
     public static function min(a:Dynamic, b:Dynamic) : Dynamic {
         return a < b ? a : b;
     }
 
-    // public final static int min(final int a, final int b) {
-    //     return a < b ? a : b;
-    // }
 
     public static function map(val:Float, fromMin:Float, fromMax:Float, toMin:Float, toMax:Float) : Float {
         var mult : Float = (val - fromMin) / (fromMax - fromMin);

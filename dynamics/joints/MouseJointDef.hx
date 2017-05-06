@@ -40,17 +40,17 @@ import box2d.common.Vec2;
    * The maximum constraint force that can be exerted to move the candidate body. Usually you will
    * express as some multiple of the weight (multiplier * mass * gravity).
    */
-  public var maxForce : Float;
+  public var maxForce : Float = 0;
 
   /**
    * The response speed.
    */
-  public var frequencyHz : Float;
+  public var frequencyHz : Float = 0;
 
   /**
    * The damping ratio. 0 = no damping, 1 = critical damping.
    */
-  public var dampingRatio : Float;
+  public var dampingRatio : Float = 0;
 
   public function new() {
     super(JointType.MOUSE);

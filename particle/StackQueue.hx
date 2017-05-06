@@ -5,9 +5,9 @@ import haxe.ds.Vector;
  class StackQueue<T> {
 
   private var m_buffer : Vector<T>;
-  private var m_front : Int;
-  private var m_back : Int;
-  private var m_end : Int;
+  private var m_front : Int = 0;
+  private var m_back : Int = 0;
+  private var m_end : Int = 0;
 
   public function new() {}
 

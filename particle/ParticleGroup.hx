@@ -6,19 +6,19 @@ import box2d.common.Vec2;
 class ParticleGroup {
 
   public var m_system : ParticleSystem;
-  public var m_firstIndex : Int;
-  public var m_lastIndex : Int;
-  public var m_groupFlags : Int;
-  public var m_strength : Float;
+  public var m_firstIndex : Int = 0;
+  public var m_lastIndex : Int = 0;
+  public var m_groupFlags : Int = 0;
+  public var m_strength : Float = 0;
   public var m_prev : ParticleGroup;
   public var m_next : ParticleGroup;
 
-  public var m_timestamp : Int;
-  public var m_mass : Float;
-  public var m_inertia : Float;
+  public var m_timestamp : Int = 0;
+  public var m_mass : Float = 0;
+  public var m_inertia : Float = 0;
   public var m_center : Vec2 = new Vec2();
   public var m_linearVelocity : Vec2 = new Vec2();
-  public var m_angularVelocity : Float;
+  public var m_angularVelocity : Float = 0;
   public var m_transform : Transform = new Transform();
 
   public var m_destroyAutomatically : Bool;

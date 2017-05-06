@@ -9,9 +9,9 @@ import haxe.ds.Vector;
  class VoronoiDiagram {
 
   private var m_generatorBuffer : Vector<Generator>;
-  private var m_generatorCount : Int;
-  private var m_countY : Int;
-  private var m_countX : Int;
+  private var m_generatorCount : Int = 0;
+  private var m_countY : Int = 0;
+  private var m_countX : Int = 0;
   // The diagram is an array of "pointers".
   private var m_diagram : Vector<Generator>;
 

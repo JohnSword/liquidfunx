@@ -57,8 +57,8 @@ import box2d.pooling.IWorldPool;
  */
  class WheelJoint extends Joint {
 
-  private var m_frequencyHz : Float;
-  private var m_dampingRatio : Float;
+  private var m_frequencyHz : Float = 0;
+  private var m_dampingRatio : Float = 0;
 
   // Solver shared
   private var m_localAnchorA : Vec2 = new Vec2();
@@ -66,37 +66,37 @@ import box2d.pooling.IWorldPool;
   private var m_localXAxisA : Vec2 = new Vec2();
   private var m_localYAxisA : Vec2 = new Vec2();
 
-  private var m_impulse : Float;
-  private var m_motorImpulse : Float;
-  private var m_springImpulse : Float;
+  private var m_impulse : Float = 0;
+  private var m_motorImpulse : Float = 0;
+  private var m_springImpulse : Float = 0;
 
-  private var m_maxMotorTorque : Float;
-  private var m_motorSpeed : Float;
+  private var m_maxMotorTorque : Float = 0;
+  private var m_motorSpeed : Float = 0;
   private var m_enableMotor : Bool;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
 
   private var m_ax : Vec2 = new Vec2();
   private var m_ay : Vec2 = new Vec2();
-  private var m_sBx : Float;
-  private var m_sAx : Float;
-  private var m_sBy : Float;
-  private var m_sAy : Float;
+  private var m_sBx : Float = 0;
+  private var m_sAx : Float = 0;
+  private var m_sBy : Float = 0;
+  private var m_sAy : Float = 0;
 
-  private var m_mass : Float;
-  private var m_motorMass : Float;
-  private var m_springMass : Float;
+  private var m_mass : Float = 0;
+  private var m_motorMass : Float = 0;
+  private var m_springMass : Float = 0;
 
-  private var m_bias : Float;
-  private var m_gamma : Float;
+  private var m_bias : Float = 0;
+  private var m_gamma : Float = 0;
 
   public function new(argPool : IWorldPool, def : WheelJointDef) {
     super(argPool, def);

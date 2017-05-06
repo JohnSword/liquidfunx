@@ -8,7 +8,7 @@ class PositionSolverManifold {
 
   public var normal : Vec2 = new Vec2();
   public var point : Vec2 = new Vec2();
-  public var separation : Float;
+  public var separation : Float = 0;
 
   public function new() {}
 

@@ -9,6 +9,6 @@ import box2d.collision.TimeOfImpact;
  */
 class TOIOutput {
     public var state : TOIOutputState;
-    public var t : Float;
+    public var t : Float = 0;
     public function new() {}
 }

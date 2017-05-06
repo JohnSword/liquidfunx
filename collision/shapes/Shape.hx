@@ -37,7 +37,7 @@ import box2d.common.Vec2;
 class Shape {
 
   public var m_type : ShapeType;
-  public var m_radius : Float;
+  public var m_radius : Float = 0;
 
   public function new(type : ShapeType) {
     this.m_type = type;

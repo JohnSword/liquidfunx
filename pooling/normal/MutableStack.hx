@@ -29,8 +29,8 @@ import haxe.ds.Vector;
 class MutableStack<E> implements IDynamicStack<E> {
 
   private var stack : Vector<E>;
-  private var index : Int;
-  private var size : Int;
+  private var index : Int = 0;
+  private var size : Int = 0;
 
   public function new(argInitSize : Int) {
     index = 0;
@@ -74,7 +74,7 @@ class MutableStack<E> implements IDynamicStack<E> {
     return null;
   }
   
-  dynamic public function newArray<E>(size : Int) : Vector<E> {
+  dynamic public function newArray<E>(size : Int) : Dynamic {
     return cast new Vector<Dynamic>(size);
   }
 }

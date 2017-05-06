@@ -29,8 +29,8 @@ package box2d.collision.broadphase;
  * sort from.
  */
  class Pair {
-  public var proxyIdA : Int;
-  public var proxyIdB : Int;
+  public var proxyIdA : Int = 0;
+  public var proxyIdB : Int = 0;
 
   public function new() {}
 

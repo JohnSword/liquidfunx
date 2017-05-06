@@ -16,6 +16,6 @@ class TOIInput {
     /**
      * defines sweep interval [0, tMax]
      */
-    public var tMax : Float;
+    public var tMax : Float = 0;
     public function new () {}
 }

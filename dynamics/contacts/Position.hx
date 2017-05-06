@@ -27,7 +27,7 @@ import box2d.common.Vec2;
 
  class Position {
   public var c : Vec2 = new Vec2();
-  public var a : Float;
+  public var a : Float = 0;
   public function new() {}
 }
 

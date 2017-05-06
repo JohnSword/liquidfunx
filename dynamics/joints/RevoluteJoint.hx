@@ -62,30 +62,30 @@ import box2d.pooling.IWorldPool;
   public var m_localAnchorA : Vec2 = new Vec2();
   public var m_localAnchorB : Vec2 = new Vec2();
   private var m_impulse : Vec3 = new Vec3();
-  private var m_motorImpulse : Float;
+  private var m_motorImpulse : Float = 0;
 
   private var m_enableMotor : Bool;
-  private var m_maxMotorTorque : Float;
-  private var m_motorSpeed : Float;
+  private var m_maxMotorTorque : Float = 0;
+  private var m_motorSpeed : Float = 0;
 
   private var m_enableLimit : Bool;
-  public var m_referenceAngle : Float;
-  private var m_lowerAngle : Float;
-  private var m_upperAngle : Float;
+  public var m_referenceAngle : Float = 0;
+  private var m_lowerAngle : Float = 0;
+  private var m_upperAngle : Float = 0;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_rA : Vec2 = new Vec2();
   private var m_rB : Vec2 = new Vec2();
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
   private var m_mass : Mat33 = new Mat33();
-  private var m_motorMass : Float; // effective mass for motor/limit angular constraint.
+  private var m_motorMass : Float = 0; // effective mass for motor/limit angular constraint.
   private var m_limitState : LimitState;
 
   public function new(argWorld : IWorldPool, def : RevoluteJointDef) {

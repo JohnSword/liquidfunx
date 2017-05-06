@@ -9,8 +9,8 @@ import box2d.common.Settings;
  */
 class SimplexCache {
     /** length or area */
-    public var metric : Float;
-    public var count : Int;
+    public var metric : Float = 0;
+    public var count : Int = 0;
     /** vertices on shape A */
     public var indexA : Array<Int> = new Array<Int>();
     /** vertices on shape B */

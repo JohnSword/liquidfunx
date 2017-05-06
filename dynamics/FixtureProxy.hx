@@ -33,8 +33,8 @@ import box2d.collision.AABB;
  class FixtureProxy {
   public var aabb : AABB = new AABB();
   public var fixture : Fixture;
-  public var childIndex : Int;
-  public var proxyId : Int;
+  public var childIndex : Int = 0;
+  public var proxyId : Int = 0;
   public function new() {}
 }
 

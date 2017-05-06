@@ -48,7 +48,7 @@ package box2d.dynamics.joints;
    * 
    * @see GearJoint
    */
-  public var ratio : Float;
+  public var ratio : Float = 0;
 
   public function new() {
     super(JointType.GEAR);

@@ -12,7 +12,7 @@ class Simplex {
     public var m_v2 : SimplexVertex = new SimplexVertex();
     public var m_v3 : SimplexVertex = new SimplexVertex();
     public var vertices : Array<SimplexVertex>;
-    public var m_count : Int;
+    public var m_count : Int = 0;
 
     public function new () {
         vertices = new Array <SimplexVertex> ();

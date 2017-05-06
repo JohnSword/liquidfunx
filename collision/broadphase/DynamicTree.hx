@@ -49,10 +49,10 @@ import haxe.ds.Vector;
 
   private var m_root : DynamicTreeNode;
   private var m_nodes : Vector<DynamicTreeNode>;
-  private var m_nodeCount : Int;
-  private var m_nodeCapacity : Int;
+  private var m_nodeCount : Int = 0;
+  private var m_nodeCapacity : Int = 0;
 
-  private var m_freeList : Int;
+  private var m_freeList : Int = 0;
 
   private var drawVecs : Vector<Vec2> = new Vector<Vec2>(4);
   private var nodeStack : Vector<DynamicTreeNode> = new Vector<DynamicTreeNode>(20);

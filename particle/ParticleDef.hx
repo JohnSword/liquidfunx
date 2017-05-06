@@ -8,7 +8,7 @@ import box2d.common.Vec2;
    * chained by logical sums, for example: pd.flags = ParticleType.b2_elasticParticle |
    * ParticleType.b2_viscousParticle.
    */
-  public var flags : Int;
+  public var flags : Int = 0;
 
   /** The world position of the particle. */
   public var position : Vec2 = new Vec2();

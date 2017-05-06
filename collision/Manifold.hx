@@ -70,7 +70,7 @@ enum ManifoldType {
   public var type : ManifoldType;
 
   /** The number of manifold points. */
-  public var pointCount : Int;
+  public var pointCount : Int = 0;
 
   /**
    * creates a manifold with 0 points, with it's points array full of instantiated ManifoldPoints.

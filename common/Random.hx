@@ -5,13 +5,13 @@ package box2d.common;
  */
 class Random {
 
-    private var seed : Float;
+    private var seed : Float = 0;
     private var M : Float = 2147483647;
     private var A : Float = 16807;
-    private var Q : Float;
-    private var R : Float;
-    private var low : Float;
-    private var high : Float;
+    private var Q : Float = 0;
+    private var R : Float = 0;
+    private var low : Float = 0;
+    private var high : Float = 0;
 
     /**
      * Construct a Randoms.

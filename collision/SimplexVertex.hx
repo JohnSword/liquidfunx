@@ -9,9 +9,9 @@ class SimplexVertex {
     public var wA : Vec2 = new Vec2();
     public var wB : Vec2 = new Vec2();
     public var w : Vec2 = new Vec2();
-    public var a : Float; // barycentric coordinate for closest point
-    public var indexA : Int; // wA index
-    public var indexB : Int; // wB index
+    public var a : Float = 0; // barycentric coordinate for closest point
+    public var indexA : Int = 0; // wA index
+    public var indexB : Int = 0; // wB index
 
     public function new() {}
 

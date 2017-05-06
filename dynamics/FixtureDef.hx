@@ -46,17 +46,17 @@ import box2d.collision.shapes.Shape;
   /**
    * The friction coefficient, usually in the range [0,1].
    */
-  public var friction : Float;
+  public var friction : Float = 0;
 
   /**
    * The restitution (elasticity) usually in the range [0,1].
    */
-  public var restitution : Float;
+  public var restitution : Float = 0;
 
   /**
    * The density, usually in kg/m^2
    */
-  public var density : Float;
+  public var density : Float = 0;
 
   /**
    * A sensor shape collects contact information but never generates a collision response.

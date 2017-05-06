@@ -43,21 +43,21 @@ import box2d.pooling.IWorldPool;
 
   private var m_localAnchorB : Vec2 = new Vec2();
   private var m_targetA : Vec2 = new Vec2();
-  private var m_frequencyHz : Float;
-  private var m_dampingRatio : Float;
-  private var m_beta : Float;
+  private var m_frequencyHz : Float = 0;
+  private var m_dampingRatio : Float = 0;
+  private var m_beta : Float = 0;
 
   // Solver shared
   private var m_impulse : Vec2 = new Vec2();
-  private var m_maxForce : Float;
-  private var m_gamma : Float;
+  private var m_maxForce : Float = 0;
+  private var m_gamma : Float = 0;
 
   // Solver temp
   private var m_indexB : Int;
   private var m_rB : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassB : Float;
-  private var m_invIB : Float;
+  private var m_invMassB : Float = 0;
+  private var m_invIB : Float = 0;
   private var m_mass : Mat22 = new Mat22();
   private var m_C : Vec2 = new Vec2();
 

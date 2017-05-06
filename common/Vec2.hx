@@ -4,8 +4,8 @@ class Vec2 {
 
     private static var serialVersionUID : Int = 1;
 
-    public var x:Float;
-    public var y:Float;
+    public var x:Float = 0;
+    public var y:Float = 0;
 
     public function new(x:Float=0,y:Float=0) {
         this.x = x;

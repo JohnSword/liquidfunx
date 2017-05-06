@@ -11,7 +11,7 @@ class ContactImpulse {
 
     public var normalImpulses : Array<Float> = new Array<Float>();
     public var tangentImpulses : Array<Float> = new Array<Float>();
-    public var count : Int;
+    public var count : Int = 0;
 
     public function new() {
 

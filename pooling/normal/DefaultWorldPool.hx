@@ -87,50 +87,50 @@ import haxe.ds.Vector;
     pcstack.newInstance = function() : Contact {
       return new PolygonContact(world);
     }
-    pcstack.newArray = function(size : Int) : Vector<Contact> {
-      return cast new Vector<PolygonContact>(size);
+    pcstack.newArray = function(size : Int) : Vector<PolygonContact> {
+      return new Vector<PolygonContact>(size);
     }
 
     ccstack.newInstance = function() : Contact {
       return new CircleContact(world);
     }
-    ccstack.newArray = function(size : Int) : Vector<Contact> {
-      return cast new Vector<CircleContact>(size);
+    ccstack.newArray = function(size : Int) : Vector<CircleContact> {
+      return new Vector<CircleContact>(size);
     }
 
     cpstack.newInstance = function() : Contact {
       return new PolygonAndCircleContact(world);
     }
-    cpstack.newArray = function(size : Int) : Vector<Contact> {
-      return cast new Vector<PolygonAndCircleContact>(size);
+    cpstack.newArray = function(size : Int) : Vector<PolygonAndCircleContact> {
+      return new Vector<PolygonAndCircleContact>(size);
     }
 
     ecstack.newInstance = function() : Contact {
-      return cast new EdgeAndCircleContact(world);
+      return new EdgeAndCircleContact(world);
     }
     ecstack.newArray = function(size : Int) : Vector<EdgeAndCircleContact> {
-      return cast new Vector<EdgeAndCircleContact>(size);
+      return new Vector<EdgeAndCircleContact>(size);
     }
 
     epstack.newInstance = function() : Contact {
       return new EdgeAndPolygonContact(world);
     }
-    epstack.newArray = function(size : Int) : Vector<Contact> {
-      return cast new Vector<EdgeAndPolygonContact>(size);
+    epstack.newArray = function(size : Int) : Vector<EdgeAndPolygonContact> {
+      return new Vector<EdgeAndPolygonContact>(size);
     }
 
     chcstack.newInstance = function() : Contact {
       return new ChainAndCircleContact(world);
     }
-    chcstack.newArray = function(size : Int) : Vector<Contact> {
-      return cast new Vector<ChainAndCircleContact>(size);
+    chcstack.newArray = function(size : Int) : Vector<ChainAndCircleContact> {
+      return new Vector<ChainAndCircleContact>(size);
     }
 
     chpstack.newInstance = function() : Contact {
       return new ChainAndPolygonContact(world);
     }
-    chpstack.newArray = function(size : Int) : Vector<Contact> { 
-        return cast new Vector<ChainAndPolygonContact>(size);
+    chpstack.newArray = function(size : Int) : Vector<ChainAndPolygonContact> { 
+        return new Vector<ChainAndPolygonContact>(size);
     }
 
     vecs = new OrderedStack<Vec2>(argSize, argContainerSize);

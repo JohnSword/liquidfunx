@@ -32,7 +32,7 @@ import box2d.common.Vec2;
  */
  class RayCastOutput {
 	public var normal : Vec2;
-	public var fraction : Float;
+	public var fraction : Float = 0;
 
 	public function new() {
 		normal = new Vec2();

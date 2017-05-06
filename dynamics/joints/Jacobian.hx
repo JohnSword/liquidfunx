@@ -27,8 +27,8 @@ import box2d.common.Vec2;
 
  class Jacobian {
 	public var linearA : Vec2 = new Vec2();
-	public var angularA : Float;
-	public var angularB : Float;
+	public var angularA : Float = 0;
+	public var angularB : Float = 0;
 	public function new() {}
 }
 

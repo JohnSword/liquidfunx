@@ -86,38 +86,38 @@ import box2d.pooling.IWorldPool;
   private var m_localAxisC : Vec2 = new Vec2();
   private var m_localAxisD : Vec2 = new Vec2();
 
-  private var m_referenceAngleA : Float;
-  private var m_referenceAngleB : Float;
+  private var m_referenceAngleA : Float = 0;
+  private var m_referenceAngleB : Float = 0;
 
-  private var m_constant : Float;
-  private var m_ratio : Float;
+  private var m_constant : Float = 0;
+  private var m_ratio : Float = 0;
 
-  private var m_impulse : Float;
+  private var m_impulse : Float = 0;
 
   // Solver temp
-  private var m_indexD : Int;
-  private var m_indexA : Int;
-  private var m_indexB : Int;
-  private var m_indexC : Int;
+  private var m_indexD : Int = 0;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
+  private var m_indexC : Int = 0;
   private var m_lcA : Vec2 = new Vec2();
   private var m_lcB : Vec2 = new Vec2();
   private var m_lcC : Vec2 = new Vec2();
   private var m_lcD : Vec2 = new Vec2();
-  private var m_mD : Float;
-  private var m_mA : Float;
-  private var m_mB : Float;
-  private var m_mC : Float;
-  private var m_iD : Float;
-  private var m_iA : Float;
-  private var m_iB : Float;
-  private var m_iC : Float;
+  private var m_mD : Float = 0;
+  private var m_mA : Float = 0;
+  private var m_mB : Float = 0;
+  private var m_mC : Float = 0;
+  private var m_iD : Float = 0;
+  private var m_iA : Float = 0;
+  private var m_iB : Float = 0;
+  private var m_iC : Float = 0;
   private var m_JvBD : Vec2 = new Vec2();
   private var m_JvAC : Vec2 = new Vec2();
-  private var m_JwD : Float;
-  private var m_JwA : Float;
-  private var m_JwB : Float;
-  private var m_JwC : Float;
-  private var m_mass : Float;
+  private var m_JwD : Float = 0;
+  private var m_JwA : Float = 0;
+  private var m_JwB : Float = 0;
+  private var m_JwC : Float = 0;
+  private var m_mass : Float = 0;
 
   public function new(argWorldPool : IWorldPool, def : GearJointDef) {
     super(argWorldPool, def);

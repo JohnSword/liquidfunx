@@ -48,30 +48,30 @@ import box2d.pooling.IWorldPool;
 
   private var m_groundAnchorA : Vec2 = new Vec2();
   private var m_groundAnchorB : Vec2 = new Vec2();
-  private var m_lengthA : Float;
-  private var m_lengthB : Float;
+  private var m_lengthA : Float = 0;
+  private var m_lengthB : Float = 0;
 
   // Solver shared
   private var m_localAnchorA : Vec2 = new Vec2();
   private var m_localAnchorB : Vec2 = new Vec2();
-  private var m_constant : Float;
-  private var m_ratio : Float;
-  private var m_impulse : Float;
+  private var m_constant : Float = 0;
+  private var m_ratio : Float = 0;
+  private var m_impulse : Float = 0;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_uA : Vec2 = new Vec2();
   private var m_uB : Vec2 = new Vec2();
   private var m_rA : Vec2 = new Vec2();
   private var m_rB : Vec2 = new Vec2();
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
-  private var m_mass : Float;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
+  private var m_mass : Float = 0;
 
   public function new(argWorldPool : IWorldPool, def : PulleyJointDef) {
     super(argWorldPool, def);

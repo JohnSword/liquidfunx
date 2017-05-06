@@ -49,17 +49,17 @@ import box2d.dynamics.joints.JointType;
   /**
    * The body2 angle minus body1 angle in the reference state (radians).
    */
-  public var referenceAngle : Float;
+  public var referenceAngle : Float = 0;
 
   /**
    * The mass-spring-damper frequency in Hertz. Rotation only. Disable softness with a value of 0.
    */
-  public var frequencyHz : Float;
+  public var frequencyHz : Float = 0;
 
   /**
    * The damping ratio. 0 = no damping, 1 = critical damping.
    */
-  public var dampingRatio : Float;
+  public var dampingRatio : Float = 0;
 
   public function new() {
     super(JointType.WELD);

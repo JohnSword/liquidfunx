@@ -29,28 +29,28 @@ import box2d.pooling.IWorldPool;
 
   // Solver shared
   private var m_linearOffset : Vec2 = new Vec2();
-  private var m_angularOffset : Float;
+  private var m_angularOffset : Float = 0;
   private var m_linearImpulse : Vec2 = new Vec2();
-  private var m_angularImpulse : Float;
-  private var m_maxForce : Float;
-  private var m_maxTorque : Float;
-  private var m_correctionFactor : Float;
+  private var m_angularImpulse : Float = 0;
+  private var m_maxForce : Float = 0;
+  private var m_maxTorque : Float = 0;
+  private var m_correctionFactor : Float = 0;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_rA : Vec2 = new Vec2();
   private var m_rB : Vec2 = new Vec2();
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
   private var m_linearError : Vec2 = new Vec2();
-  private var m_angularError : Float;
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
+  private var m_angularError : Float = 0;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
   private var m_linearMass : Mat22 = new Mat22();
-  private var m_angularMass : Float;
+  private var m_angularMass : Float = 0;
 
   public function new(pool : IWorldPool, def : MotorJointDef) {
     super(pool, def);

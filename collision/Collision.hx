@@ -56,8 +56,8 @@ enum VertexType {
 */
 class EPAxis { 
     public var type : EdgeType;
-    public var index : Int;
-    public var separation : Float;
+    public var index : Int = 0;
+    public var separation : Float = 0;
     public function new() {}
 }
 
@@ -830,8 +830,8 @@ class Collision {
  * Java-specific class for returning edge results
  */
 class EdgeResults {
-    public var separation : Float;
-    public var edgeIndex : Int;
+    public var separation : Float = 0;
+    public var edgeIndex : Int = 0;
     public function new() {}
 }
 
@@ -865,7 +865,7 @@ class ClipVertex {
  class TempPolygon {
     public var vertices : Vector<Vec2> = new Vector<Vec2>(Settings.maxPolygonVertices);
     public var normals : Vector<Vec2> = new Vector<Vec2>(Settings.maxPolygonVertices);
-    public var count : Int;
+    public var count : Int = 0;
 
     public function new() {
         for(i in 0...vertices.length) {
@@ -880,17 +880,17 @@ class ClipVertex {
  * Reference face used for clipping
  */
  class ReferenceFace {
-    public var i1 : Int; 
-    public var i2 : Int;
+    public var i1 : Int = 0; 
+    public var i2 : Int = 0;
     public var v1 : Vec2 = new Vec2();
     public var v2 : Vec2 = new Vec2();
     public var normal : Vec2 = new Vec2();
 
     public var sideNormal1 : Vec2 = new Vec2();
-    public var sideOffset1 : Float;
+    public var sideOffset1 : Float = 0;
 
     public var sideNormal2 : Vec2 = new Vec2();
-    public var sideOffset2 : Float;
+    public var sideOffset2 : Float = 0;
 
     public function new() {}
 }
@@ -919,7 +919,7 @@ class EPCollider {
 
     var m_lowerLimit : Vec2 = new Vec2();
     var m_upperLimit : Vec2 = new Vec2();
-    var m_radius : Float;
+    var m_radius : Float = 0;
     var m_front : Bool;
 
     public function new() {

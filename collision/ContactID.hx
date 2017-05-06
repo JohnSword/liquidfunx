@@ -10,10 +10,10 @@ enum ContactType {
  */
 class ContactID {
 
-    public var indexA : Int;
-    public var indexB : Int;
-    public var typeA : Int;
-    public var typeB : Int;
+    public var indexA : Int = 0;
+    public var indexB : Int = 0;
+    public var typeA : Int = 0;
+    public var typeB : Int = 0;
 
     public function new(c : ContactID = null) {
         if(c!=null) {

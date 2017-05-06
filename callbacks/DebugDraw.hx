@@ -32,7 +32,7 @@ class DebugDraw {
     public static var e_wireframeDrawingBit : Int = 1 << 7;
 
 
-    private var m_drawFlags : Int ;
+    private var m_drawFlags : Int  = 0;
     private var viewportTransform : IViewportTransform;
 
     public function new(viewport:IViewportTransform = null) {
@@ -74,12 +74,10 @@ class DebugDraw {
       return;
     }
 
-    var i : Int = 0;
-    while(i < vertexCount) {
-      drawSegment(vertices[i], vertices[i + 1], color);
-      i += 1;
-    }
+    for(i in 0 ... (vertexCount - 1)) {
     // for (int i = 0; i < vertexCount - 1; i += 1) {
+      drawSegment(vertices[i], vertices[i + 1], color);
+    }
     // }
 
     if (vertexCount > 2) {

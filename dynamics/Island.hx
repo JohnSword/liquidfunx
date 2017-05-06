@@ -173,13 +173,13 @@ import haxe.ds.Vector;
   public var m_positions : Vector<Position>;
   public var m_velocities : Vector<Velocity>;
 
-  public var m_bodyCount : Int;
-  public var m_jointCount : Int;
-  public var m_contactCount : Int;
+  public var m_bodyCount : Int = 0;
+  public var m_jointCount : Int = 0;
+  public var m_contactCount : Int = 0;
 
-  public var m_bodyCapacity : Int;
-  public var m_contactCapacity : Int;
-  public var m_jointCapacity : Int;
+  public var m_bodyCapacity : Int = 0;
+  public var m_contactCapacity : Int = 0;
+  public var m_jointCapacity : Int = 0;
 
   public function new() {
 

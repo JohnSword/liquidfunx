@@ -10,10 +10,10 @@ import box2d.common.Vec2;
  class ParticleGroupDef {
 
   /** The particle-behavior flags. */
-  public var flags : Int;
+  public var flags : Int = 0;
 
   /** The group-construction flags. */
-  public var groupFlags : Int;
+  public var groupFlags : Int = 0;
 
   /**
    * The world position of the group. Moves the group's shape a distance equal to the value of
@@ -25,13 +25,13 @@ import box2d.common.Vec2;
    * The world angle of the group in radians. Rotates the shape by an angle equal to the value of
    * angle.
    */
-  public var angle : Float;
+  public var angle : Float = 0;
 
   /** The linear velocity of the group's origin in world co-ordinates. */
   public var linearVelocity : Vec2 = new Vec2();
 
   /** The angular velocity of the group. */
-  public var angularVelocity : Float;
+  public var angularVelocity : Float = 0;
 
   /** The color of all particles in the group. */
   public var color : ParticleColor;
@@ -40,7 +40,7 @@ import box2d.common.Vec2;
    * The strength of cohesion among the particles in a group with flag b2_elasticParticle or
    * b2_springParticle.
    */
-  public var strength : Float;
+  public var strength : Float = 0;
 
   /** Shape containing the particle group. */
   public var shape : Shape;

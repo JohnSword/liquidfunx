@@ -9,7 +9,7 @@ class DestroyParticlesInShapeCallback implements ParticleQueryCallback {
     private var shape : Shape;
     private var xf : Transform;
     private var callDestructionListener : Bool;
-    public var destroyed : Int;
+    public var destroyed : Int = 0;
 
     public function new() {
       // TODO Auto-generated constructor stub

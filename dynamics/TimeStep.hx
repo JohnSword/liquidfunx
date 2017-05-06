@@ -30,17 +30,17 @@ package box2d.dynamics;
  class TimeStep {
 	
 	/** time step */
-	public var dt : Float;
+	public var dt : Float = 0;
 	
 	/** inverse time step (0 if dt == 0). */
-	public var inv_dt : Float;
+	public var inv_dt : Float = 0;
 	
 	/** dt * inv_dt0 */
-	public var dtRatio : Float;
+	public var dtRatio : Float = 0;
 	
-	public var velocityIterations : Int;
+	public var velocityIterations : Int = 0;
 	
-	public var positionIterations : Int;
+	public var positionIterations : Int = 0;
 	
 	public var warmStarting : Bool;
 

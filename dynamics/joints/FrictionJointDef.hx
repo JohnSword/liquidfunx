@@ -50,12 +50,12 @@ import box2d.dynamics.Body;
   /**
    * The maximum friction force in N.
    */
-  public var maxForce : Float;
+  public var maxForce : Float = 0;
 
   /**
    * The maximum friction torque in N-m.
    */
-  public var maxTorque : Float;
+  public var maxTorque : Float = 0;
 
   public function new() {
     super(JointType.FRICTION);

@@ -37,7 +37,7 @@ import haxe.ds.Vector;
 
   private var bodies : Vector<Body>;
   private var targetLengths : Vector<Float>;
-  private var targetVolume : Float;
+  private var targetVolume : Float = 0;
 
   private var normals : Vector<Vec2>;
   private var m_impulse : Float = 0.0;

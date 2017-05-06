@@ -59,7 +59,7 @@ class Contact {
 
   public static var TOI_FLAG : Int = 0x0020;
 
-  public var m_flags : Int;
+  public var m_flags : Int = 0;
 
   // World pool and list pointers.
   public var m_prev : Contact;
@@ -72,18 +72,18 @@ class Contact {
   public var m_fixtureA : Fixture;
   public var m_fixtureB : Fixture;
 
-  public var m_indexA : Int;
-  public var m_indexB : Int;
+  public var m_indexA : Int = 0;
+  public var m_indexB : Int = 0;
 
   public var m_manifold : Manifold;
 
-  public var m_toiCount : Float;
-  public var m_toi : Float;
+  public var m_toiCount : Float = 0;
+  public var m_toi : Float = 0;
 
-  public var m_friction : Float;
-  public var m_restitution : Float;
+  public var m_friction : Float = 0;
+  public var m_restitution : Float = 0;
 
-  public var m_tangentSpeed : Float;
+  public var m_tangentSpeed : Float = 0;
 
   public var pool : IWorldPool;
 

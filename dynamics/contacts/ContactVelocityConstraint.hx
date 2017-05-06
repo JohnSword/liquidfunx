@@ -34,17 +34,17 @@ import haxe.ds.Vector;
   public var normal : Vec2 = new Vec2();
   public var normalMass : Mat22 = new Mat22();
   public var K : Mat22 = new Mat22();
-  public var indexA : Int;
-  public var indexB : Int;
-  public var invMassB : Float;
-  public var invMassA : Float;
-  public var invIB : Float;
-  public var invIA : Float;
-  public var friction : Float;
-  public var restitution : Float;
-  public var tangentSpeed : Float;
-  public var pointCount : Int;
-  public var contactIndex : Int;
+  public var indexA : Int = 0;
+  public var indexB : Int = 0;
+  public var invMassB : Float = 0;
+  public var invMassA : Float = 0;
+  public var invIB : Float = 0;
+  public var invIA : Float = 0;
+  public var friction : Float = 0;
+  public var restitution : Float = 0;
+  public var tangentSpeed : Float = 0;
+  public var pointCount : Int = 0;
+  public var contactIndex : Int = 0;
 
   public function new() {
     for(i in 0 ... points.length) {

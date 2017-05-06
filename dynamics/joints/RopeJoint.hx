@@ -20,23 +20,23 @@ import box2d.pooling.IWorldPool;
   // Solver shared
   private var m_localAnchorA : Vec2 = new Vec2();
   private var m_localAnchorB : Vec2 = new Vec2();
-  private var m_maxLength : Float;
-  private var m_length : Float;
-  private var m_impulse : Float;
+  private var m_maxLength : Float = 0;
+  private var m_length : Float = 0;
+  private var m_impulse : Float = 0;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_u : Vec2 = new Vec2();
   private var m_rA : Vec2 = new Vec2();
   private var m_rB : Vec2 = new Vec2();
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
-  private var m_mass : Float;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
+  private var m_mass : Float = 0;
   private var m_state : LimitState;
 
   public function new(worldPool : IWorldPool, def : RopeJointDef) {

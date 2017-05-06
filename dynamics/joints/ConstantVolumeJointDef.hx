@@ -30,8 +30,8 @@ import box2d.dynamics.Body;
  * maintain a constant volume within them.
  */
  class ConstantVolumeJointDef extends JointDef {
-  public var frequencyHz : Float;
-  public var dampingRatio : Float;
+  public var frequencyHz : Float = 0;
+  public var dampingRatio : Float = 0;
 
   public var bodies : List<Body>;
   public var joints : List<DistanceJoint>;

@@ -32,7 +32,7 @@ import box2d.common.Vec2;
  class RayCastInput {
 	public var p1 : Vec2;
 	public var p2 : Vec2;
-	public var maxFraction : Float;
+	public var maxFraction : Float = 0;
 
 	public function new() {
 		p1 = new Vec2();

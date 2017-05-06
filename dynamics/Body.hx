@@ -51,9 +51,9 @@ import box2d.dynamics.joints.JointEdge;
 
   public var m_type : BodyType;
 
-  public var m_flags : Int;
+  public var m_flags : Int = 0;
 
-  public var m_islandIndex : Int;
+  public var m_islandIndex : Int = 0;
 
   /**
    * The body origin transform.
@@ -80,23 +80,23 @@ import box2d.dynamics.joints.JointEdge;
   public var m_next : Body;
 
   public var m_fixtureList : Fixture;
-  public var m_fixtureCount : Int;
+  public var m_fixtureCount : Int = 0;
 
   public var m_jointList : JointEdge;
   public var m_contactList : ContactEdge;
 
-  public var m_invMass : Float; 
-  public var m_mass : Float;
+  public var m_invMass : Float = 0; 
+  public var m_mass : Float = 0;
 
   // Rotational inertia about the center of mass.
-  public var m_invI : Float; 
-  public var m_I : Float;
+  public var m_invI : Float = 0; 
+  public var m_I : Float = 0;
 
-  public var m_linearDamping : Float;
-  public var m_angularDamping : Float;
-  public var m_gravityScale : Float;
+  public var m_linearDamping : Float = 0;
+  public var m_angularDamping : Float = 0;
+  public var m_gravityScale : Float = 0;
 
-  public var m_sleepTime : Float;
+  public var m_sleepTime : Float = 0;
 
   public var m_userData : Dynamic;
 

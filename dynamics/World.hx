@@ -104,8 +104,8 @@ import haxe.ds.Vector;
   private var m_bodyList : Body;
   private var m_jointList : Joint;
 
-  private var m_bodyCount : Int;
-  private var m_jointCount : Int;
+  private var m_bodyCount : Int = 0;
+  private var m_jointCount : Int = 0;
 
   private var m_gravity : Vec2 = new Vec2();
   private var m_allowSleep : Bool;
@@ -121,7 +121,7 @@ import haxe.ds.Vector;
   /**
    * This is used to compute the time step ratio to support a variable time step.
    */
-  private var m_inv_dt0 : Float;
+  private var m_inv_dt0 : Float = 0;
 
   // these are for debugging the solver
   private var m_warmStarting : Bool;
@@ -768,8 +768,8 @@ import haxe.ds.Vector;
           }
           f = f.getNext();
         }
+        b = b.getNext();
       }
-      b = b.getNext();
     }
 
     if ((flags & DebugDraw.e_centerOfMassBit) != 0) {

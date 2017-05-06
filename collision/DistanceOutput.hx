@@ -34,9 +34,9 @@ import box2d.common.Vec2;
 	public var pointA : Vec2 = new Vec2();
 	/** Closest point on shapeB */
 	public var pointB : Vec2 = new Vec2();
-	public var distance : Float;
+	public var distance : Float = 0;
 	/** number of gjk iterations used */
-	public var iterations : Int;
+	public var iterations : Int = 0;
 	public function new () {}
 }
 

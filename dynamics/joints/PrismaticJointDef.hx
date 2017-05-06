@@ -58,7 +58,7 @@ import box2d.dynamics.Body;
   /**
    * The constrained angle between the bodies: body2_angle - body1_angle.
    */
-  public var referenceAngle : Float;
+  public var referenceAngle : Float = 0;
 
   /**
    * Enable/disable the joint limit.
@@ -68,12 +68,12 @@ import box2d.dynamics.Body;
   /**
    * The lower translation limit, usually in meters.
    */
-  public var lowerTranslation : Float;
+  public var lowerTranslation : Float = 0;
 
   /**
    * The upper translation limit, usually in meters.
    */
-  public var upperTranslation : Float;
+  public var upperTranslation : Float = 0;
 
   /**
    * Enable/disable the joint motor.
@@ -83,7 +83,7 @@ import box2d.dynamics.Body;
   /**
    * The maximum motor torque, usually in N-m.
    */
-  public var maxMotorForce : Float;
+  public var maxMotorForce : Float = 0;
 
   /**
    * The desired motor speed in radians per second.

@@ -42,7 +42,7 @@ import haxe.ds.Vector;
   public static var NULL_NODE : Int = -1;
   public static var INITIAL_BUFFER_LENGTH : Int = 16;
 
-  public var m_root : Int;
+  public var m_root : Int = 0;
   public var m_aabb : Vector<AABB>;
   public var m_userData : Dynamic;
   public var m_parent : Vector<Int>;
@@ -50,10 +50,10 @@ import haxe.ds.Vector;
   public var m_child2 : Vector<Int>;
   public var m_height : Vector<Int>;
 
-  private var m_nodeCount : Int;
-  private var m_nodeCapacity : Int;
+  private var m_nodeCount : Int = 0;
+  private var m_nodeCapacity : Int = 0;
 
-  private var m_freeList : Int;
+  private var m_freeList : Int = 0;
 
   private var drawVecs : Vector<Vec2> = new Vector<Vec2>(4);
 

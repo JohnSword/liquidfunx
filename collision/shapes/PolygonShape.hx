@@ -64,7 +64,7 @@ import haxe.ds.Vector;
   /**
    * Number of active vertices in the shape.
    */
-  public var m_count : Int;
+  public var m_count : Int = 0;
 
   // pooling
   private var pool1 : Vec2 = new Vec2();

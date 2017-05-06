@@ -17,22 +17,22 @@ import box2d.dynamics.Body;
   /**
    * The bodyB angle minus bodyA angle in radians.
    */
-  public var angularOffset : Float;
+  public var angularOffset : Float = 0;
 
   /**
    * The maximum motor force in N.
    */
-  public var maxForce : Float;
+  public var maxForce : Float = 0;
 
   /**
    * The maximum motor torque in N-m.
    */
-  public var maxTorque : Float;
+  public var maxTorque : Float = 0;
 
   /**
    * Position correction factor in the range [0,1].
    */
-  public var correctionFactor : Float;
+  public var correctionFactor : Float = 0;
 
   public function new() {
     super(JointType.MOTOR);

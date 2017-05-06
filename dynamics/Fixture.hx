@@ -51,18 +51,18 @@ import haxe.ds.Vector;
 
   public static var NULL_PROXY : Int = -1;
 
-  public var m_density : Float;
+  public var m_density : Float = 0;
 
   public var m_next : Fixture;
   public var m_body : Body;
 
   public var m_shape : Shape;
 
-  public var m_friction : Float;
-  public var m_restitution : Float;
+  public var m_friction : Float = 0;
+  public var m_restitution : Float = 0;
 
   public var m_proxies : Vector<FixtureProxy>;
-  public var m_proxyCount : Int;
+  public var m_proxyCount : Int = 0;
 
   public var m_filter : Filter;
 

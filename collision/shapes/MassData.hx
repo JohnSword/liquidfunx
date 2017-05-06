@@ -53,11 +53,11 @@ import box2d.common.Vec2;
 /** This holds the mass data computed for a shape. */
  class MassData {
 	/** The mass of the shape, usually in kilograms. */
-	public var mass : Float;
+	public var mass : Float = 0;
 	/** The position of the shape's centroid relative to the shape's origin. */
 	public var center : Vec2;
 	/** The rotational inertia of the shape about the local origin. */
-	public var I : Float;
+	public var I : Float = 0;
 	
 	/**
 	 * Blank mass data

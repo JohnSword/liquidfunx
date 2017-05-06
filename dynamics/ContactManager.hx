@@ -39,7 +39,7 @@ import box2d.dynamics.contacts.ContactEdge;
 
   public var m_broadPhase : BroadPhase;
   public var m_contactList : Contact;
-  public var m_contactCount : Int;
+  public var m_contactCount : Int = 0;
   public var m_contactFilter : ContactFilter;
   public var m_contactListener : ContactListener;
 

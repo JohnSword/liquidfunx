@@ -31,18 +31,18 @@ import box2d.common.Vec2;
   public var localPoints : Array<Vec2> = new Array<Vec2>();
   public var localNormal : Vec2 = new Vec2();
   public var localPoint : Vec2 = new Vec2();
-  public var indexA : Int;
-  public var indexB : Int;
-  public var invMassA : Float;
-  public var invMassB : Float;
+  public var indexA : Int = 0;
+  public var indexB : Int = 0;
+  public var invMassA : Float = 0;
+  public var invMassB : Float = 0;
   public var localCenterA : Vec2 = new Vec2();
   public var localCenterB : Vec2 = new Vec2();
-  public var invIA : Float;
-  public var invIB : Float;
+  public var invIA : Float = 0;
+  public var invIB : Float = 0;
   public var type : ManifoldType;
-  public var radiusA : Float;
-  public var radiusB : Float;
-  public var pointCount : Int;
+  public var radiusA : Float = 0;
+  public var radiusB : Float = 0;
+  public var pointCount : Int = 0;
 
   public function new() {
     for(i in 0 ... Settings.maxManifoldPoints) {

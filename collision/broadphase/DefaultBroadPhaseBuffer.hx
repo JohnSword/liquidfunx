@@ -113,8 +113,9 @@ class DefaultBroadPhaseBuffer implements TreeCallback implements BroadPhase {
 
     // Perform tree queries for all moving proxies.
     // for (int i = 0; i < m_moveCount; ++i) {
-    var i : Int = 0;
-    while(i < m_moveCount) {
+    // var i : Int = 0;
+    for(i in 0 ... m_moveCount) {
+    // while(i < m_moveCount) {
       m_queryProxyId = m_moveBuffer[i];
       if (m_queryProxyId == NULL_PROXY) {
         continue;
@@ -128,7 +129,7 @@ class DefaultBroadPhaseBuffer implements TreeCallback implements BroadPhase {
       // log.debug("quering aabb: "+m_queryProxy.aabb);
       m_tree.query(this, fatAABB);
 
-      ++i;
+      // ++i;
     }
     // log.debug("Number of pairs found: "+m_pairCount);
 
@@ -136,9 +137,9 @@ class DefaultBroadPhaseBuffer implements TreeCallback implements BroadPhase {
     m_moveCount = 0;
 
     // Sort the pair buffer to expose duplicates.
-    m_pairBuffer.sort(function(a : Pair, b : Pair) : Int {
-           return a.compareTo(b);
-        });
+    // m_pairBuffer.sort(function(a : Pair, b : Pair) : Int {
+    //        return a.compareTo(b);
+    //     });
     // TODO: Vector sort
     // Arrays.sort(m_pairBuffer, 0, m_pairCount);
 

@@ -2,8 +2,8 @@ package box2d.particle;
 
 /** Used for detecting particle contacts */
 class Proxy {
-    public var index : Int;
-    public var tag : Int;
+    public var index : Int = 0;
+    public var tag : Int = 0;
 
     public function compareTo(o : Proxy) : Int {
         return (tag - o.tag) < 0 ? -1 : (o.tag == tag ? 0 : 1);

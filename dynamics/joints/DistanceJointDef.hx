@@ -66,17 +66,17 @@ import box2d.dynamics.Body;
   public var localAnchorB : Vec2;
 
   /** The equilibrium length between the anchor points. */
-  public var length : Float;
+  public var length : Float = 0;
 
   /**
    * The mass-spring-damper frequency in Hertz.
    */
-  public var frequencyHz : Float;
+  public var frequencyHz : Float = 0;
 
   /**
    * The damping ratio. 0 = no damping, 1 = critical damping.
    */
-  public var dampingRatio : Float;
+  public var dampingRatio : Float = 0;
 
   public function new() {
     super(JointType.DISTANCE);

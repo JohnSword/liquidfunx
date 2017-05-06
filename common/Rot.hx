@@ -5,8 +5,8 @@ class Rot {
     private static var serialVersionUID : Int = 1;
 
     // sin and cos
-    public var s : Float;
-    public var c : Float;
+    public var s : Float = 0;
+    public var c : Float = 0;
 
     public function new(angle:Float=null) {
         if(angle!=null) {

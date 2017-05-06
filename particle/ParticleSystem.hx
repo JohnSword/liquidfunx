@@ -190,7 +190,7 @@ import haxe.ds.Vector;
       capacity = limitCapacity(capacity, m_userDataBuffer.userSuppliedCapacity);
       if (m_internalAllocatedCapacity < capacity) {
         m_flagsBuffer.data =
-            reallocateBuffer(cast m_flagsBuffer, m_internalAllocatedCapacity, capacity, false);
+            reallocateBufferInt(m_flagsBuffer, m_internalAllocatedCapacity, capacity, false);
         m_positionBuffer.data =
             reallocateBuffer(m_positionBuffer, m_internalAllocatedCapacity, capacity, false);
         m_velocityBuffer.data =
@@ -1772,7 +1772,7 @@ import haxe.ds.Vector;
         oldCapacity, newCapacity, deferred);
   }
 
-  static private function reallocateBuffer2(buffer : ParticleBufferInt, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Dynamic> {
+  static private function reallocateBufferInt(buffer : ParticleBufferInt, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Int> {
     return BufferUtils.reallocateBufferIntDeffered(buffer.data, buffer.userSuppliedCapacity, oldCapacity,
         newCapacity, deferred);
   }

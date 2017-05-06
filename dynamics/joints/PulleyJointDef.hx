@@ -26,7 +26,6 @@
  */
 package box2d.dynamics.joints;
 
-import box2d.common.Settings;
 import box2d.common.Vec2;
 import box2d.dynamics.Body;
 
@@ -61,12 +60,12 @@ import box2d.dynamics.Body;
   /**
    * The a reference length for the segment attached to bodyA.
    */
-  public var lengthA : Float;
+  public var lengthA : Float = 0;
 
   /**
    * The a reference length for the segment attached to bodyB.
    */
-  public var lengthB : Float;
+  public var lengthB : Float = 0;
 
   /**
    * The pulley ratio, used to simulate a block-and-tackle.

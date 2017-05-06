@@ -28,8 +28,8 @@ import haxe.ds.Vector;
 class DynamicIntStack {
 
   private var stack : Vector<Int>;
-  private var size : Int;
-  private var position : Int;
+  private var size : Int = 0;
+  private var position : Int = 0;
 
   public function new(initialSize : Int) {
     stack = new Vector<Int>(initialSize);
@@ -51,6 +51,7 @@ class DynamicIntStack {
       stack = new Vector<Int>(size * 2);
       size = stack.length;
       // TODO: array copy
+      Vector.blit(old, 0, stack, 0, old.length);
       // System.arraycopy(old, 0, stack, 0, old.length);
     }
     stack[position++] = i;

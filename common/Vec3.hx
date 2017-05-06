@@ -4,9 +4,9 @@ class Vec3 {
 
     private static var serialVersionUID : Int = 1;
 
-    public var x : Float;
-    public var y : Float;
-    public var z : Float;
+    public var x : Float = 0;
+    public var y : Float = 0;
+    public var z : Float = 0;
     
     public function new() {
         x = y = z = 0;

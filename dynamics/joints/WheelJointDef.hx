@@ -63,22 +63,22 @@ import box2d.dynamics.Body;
   /**
    * The maximum motor torque, usually in N-m.
    */
-  public var maxMotorTorque : Float;
+  public var maxMotorTorque : Float = 0;
 
   /**
    * The desired motor speed in radians per second.
    */
-  public var motorSpeed : Float;
+  public var motorSpeed : Float = 0;
 
   /**
    * Suspension frequency, zero indicates no suspension
    */
-  public var frequencyHz : Float;
+  public var frequencyHz : Float = 0;
 
   /**
    * Suspension damping ratio, one indicates critical damping
    */
-  public var dampingRatio : Float;
+  public var dampingRatio : Float = 0;
 
   public function new() {
     super(JointType.WHEEL);

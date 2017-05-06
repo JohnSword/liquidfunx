@@ -5,11 +5,11 @@ import box2d.dynamics.Body;
 
  class ParticleBodyContact {
   /** Index of the particle making contact. */
-  public var index : Int;
+  public var index : Int = 0;
   /** The body making contact. */
   public var body : Body;
   /** Weight of the contact. A value between 0.0f and 1.0f. */
-  public var weight : Float;
+  public var weight : Float = 0;
   /** The normalized direction from the particle to the body. */
   public var normal : Vec2 = new Vec2();
   /** The effective mass used in calculating force. */

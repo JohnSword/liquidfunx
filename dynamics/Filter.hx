@@ -33,20 +33,20 @@ package box2d.dynamics;
 	/**
 	 * The collision category bits. Normally you would just set one bit.
 	 */
-	public var categoryBits : Int;
+	public var categoryBits : Int = 0;
 	
 	/**
 	 * The collision mask bits. This states the categories that this
 	 * shape would accept for collision.
 	 */
-	public var maskBits : Int;
+	public var maskBits : Int = 0;
 	
 	/**
 	 * Collision groups allow a certain group of objects to never collide (negative)
 	 * or always collide (positive). Zero means no collision group. Non-zero group
 	 * filtering always wins against the mask bits.
 	 */
-	public var groupIndex : Int;
+	public var groupIndex : Int = 0;
 	
 	public function new() {
 	  categoryBits = 0x0001;

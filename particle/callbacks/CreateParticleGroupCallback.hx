@@ -9,7 +9,7 @@ class CreateParticleGroupCallback implements VoronoiDiagramCallback {
 
     public var system : ParticleSystem;
     public var def : ParticleGroupDef; // pointer
-    public var firstIndex : Int;
+    public var firstIndex : Int = 0;
 
     public function new() {}
 

@@ -115,32 +115,32 @@ import box2d.pooling.IWorldPool;
   public var m_localAnchorB : Vec2;
   public var m_localXAxisA : Vec2;
   public var m_localYAxisA : Vec2;
-  public var m_referenceAngle : Float;
+  public var m_referenceAngle : Float = 0;
   private var m_impulse : Vec3;
-  private var m_motorImpulse : Float;
-  private var m_lowerTranslation : Float;
-  private var m_upperTranslation : Float;
-  private var m_maxMotorForce : Float;
-  private var m_motorSpeed : Float;
+  private var m_motorImpulse : Float = 0;
+  private var m_lowerTranslation : Float = 0;
+  private var m_upperTranslation : Float = 0;
+  private var m_maxMotorForce : Float = 0;
+  private var m_motorSpeed : Float = 0;
   private var m_enableLimit : Bool;
   private var m_enableMotor : Bool;
   private var m_limitState : LimitState;
 
   // Solver temp
-  private var m_indexA : Int;
-  private var m_indexB : Int;
+  private var m_indexA : Int = 0;
+  private var m_indexB : Int = 0;
   private var m_localCenterA : Vec2 = new Vec2();
   private var m_localCenterB : Vec2 = new Vec2();
-  private var m_invMassA : Float;
-  private var m_invMassB : Float;
-  private var m_invIA : Float;
-  private var m_invIB : Float;
+  private var m_invMassA : Float = 0;
+  private var m_invMassB : Float = 0;
+  private var m_invIA : Float = 0;
+  private var m_invIB : Float = 0;
   private var m_perp : Vec2;
   private var m_axis : Vec2;
-  private var m_s2 : Float;
-  private var m_s1 : Float;
-  private var m_a2 : Float;
-  private var m_a1 : Float;
+  private var m_s2 : Float = 0;
+  private var m_s1 : Float = 0;
+  private var m_a2 : Float = 0;
+  private var m_a1 : Float = 0;
   private var m_K : Mat33;
   private var m_motorMass : Float; // effective mass for motor/limit translational constraint.
 

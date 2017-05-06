@@ -47,7 +47,7 @@ class BufferUtils {
      * Reallocate a buffer. A 'deferred' buffer is reallocated only if it is not NULL. If
      * 'userSuppliedCapacity' is not zero, buffer is user supplied and must be kept.
      */
-     public static function reallocateBufferDeffered(klass : Class<Dynamic>, buffer : Vector<Dynamic>, userSuppliedCapacity : Int,
+     public static function reallocateBufferDeffered<T>(klass : Class<Dynamic>, buffer : Vector<Dynamic>, userSuppliedCapacity : Int,
          oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Dynamic> {
         if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
             buffer = reallocateBuffer(klass, buffer, oldCapacity, newCapacity);

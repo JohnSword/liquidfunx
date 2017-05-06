@@ -64,7 +64,7 @@ import haxe.ds.Vector;
   public var m_positionConstraints : Vector<ContactPositionConstraint>;
   public var m_velocityConstraints : Vector<ContactVelocityConstraint>;
   public var m_contacts : Vector<Contact>;
-  public var m_count : Int;
+  public var m_count : Int = 0;
 
   public function new() {
     m_positionConstraints = new Vector<ContactPositionConstraint>(INITIAL_NUM_CONSTRAINTS);
@@ -107,9 +107,10 @@ import haxe.ds.Vector;
     m_velocities = def.velocities;
     m_contacts = def.contacts;
 
-    var i:Int = 0;
-    while (i < m_count) {
+    // var i:Int = 0;
+    // while (i < m_count) {
     // for (int i = 0; i < m_count; ++i) {
+    for (i in 0 ... m_count) {
       // System.out.println("contacts: " + m_count);
       var contact : Contact = m_contacts[i];
 
@@ -157,9 +158,9 @@ import haxe.ds.Vector;
       pc.type = manifold.type;
 
       // System.out.println("contact point count: " + pointCount);
-      var j:Int = 0;
-      while (j < pointCount) {
-      // for (int j = 0; j < pointCount; j++) {
+      // var j:Int = 0;
+      // while (j < pointCount) {
+      for (j in 0 ... pointCount) {
         var cp : ManifoldPoint = manifold.points[j];
         var vcp : VelocityConstraintPoint = vc.points[j];
 
@@ -180,11 +181,7 @@ import haxe.ds.Vector;
         vcp.velocityBias = 0;
         pc.localPoints[j].x = cp.localPoint.x;
         pc.localPoints[j].y = cp.localPoint.y;
-
-        j++;
       }
-
-      ++i;
     }
   }
 

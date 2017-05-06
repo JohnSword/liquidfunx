@@ -53,7 +53,7 @@ import box2d.common.Vec2;
   /**
    * The world angle of the body in radians.
    */
-  public var angle : Float;
+  public var angle : Float = 0;
 
   /**
    * The linear velocity of the body in world co-ordinates.
@@ -63,21 +63,21 @@ import box2d.common.Vec2;
   /**
    * The angular velocity of the body.
    */
-  public var angularVelocity : Float;
+  public var angularVelocity : Float = 0;
 
   /**
    * Linear damping is use to reduce the linear velocity. The damping parameter can be larger than
    * 1.0f but the damping effect becomes sensitive to the time step when the damping parameter is
    * large.
    */
-  public var linearDamping : Float;
+  public var linearDamping : Float = 0;
 
   /**
    * Angular damping is use to reduce the angular velocity. The damping parameter can be larger than
    * 1.0f but the damping effect becomes sensitive to the time step when the damping parameter is
    * large.
    */
-  public var angularDamping : Float;
+  public var angularDamping : Float = 0;
 
   /**
    * Set this flag to false if this body should never fall asleep. Note that this increases CPU
@@ -112,7 +112,7 @@ import box2d.common.Vec2;
   /**
    * Experimental: scales the inertia tensor.
    */
-  public var gravityScale : Float;
+  public var gravityScale : Float = 0;
 
   public function new() {
     userData = null;

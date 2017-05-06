@@ -37,8 +37,8 @@ import box2d.collision.AABB;
 
   public var child1 : DynamicTreeNode;
   public var child2 : DynamicTreeNode;
-  public var id : Int;
-  public var height : Int;
+  public var id : Int = 0;
+  public var height : Int = 0;
 
   public function getUserData() : Dynamic {
     return userData;

@@ -27,7 +27,7 @@ import box2d.common.Vec2;
 
  class Velocity {
   public var v : Vec2 = new Vec2();
-  public var w : Float;
+  public var w : Float = 0;
   public function new() {}
 }
 

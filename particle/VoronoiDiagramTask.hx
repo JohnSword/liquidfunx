@@ -1,9 +1,9 @@
 package box2d.particle;
 
 class VoronoiDiagramTask {
-    public var m_x : Int;
-    public var m_y : Int; 
-    public var  m_i : Int;
+    public var m_x : Int = 0;
+    public var m_y : Int = 0; 
+    public var  m_i : Int = 0;
     public var m_generator : Generator;
 
     public function new(x : Int, y : Int, i : Int, g : Generator) {

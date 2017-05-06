@@ -18,8 +18,8 @@ import haxe.ds.Vector;
 class DistanceProxy {
 
     public var m_vertices : Vector<Vec2>;
-    public var m_count : Int;
-    public var m_radius : Float;
+    public var m_count : Int = 0;
+    public var m_radius : Float = 0;
     public var m_buffer : Vector<Vec2>;
 
     public function new () {
