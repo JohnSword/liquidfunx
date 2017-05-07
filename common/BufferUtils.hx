@@ -1,11 +1,100 @@
 package box2d.common;
 
+import box2d.particle.ParticleBodyContact;
+import box2d.particle.ParticleContact;
+import box2d.particle.Proxy;
+import box2d.particle.ParticleGroup;
 import haxe.ds.Vector;
 
 class BufferUtils {
 
-    public static function reallocateBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Dynamic>, oldCapacity : Int, newCapacity : Int) : Vector<Dynamic> {
+    public static function reallocateBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Dynamic>, oldCapacity : Int, newCapacity : Int) : Dynamic {
         var newBuffer : Vector<Dynamic> = new Vector<Dynamic>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocateProxyBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Proxy>, oldCapacity : Int, newCapacity : Int) : Vector<Proxy> {
+        var newBuffer : Vector<Proxy> = new Vector<Proxy>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocateParticleGroupBuffer(klass : Class<Dynamic>, oldBuffer : Vector<ParticleGroup>, oldCapacity : Int, newCapacity : Int) : Vector<ParticleGroup> {
+        var newBuffer : Vector<ParticleGroup> = new Vector<ParticleGroup>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocateParticleContactBuffer(klass : Class<Dynamic>, oldBuffer : Vector<ParticleContact>, oldCapacity : Int, newCapacity : Int) : Vector<ParticleContact> {
+        var newBuffer : Vector<ParticleContact> = new Vector<ParticleContact>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocateParticleBodyContactBuffer(klass : Class<Dynamic>, oldBuffer : Vector<ParticleBodyContact>, oldCapacity : Int, newCapacity : Int) : Vector<ParticleBodyContact> {
+        var newBuffer : Vector<ParticleBodyContact> = new Vector<ParticleBodyContact>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocateVec2ContactBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Vec2>, oldCapacity : Int, newCapacity : Int) : Vector<Vec2> {
+        var newBuffer : Vector<Vec2> = new Vector<Vec2>(newCapacity);
         if (oldBuffer != null) {
             // TODO: array copy
             Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
@@ -48,9 +137,25 @@ class BufferUtils {
      * 'userSuppliedCapacity' is not zero, buffer is user supplied and must be kept.
      */
      public static function reallocateBufferDeffered<T>(klass : Class<Dynamic>, buffer : Vector<Dynamic>, userSuppliedCapacity : Int,
-         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Dynamic> {
+         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
         if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
             buffer = reallocateBuffer(klass, buffer, oldCapacity, newCapacity);
+        }
+        return buffer;
+    }
+
+     public static function reallocateVec2BufferDeffered<T>(klass : Class<Dynamic>, buffer : Vector<Vec2>, userSuppliedCapacity : Int,
+         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Vec2> {
+        if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
+            buffer = reallocateVec2ContactBuffer(klass, buffer, oldCapacity, newCapacity);
+        }
+        return buffer;
+    }
+
+    public static function reallocateParticleGroupBufferDeffered(klass : Class<Dynamic>, buffer : Vector<ParticleGroup>, userSuppliedCapacity : Int,
+         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<ParticleGroup> {
+        if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
+            buffer = reallocateParticleGroupBuffer(klass, buffer, oldCapacity, newCapacity);
         }
         return buffer;
     }

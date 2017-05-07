@@ -82,17 +82,16 @@ class MathUtils extends PlatformMathUtils {
     // }
 
     public static function abs(x:Dynamic) : Dynamic {
-        return Math.abs(x);
-        // if(Std.is(x,Float)) {
-        //     if (Settings.FAST_ABS) {
-        //         return x > 0 ? x : -x;
-        //     } else {
-        //         return Math.abs(x);
-        //     }
-        // } else {
-        //     var y : Int = x >> 31;
-        //     return (x ^ y) - y;
-        // } 
+        if(Std.is(x,Float)) {
+            if (Settings.FAST_ABS) {
+                return x > 0 ? x : -x;
+            } else {
+                return Math.abs(x);
+            }
+        } else {
+            var y : Int = x >> 31;
+            return (x ^ y) - y;
+        } 
     }
 
     public static function fastAbs(x:Float) : Float {
@@ -100,12 +99,11 @@ class MathUtils extends PlatformMathUtils {
     }
 
     public static function floor(x:Float) : Int {
-        return Std.int(Math.floor(x));
-        // if (Settings.FAST_FLOOR) {
-        //     return fastFloor(x);
-        // } else {
-        //     return Std.int(Math.floor(x));
-        // }
+        if (Settings.FAST_FLOOR) {
+            return fastFloor(x);
+        } else {
+            return Std.int(Math.floor(x));
+        }
     }
 
     public static function fastFloor(x:Float) : Int {
@@ -282,6 +280,14 @@ class MathUtils extends PlatformMathUtils {
     public static var MIN_VALUE (get, null):Float;
 	public static var MAX_VALUE (get, null):Float;
 	
+    #if flash
+        public static var NUMBER_MAX_VALUE(get_NUMBER_MAX_VALUE, never):Float;
+        private static inline function get_NUMBER_MAX_VALUE():Float return untyped __global__["Number"].MAX_VALUE; 
+    #else
+        public static var NUMBER_MAX_VALUE(get_NUMBER_MAX_VALUE, never):Float;
+        private static inline function get_NUMBER_MAX_VALUE():Float return 179 * Math.pow(10, 306);  // 1.79e+308
+    #end
+
 	private static inline function get_MIN_VALUE ():Float {
 		#if flash
 		return untyped __global__ ["Number"].MIN_VALUE;

@@ -20,10 +20,13 @@ import box2d.particle.callbacks.UpdateBodyContactsCallback;
 import box2d.particle.callbacks.SolveCollisionCallback;
 import box2d.particle.callbacks.JoinParticleGroupsCallback;
 
-import box2d.particle.ParticleBuffer;
-import box2d.particle.ParticleBufferInt;
+import box2d.particle.buffers.ParticleBuffer;
+import box2d.particle.buffers.ParticleBufferInt;
+import box2d.particle.buffers.ParticleBufferVec2;
+import box2d.particle.buffers.ParticleBufferParticleColor;
 
 import haxe.ds.Vector;
+import haxe.ds.ArraySort;
 
  class ParticleSystem {
   /** All particle types that require creating pairs */
@@ -58,63 +61,64 @@ import haxe.ds.Vector;
     return maxCount != 0 && capacity > maxCount ? maxCount : capacity;
   }
 
-  public var m_timestamp : Int;
-  public var m_allParticleFlags : Int;
-  public var m_allGroupFlags : Int;
-  public var m_density : Float;
-  public var m_inverseDensity : Float;
-  public var m_gravityScale : Float;
-  public var m_particleDiameter : Float;
-  public var m_inverseDiameter : Float;
-  public var m_squaredDiameter : Float;
+  public var m_timestamp : Int = 0;
+  public var m_allParticleFlags : Int = 0;
+  public var m_allGroupFlags : Int = 0;
+  public var m_density : Float = 0;
+  public var m_inverseDensity : Float = 0;
+  public var m_gravityScale : Float = 0;
+  public var m_particleDiameter : Float = 0;
+  public var m_inverseDiameter : Float = 0;
+  public var m_squaredDiameter : Float = 0;
 
-  public var m_count : Int;
-  public var m_internalAllocatedCapacity : Int;
-  public var m_maxCount : Int;
+  public var m_count : Int = 0;
+  public var m_internalAllocatedCapacity : Int = 0;
+  public var m_maxCount : Int = 0;
   public var m_flagsBuffer : ParticleBufferInt;
-  public var m_positionBuffer : ParticleBuffer;
-  public var m_velocityBuffer : ParticleBuffer;
+  public var m_positionBuffer : ParticleBufferVec2;
+  public var m_velocityBuffer : ParticleBufferVec2;
   public var m_accumulationBuffer : Vector<Float>; // temporary values
   public var m_accumulation2Buffer : Vector<Vec2>; // temporary vector values
   public var m_depthBuffer : Vector<Float>; // distance from the surface
 
-  public var m_colorBuffer : ParticleBuffer;
+  public var m_colorBuffer : ParticleBufferParticleColor;
   public var m_groupBuffer : Vector<ParticleGroup>;
   public var m_userDataBuffer : ParticleBuffer;
 
-  public var m_proxyCount : Int;
-  public var m_proxyCapacity : Int;
-  public var m_proxyBuffer : Vector<Proxy>;
+  public var m_proxyCount : Int = 0;
+  public var m_proxyCapacity : Int = 0;
+  public var m_proxyBuffer : Array<Proxy>;
+  // public var m_proxyBuffer : Vector<Proxy>;
 
-  public var m_contactCount : Int;
-  public var m_contactCapacity : Int;
+  public var m_contactCount : Int = 0;
+  public var m_contactCapacity : Int = 0;
   public var m_contactBuffer : Vector<ParticleContact>;
 
-  public var m_bodyContactCount : Int;
-  public var m_bodyContactCapacity : Int;
+  public var m_bodyContactCount : Int = 0;
+  public var m_bodyContactCapacity : Int = 0;
   public var m_bodyContactBuffer : Vector<ParticleBodyContact>;
 
-  public var m_pairCount : Int;
-  public var m_pairCapacity : Int;
+  public var m_pairCount : Int = 0;
+  public var m_pairCapacity : Int = 0;
   public var m_pairBuffer : Vector<Pair>;
 
-  public var m_triadCount : Int;
-  public var m_triadCapacity : Int;
+  public var m_triadCount : Int = 0;
+  public var m_triadCapacity : Int = 0;
   public var m_triadBuffer : Vector<Triad>;
 
-  public var m_groupCount : Int;
+  public var m_groupCount : Int = 0;
   public var m_groupList : ParticleGroup;
 
-  public var m_pressureStrength : Float;
-  public var m_dampingStrength : Float;
-  public var m_elasticStrength : Float;
-  public var m_springStrength : Float;
-  public var m_viscousStrength : Float;
-  public var m_surfaceTensionStrengthA : Float;
-  public var m_surfaceTensionStrengthB : Float;
-  public var m_powderStrength : Float;
-  public var m_ejectionStrength : Float;
-  public var m_colorMixingStrength : Float;
+  public var m_pressureStrength : Float = 0;
+  public var m_dampingStrength : Float = 0;
+  public var m_elasticStrength : Float = 0;
+  public var m_springStrength : Float = 0;
+  public var m_viscousStrength : Float = 0;
+  public var m_surfaceTensionStrengthA : Float = 0;
+  public var m_surfaceTensionStrengthB : Float = 0;
+  public var m_powderStrength : Float = 0;
+  public var m_ejectionStrength : Float = 0;
+  public var m_colorMixingStrength : Float = 0;
 
   private var m_world : World;
 
@@ -163,10 +167,12 @@ import haxe.ds.Vector;
     m_colorMixingStrength = 0.5;
 
     m_flagsBuffer = new ParticleBufferInt();
-    m_positionBuffer = new ParticleBuffer(Vec2);
-    m_velocityBuffer = new ParticleBuffer(Vec2);
-    m_colorBuffer = new ParticleBuffer(ParticleColor);
+    m_positionBuffer = new ParticleBufferVec2(Vec2);
+    m_velocityBuffer = new ParticleBufferVec2(Vec2);
+    m_colorBuffer = new ParticleBufferParticleColor(ParticleColor);
     m_userDataBuffer = new ParticleBuffer(cast Dynamic);
+
+    m_proxyBuffer = new Array<Proxy>();
   }
   
 //  public void assertNotSamePosition() {
@@ -192,14 +198,14 @@ import haxe.ds.Vector;
         m_flagsBuffer.data =
             reallocateBufferInt(m_flagsBuffer, m_internalAllocatedCapacity, capacity, false);
         m_positionBuffer.data =
-            reallocateBuffer(m_positionBuffer, m_internalAllocatedCapacity, capacity, false);
+            reallocateVec2Buffer(m_positionBuffer, m_internalAllocatedCapacity, capacity, false);
         m_velocityBuffer.data =
-            reallocateBuffer(m_velocityBuffer, m_internalAllocatedCapacity, capacity, false);
+            reallocateVec2Buffer(m_velocityBuffer, m_internalAllocatedCapacity, capacity, false);
         m_accumulationBuffer =
             BufferUtils.reallocateBufferFloatDeffered(m_accumulationBuffer, 0, m_internalAllocatedCapacity,
                 capacity, false);
         m_accumulation2Buffer =
-            cast BufferUtils.reallocateBufferDeffered(Vec2, m_accumulation2Buffer, 0,
+            BufferUtils.reallocateBufferDeffered(Vec2, m_accumulation2Buffer, 0,
                 m_internalAllocatedCapacity, capacity, true);
         m_depthBuffer =
             BufferUtils.reallocateBufferFloatDeffered(m_depthBuffer, 0, m_internalAllocatedCapacity, capacity,
@@ -207,7 +213,7 @@ import haxe.ds.Vector;
         m_colorBuffer.data =
             reallocateBuffer(m_colorBuffer, m_internalAllocatedCapacity, capacity, true);
         m_groupBuffer =
-            cast BufferUtils.reallocateBufferDeffered(ParticleGroup, m_groupBuffer, 0,
+           cast BufferUtils.reallocateParticleGroupBufferDeffered(ParticleGroup, m_groupBuffer, 0,
                 m_internalAllocatedCapacity, capacity, false);
         m_userDataBuffer.data =
             reallocateBuffer(m_userDataBuffer, m_internalAllocatedCapacity, capacity, true);
@@ -219,30 +225,32 @@ import haxe.ds.Vector;
     }
     var index : Int = m_count++;
     m_flagsBuffer.data[index] = def.flags;
-    m_positionBuffer.data[index].set(def.position);
+    m_positionBuffer.data[index].setVec(def.position);
 //    assertNotSamePosition();
-    m_velocityBuffer.data[index].set(def.velocity);
+    m_velocityBuffer.data[index].setVec(def.velocity);
     m_groupBuffer[index] = null;
     if (m_depthBuffer != null) {
       m_depthBuffer[index] = 0;
     }
     if (m_colorBuffer.data != null || def.color != null) {
-      m_colorBuffer.data = requestParticleBuffer(m_colorBuffer.dataClass, m_colorBuffer.data);
-      m_colorBuffer.data[index].set(def.color);
+      m_colorBuffer.data = cast requestParticleBuffer(m_colorBuffer.dataClass, m_colorBuffer.data);
+      m_colorBuffer.data[index].setParticleColor(def.color);
     }
     if (m_userDataBuffer.data != null || def.userData != null) {
       m_userDataBuffer.data =
           requestParticleBuffer(m_userDataBuffer.dataClass, m_userDataBuffer.data);
       m_userDataBuffer.data[index] = def.userData;
     }
-    if (m_proxyCount >= m_proxyCapacity) {
-      var oldCapacity : Int = m_proxyCapacity;
-      var newCapacity : Int = m_proxyCount != 0 ? 2 * m_proxyCount : Settings.minParticleBufferCapacity;
-      m_proxyBuffer =
-          cast BufferUtils.reallocateBuffer(Proxy, m_proxyBuffer, oldCapacity, newCapacity);
-      m_proxyCapacity = newCapacity;
-    }
-    m_proxyBuffer[m_proxyCount++].index = index;
+    // if (m_proxyCount >= m_proxyCapacity) {
+    //   var oldCapacity : Int = m_proxyCapacity;
+    //   var newCapacity : Int = 49;
+    //   // var newCapacity : Int = m_proxyCount != 0 ? 2 * m_proxyCount : Settings.minParticleBufferCapacity;
+    //   m_proxyBuffer = BufferUtils.reallocateProxyBuffer(Proxy, m_proxyBuffer, oldCapacity, newCapacity);
+    //   m_proxyCapacity = newCapacity;
+    // }
+    m_proxyBuffer.push(new Proxy());
+    m_proxyBuffer[m_proxyCount].index = index;
+    m_proxyCount++;
     return index;
   }
 
@@ -558,7 +566,7 @@ import haxe.ds.Vector;
         var newCapacity : Int =
             m_contactCount != 0 ? 2 * m_contactCount : Settings.minParticleBufferCapacity;
         m_contactBuffer =
-            cast BufferUtils.reallocateBuffer(ParticleContact, m_contactBuffer, oldCapacity,
+            BufferUtils.reallocateParticleContactBuffer(ParticleContact, m_contactBuffer, oldCapacity,
                 newCapacity);
         m_contactCapacity = newCapacity;
       }
@@ -581,19 +589,11 @@ import haxe.ds.Vector;
       var pos : Vec2 = m_positionBuffer.data[i];
       proxy.tag = computeTag(m_inverseDiameter * pos.x, m_inverseDiameter * pos.y);
     }
-    m_proxyBuffer.sort(function (a:Proxy, b:Proxy) : Int {
-        var result:Int = a.compareTo(b);
-        // if (a < b) {
-        //     result = -1;
-        // } else if (a > b) {
-        //     result =  1;    
-        // } else {
-        //     result 0;
-        // }
-        return result;
-    });
     // TODO: array sort
     // Arrays.sort(m_proxyBuffer, 0, m_proxyCount);
+    m_proxyBuffer.sort(function (a:Proxy, b:Proxy) : Int {
+      return a.compareTo(b);
+    });
     m_contactCount = 0;
     var c_index : Int = 0;
     for(i in 0 ... m_proxyCount) {
@@ -1185,7 +1185,7 @@ import haxe.ds.Vector;
 
   private function solveColorMixing(step : TimeStep) : Void {
     // mixes color between contacting particles
-    m_colorBuffer.data = requestParticleBuffer(ParticleColor, m_colorBuffer.data);
+    m_colorBuffer.data = cast requestParticleBuffer(ParticleColor, m_colorBuffer.data);
     var colorMixing256 : Int = Std.int(256 * m_colorMixingStrength);
     for (k in 0 ... m_contactCount) {
       var contact : ParticleContact = m_contactBuffer[k];
@@ -1226,14 +1226,14 @@ import haxe.ds.Vector;
         newIndices[i] = newCount;
         if (i != newCount) {
           m_flagsBuffer.data[newCount] = m_flagsBuffer.data[i];
-          m_positionBuffer.data[newCount].set(m_positionBuffer.data[i]);
-          m_velocityBuffer.data[newCount].set(m_velocityBuffer.data[i]);
+          m_positionBuffer.data[newCount].setVec(m_positionBuffer.data[i]);
+          m_velocityBuffer.data[newCount].setVec(m_velocityBuffer.data[i]);
           m_groupBuffer[newCount] = m_groupBuffer[i];
           if (m_depthBuffer != null) {
             m_depthBuffer[newCount] = m_depthBuffer[i];
           }
           if (m_colorBuffer.data != null) {
-            m_colorBuffer.data[newCount].set(m_colorBuffer.data[i]);
+            m_colorBuffer.data[newCount].setParticleColor(m_colorBuffer.data[i]);
           }
           if (m_userDataBuffer.data != null) {
             m_userDataBuffer.data[newCount] = m_userDataBuffer.data[i];
@@ -1544,16 +1544,16 @@ import haxe.ds.Vector;
   }
 
   public function getParticlePositionBuffer() : Vector<Vec2> {
-    return cast m_positionBuffer.data;
+    return m_positionBuffer.data;
   }
 
   public function getParticleVelocityBuffer() : Vector<Vec2> {
-    return cast m_velocityBuffer.data;
+    return m_velocityBuffer.data;
   }
 
   public function getParticleColorBuffer() : Vector<ParticleColor> {
-    m_colorBuffer.data = requestParticleBuffer(ParticleColor, m_colorBuffer.data);
-    return cast m_colorBuffer.data;
+    m_colorBuffer.data = cast requestParticleBuffer(ParticleColor, m_colorBuffer.data);
+    return m_colorBuffer.data;
   }
 
   public function getParticleUserDataBuffer() : Vector<Dynamic> {
@@ -1577,7 +1577,7 @@ import haxe.ds.Vector;
     buffer.userSuppliedCapacity = newCapacity;
   }
 
-  private function setParticleBuffer2(buffer : ParticleBuffer, newData : Vector<Dynamic>, newCapacity : Int) : Void {
+  private function setParticleBuffer2(buffer : Dynamic, newData : Vector<Dynamic>, newCapacity : Int) : Void {
     if (buffer.userSuppliedCapacity != 0) {
       // m_world.m_blockAllocator.Free(buffer.data, sizeof(T) * m_internalAllocatedCapacity);
     }
@@ -1621,7 +1621,7 @@ import haxe.ds.Vector;
     setParticleBuffer2(m_userDataBuffer, buffer, capacity);
   }
 
-  public static function lowerBound(ray : Vector<Proxy>, length : Int, tag : Int) : Int {
+  public static function lowerBound(ray : Array<Proxy>, length : Int, tag : Int) : Int {
       var left : Int = 0;
       var step : Int, curr : Int;
       while (length > 0) {
@@ -1637,7 +1637,7 @@ import haxe.ds.Vector;
       return left;
     }
 
-  public static function upperBound(ray : Vector<Proxy>, length : Int, tag : Int) : Int {
+  public static function upperBound(ray : Array<Proxy>, length : Int, tag : Int) : Int {
       var left : Int = 0;
       var step : Int, curr : Int;
       while (length > 0) {
@@ -1767,8 +1767,13 @@ import haxe.ds.Vector;
   }
 
   // reallocate a buffer
-  static private function reallocateBuffer(buffer : ParticleBuffer, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
+  static private function reallocateBuffer(buffer : Dynamic, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
     return BufferUtils.reallocateBufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
+        oldCapacity, newCapacity, deferred);
+  }
+
+  static private function reallocateVec2Buffer(buffer : ParticleBufferVec2, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
+    return BufferUtils.reallocateVec2BufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
         oldCapacity, newCapacity, deferred);
   }
 

@@ -1260,7 +1260,7 @@ import haxe.ds.Vector;
 
       // Update fixtures (for broad-phase).
       b.synchronizeFixtures();
-      b = b.m_next;
+      b = b.getNext();
     }
 
     // Look for new contacts.

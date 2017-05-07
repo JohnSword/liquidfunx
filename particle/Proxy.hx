@@ -5,6 +5,8 @@ class Proxy {
     public var index : Int = 0;
     public var tag : Int = 0;
 
+    public function new () {}
+
     public function compareTo(o : Proxy) : Int {
         return (tag - o.tag) < 0 ? -1 : (o.tag == tag ? 0 : 1);
     }

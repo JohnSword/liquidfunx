@@ -138,7 +138,15 @@ class DefaultBroadPhaseBuffer implements TreeCallback implements BroadPhase {
 
     // Sort the pair buffer to expose duplicates.
     // m_pairBuffer.sort(function(a : Pair, b : Pair) : Int {
-    //        return a.compareTo(b);
+    //     var result:Int = a.compareTo(b);
+    //     if (a. < b) {
+    //         result = -1;
+    //     } else if (a > b) {
+    //         result =  1;    
+    //     } else {
+    //         result 0;
+    //     }
+    //     return result;
     //     });
     // TODO: Vector sort
     // Arrays.sort(m_pairBuffer, 0, m_pairCount);

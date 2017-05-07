@@ -71,7 +71,7 @@ class UpdateBodyContactsCallback implements QueryCallback {
                         ? 2 * system.m_bodyContactCount
                         : Settings.minParticleBufferCapacity;
                 system.m_bodyContactBuffer =
-                    cast BufferUtils.reallocateBuffer(ParticleBodyContact,
+                    BufferUtils.reallocateParticleBodyContactBuffer(ParticleBodyContact,
                         system.m_bodyContactBuffer, oldCapacity, newCapacity);
                 system.m_bodyContactCapacity = newCapacity;
               }

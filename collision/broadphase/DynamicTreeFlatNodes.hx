@@ -70,11 +70,11 @@ import haxe.ds.Vector;
 
   private function expandBuffers(oldSize : Int, newSize : Int) : Void {
     m_aabb = BufferUtils.reallocateBuffer(AABB, m_aabb, oldSize, newSize);
-    m_userData = BufferUtils.reallocateBuffer(Dynamic, m_userData, oldSize, newSize);
-    m_parent = BufferUtils.reallocateBuffer(m_parent, oldSize, newSize);
-    m_child1 = BufferUtils.reallocateBuffer(m_child1, oldSize, newSize);
-    m_child2 = BufferUtils.reallocateBuffer(m_child2, oldSize, newSize);
-    m_height = BufferUtils.reallocateBuffer(m_height, oldSize, newSize);
+    m_userData = BufferUtils.reallocateBuffer(cast Dynamic, m_userData, oldSize, newSize);
+    m_parent = BufferUtils.reallocateBufferInt(m_parent, oldSize, newSize);
+    m_child1 = BufferUtils.reallocateBufferInt(m_child1, oldSize, newSize);
+    m_child2 = BufferUtils.reallocateBufferInt(m_child2, oldSize, newSize);
+    m_height = BufferUtils.reallocateBufferInt(m_height, oldSize, newSize);
 
     // Build a linked list for the free list.
     for(i in oldSize ... newSize) {
@@ -87,7 +87,7 @@ import haxe.ds.Vector;
     m_freeList = oldSize;
   }
 
-  override public function createProxy(aabb : AABB, userData : Dynamic) : Int {
+  public function createProxy(aabb : AABB, userData : Dynamic) : Int {
     var node : Int = allocateNode();
     // Fatten the aabb
     var nodeAABB : AABB = m_aabb[node];
@@ -102,13 +102,13 @@ import haxe.ds.Vector;
     return node;
   }
 
-  override public function destroyProxy(proxyId : Int) : Void {
+  public function destroyProxy(proxyId : Int) : Void {
 
     removeLeaf(proxyId);
     freeNode(proxyId);
   }
 
-  override public function moveProxy(proxyId : Int, aabb : AABB, displacement : Vec2) : Bool {
+  public function moveProxy(proxyId : Int, aabb : AABB, displacement : Vec2) : Bool {
     var node : Int = proxyId;
 
     var nodeAABB : AABB = m_aabb[node];
@@ -146,18 +146,18 @@ import haxe.ds.Vector;
     return true;
   }
 
-  override public function getUserData(proxyId : Int) : Dynamic {
+  public function getUserData(proxyId : Int) : Dynamic {
     return m_userData[proxyId];
   }
 
-  override public function getFatAABB(proxyId : Int) : AABB {
+  public function getFatAABB(proxyId : Int) : AABB {
     return m_aabb[proxyId];
   }
 
-  private var nodeStack : Array<Int> = new Array<Int>(20);
+  private var nodeStack : Vector<Int> = new Vector<Int>(20);
   private var nodeStackIndex : Int;
 
-  override public function query(callback : TreeCallback, aabb : AABB) : Void {
+  public function query(callback : TreeCallback, aabb : AABB) : Void {
     nodeStackIndex = 0;
     nodeStack[nodeStackIndex++] = m_root;
 
@@ -177,7 +177,7 @@ import haxe.ds.Vector;
         } else {
           if (nodeStack.length - nodeStackIndex - 2 <= 0) {
             nodeStack =
-                BufferUtils.reallocateBuffer(nodeStack, nodeStack.length, nodeStack.length * 2);
+                BufferUtils.reallocateBufferInt(nodeStack, nodeStack.length, nodeStack.length * 2);
           }
           nodeStack[nodeStackIndex++] = child1;
           nodeStack[nodeStackIndex++] = m_child2[node];
@@ -190,7 +190,7 @@ import haxe.ds.Vector;
   private var aabb : AABB = new AABB();
   private var subInput : RayCastInput = new RayCastInput();
 
-  override public function raycast(callback : TreeRayCastCallback, input : RayCastInput) : Void {
+  public function raycast(callback : TreeRayCastCallback, input : RayCastInput) : Void {
     var p1 : Vec2 = input.p1;
     var p2 : Vec2 = input.p2;
     var p1x : Float = p1.x, p2x = p2.x, p1y = p1.y, p2y = p2.y;
@@ -249,10 +249,10 @@ import haxe.ds.Vector;
       // |dot(v, p1 - c)| > dot(|v|, h)
       // node.aabb.getCenterToOut(c);
       // node.aabb.getExtentsToOut(h);
-      cx = (nodeAABB.lowerBound.x + nodeAABB.upperBound.x) * .5f;
-      cy = (nodeAABB.lowerBound.y + nodeAABB.upperBound.y) * .5f;
-      hx = (nodeAABB.upperBound.x - nodeAABB.lowerBound.x) * .5f;
-      hy = (nodeAABB.upperBound.y - nodeAABB.lowerBound.y) * .5f;
+      cx = (nodeAABB.lowerBound.x + nodeAABB.upperBound.x) * .5;
+      cy = (nodeAABB.lowerBound.y + nodeAABB.upperBound.y) * .5;
+      hx = (nodeAABB.upperBound.x - nodeAABB.lowerBound.x) * .5;
+      hy = (nodeAABB.upperBound.y - nodeAABB.lowerBound.y) * .5;
       tempx = p1x - cx;
       tempy = p1y - cy;
       var separation : Float = MathUtils.abs(vx * tempx + vy * tempy) - (absVx * hx + absVy * hy);
@@ -295,17 +295,17 @@ import haxe.ds.Vector;
     }
   }
 
-  override public function computeHeight() : Int {
-    return computeHeight(m_root);
+  public function computeHeight() : Int {
+    return computeHeight2(m_root);
   }
 
-  private function computeHeight(node : Int) : Int {
+  private function computeHeight2(node : Int = 0) : Int {
 
     if (m_child1[node] == NULL_NODE) {
       return 0;
     }
-    var height1 : Int = computeHeight(m_child1[node]);
-    var height2 : Int = computeHeight(m_child2[node]);
+    var height1 : Int = computeHeight2(m_child1[node]);
+    var height2 : Int = computeHeight2(m_child2[node]);
     return 1 + MathUtils.max(height1, height2);
   }
 
@@ -325,14 +325,14 @@ import haxe.ds.Vector;
 
   }
 
-  override public function getHeight() : Int {
+  public function getHeight() : Int {
     if (m_root == NULL_NODE) {
       return 0;
     }
     return m_height[m_root];
   }
 
-  override public function getMaxBalance() : Int {
+  public function getMaxBalance() : Int {
     var maxBalance : Int = 0;
     var i : Int = 0;
     while (i < m_nodeCapacity) {
@@ -353,7 +353,7 @@ import haxe.ds.Vector;
     return maxBalance;
   }
 
-  override public function getAreaRatio() : Float {
+  public function getAreaRatio() : Float {
     if (m_root == NULL_NODE) {
       return 0.0;
     }
@@ -781,7 +781,7 @@ import haxe.ds.Vector;
 
     var height1 : Int = m_height[child1];
     var height2 : Int = m_height[child2];
-    int height;
+    var height : Int;
     height = 1 + MathUtils.max(height1, height2);
 
     var aabb : AABB = new AABB();
@@ -792,18 +792,18 @@ import haxe.ds.Vector;
     validateMetrics(child2);
   }
 
-  override public function drawTree(argDraw : DebugDraw) : Void {
+  public function drawTree(argDraw : DebugDraw) : Void {
     if (m_root == NULL_NODE) {
       return;
     }
     var height : Int = computeHeight();
-    drawTree(argDraw, m_root, 0, height);
+    drawTree2(argDraw, m_root, 0, height);
   }
 
   private var color : Color3f = new Color3f();
   private var textVec : Vec2 = new Vec2();
 
-  public function drawTree(argDraw : DebugDraw, node : Int, spot : Int, height : Int) : Void {
+  public function drawTree2(argDraw : DebugDraw, node : Int, spot : Int, height : Int) : Void {
     var a : AABB = m_aabb[node];
     a.getVertices(drawVecs);
 
@@ -816,11 +816,13 @@ import haxe.ds.Vector;
     var c1 : Int = m_child1[node];
     var c2 : Int = m_child2[node];
     if (c1 != NULL_NODE) {
-      drawTree(argDraw, c1, spot + 1, height);
+      drawTree2(argDraw, c1, spot + 1, height);
     }
     if (c2 != NULL_NODE) {
-      drawTree(argDraw, c2, spot + 1, height);
+      drawTree2(argDraw, c2, spot + 1, height);
     }
   }
+
+
 }
 

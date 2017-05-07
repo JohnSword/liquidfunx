@@ -1,4 +1,4 @@
-package box2d.particle;
+package box2d.particle.buffers;
 
 import haxe.ds.Vector;
 
