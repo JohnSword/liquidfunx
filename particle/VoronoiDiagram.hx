@@ -5,6 +5,7 @@ import box2d.common.Vec2;
 import box2d.pooling.normal.MutableStack;
 
 import haxe.ds.Vector;
+import box2d.particle.VoronoiDiagramTask;
 
  class VoronoiDiagram {
 
@@ -15,7 +16,27 @@ import haxe.ds.Vector;
   // The diagram is an array of "pointers".
   private var m_diagram : Vector<Generator>;
 
+  private var taskPool : MutableStack = new MutableStack(50);
+      // TODO: how can this work in haxe?
+      // {
+      //   override public function newInstance() : VoronoiDiagramTask {
+      //     return new VoronoiDiagramTask();
+      //   }
+
+      //   override public function newArray(size : Int) : Vector<VoronoiDiagramTask> {
+      //     return new Vector<VoronoiDiagramTask>(size);
+      //   }
+      // };
+
   public function new(generatorCapacity : Int) {
+
+    taskPool.newInstance = function() : VoronoiDiagramTask {
+      return new VoronoiDiagramTask();
+    }
+    taskPool.newArray = function(size:Int) : Vector<VoronoiDiagramTask> {
+      return new Vector<VoronoiDiagramTask>(size);
+    }
+
     m_generatorBuffer = new Vector<Generator>(generatorCapacity);
     for(i in 0 ... generatorCapacity) {
       m_generatorBuffer[i] = new Generator();
@@ -59,18 +80,7 @@ import haxe.ds.Vector;
 
   private var lower : Vec2 = new Vec2();
   private var upper : Vec2 = new Vec2();
-  private var taskPool : MutableStack<VoronoiDiagramTask> =
-      new MutableStack<VoronoiDiagramTask>(50);
-      // TODO: how can this work in haxe?
-      // {
-      //   override public function newInstance() : VoronoiDiagramTask {
-      //     return new VoronoiDiagramTask();
-      //   }
-
-      //   override public function newArray(size : Int) : Vector<VoronoiDiagramTask> {
-      //     return new Vector<VoronoiDiagramTask>(size);
-      //   }
-      // };
+  
   private var queue : StackQueue<VoronoiDiagramTask> = new StackQueue<VoronoiDiagramTask>();
 
   public function generate(radius : Float) : Void {

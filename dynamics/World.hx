@@ -138,7 +138,8 @@ import haxe.ds.Vector;
   // private ContactRegister[][] contactStacks =
   //     new ContactRegister[ShapeType.values().length][ShapeType.values().length];
   // TODO: ShapeType does not have length property
-  private var contactStacks:Array<Array<ContactRegister>> = cast [for (x in 0...4) [for (y in 0...4) 0]];
+  private var contactStacks:Array<Array<ContactRegister>>;
+  // private var contactStacks:Array<Array<ContactRegister>> = cast [for (x in 0...4) [for (y in 0...4) 0]];
 
   /**
    * Construct a world object.
@@ -146,6 +147,15 @@ import haxe.ds.Vector;
    * @param gravity the world gravity vector.
    */
   public function new(gravity : Vec2) {
+    contactStacks = new Array<Array<ContactRegister>>();
+    for(i in 0 ... 4) {
+      var cntRegVec : Array<ContactRegister> = new Array<ContactRegister>();
+      for(j in 0 ... 4) {
+        var contact : ContactRegister = new ContactRegister();
+        cntRegVec[j] = contact;
+      }
+      contactStacks[i] = cntRegVec;
+    }
     new2(gravity, new DefaultWorldPool(WORLD_POOL_SIZE, WORLD_POOL_CONTAINER_SIZE));
   }
 
@@ -220,7 +230,7 @@ import haxe.ds.Vector;
     return m_allowSleep;
   }
 
-  private function addType(creator : IDynamicStack<Contact>, type1 : ShapeType, type2 : ShapeType) : Void {
+  private function addType(creator : IDynamicStack, type1 : ShapeType, type2 : ShapeType) : Void {
     var register : ContactRegister = new ContactRegister();
     register.creator = creator;
     register.primary = true;
@@ -288,7 +298,7 @@ import haxe.ds.Vector;
     var type1 : ShapeType = fixtureA.getType();
     var type2 : ShapeType = fixtureB.getType();
 
-    var creator : IDynamicStack<Contact> = contactStacks[type1.getIndex()][type2.getIndex()].creator;
+    var creator : IDynamicStack = contactStacks[type1.getIndex()][type2.getIndex()].creator;
     creator.push(contact);
   }
 

@@ -26,7 +26,7 @@ package box2d.dynamics.contacts;
 import box2d.pooling.IDynamicStack;
 
  class ContactRegister {
-  public var creator : IDynamicStack<Contact>;
+  public var creator : IDynamicStack;
   public var primary : Bool;
   public function new() {}
 }

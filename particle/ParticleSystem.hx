@@ -26,7 +26,6 @@ import box2d.particle.buffers.ParticleBufferVec2;
 import box2d.particle.buffers.ParticleBufferParticleColor;
 
 import haxe.ds.Vector;
-import haxe.ds.ArraySort;
 
  class ParticleSystem {
   /** All particle types that require creating pairs */

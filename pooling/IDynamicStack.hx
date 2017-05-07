@@ -1,17 +1,17 @@
 package box2d.pooling;
 
-interface IDynamicStack<E> {
+interface IDynamicStack {
 
 	/**
 	 * Pops an item off the stack
 	 * @return
 	 */
-    function pop() : E;
+    function pop() : Dynamic;
 
 	/**
 	 * Pushes an item back on the stack
 	 * @param argObject
 	 */
-	function push(argObject : E) : Void;
+	function push(argObject : Dynamic) : Void;
 
 }

@@ -9,25 +9,32 @@ import box2d.collision.AABB;
 import box2d.collision.Collision;
 import box2d.collision.TimeOfImpact;
 import box2d.collision.Distance;
-import box2d.dynamics.contacts.Contact;
+// import box2d.dynamics.contacts.Contact;
 
 import haxe.ds.Vector;
 
 interface IWorldPool {
 
-	function getPolyContactStack() : IDynamicStack<Contact>;
+	function getPolyContactStack() : IDynamicStack;
+	// function getPolyContactStack() : IDynamicStack<Contact>;
 
-	function getCircleContactStack() : IDynamicStack<Contact>;
+	function getCircleContactStack() : IDynamicStack;
+	// function getCircleContactStack() : IDynamicStack<Contact>;
 
-	function getPolyCircleContactStack() : IDynamicStack<Contact>;
+	function getPolyCircleContactStack() : IDynamicStack;
+	// function getPolyCircleContactStack() : IDynamicStack<Contact>;
 	
-    function getEdgeCircleContactStack() : IDynamicStack<Contact>;
+    function getEdgeCircleContactStack() : IDynamicStack;
+    // function getEdgeCircleContactStack() : IDynamicStack<Contact>;
     
-    function getEdgePolyContactStack() : IDynamicStack<Contact>;
+    function getEdgePolyContactStack() : IDynamicStack;
+    // function getEdgePolyContactStack() : IDynamicStack<Contact>;
 
-    function getChainCircleContactStack() : IDynamicStack<Contact>;
+    function getChainCircleContactStack() : IDynamicStack;
+    // function getChainCircleContactStack() : IDynamicStack<Contact>;
     
-    function getChainPolyContactStack() : IDynamicStack<Contact>;
+    function getChainPolyContactStack() : IDynamicStack;
+    // function getChainPolyContactStack() : IDynamicStack<Contact>;
     
 	function popVec2() : Vec2;
 

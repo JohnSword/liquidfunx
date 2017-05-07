@@ -26,9 +26,9 @@ package box2d.pooling.normal;
 import box2d.pooling.IDynamicStack;
 import haxe.ds.Vector;
 
-class MutableStack<E> implements IDynamicStack<E> {
+class MutableStack implements IDynamicStack {
 
-  private var stack : Vector<E>;
+  private var stack : Dynamic;
   private var index : Int = 0;
   private var size : Int = 0;
 
@@ -40,7 +40,7 @@ class MutableStack<E> implements IDynamicStack<E> {
   }
 
   private function extendStack(argSize : Int) : Void {
-    var newStack : Vector<E> = newArray(argSize);
+    var newStack : Dynamic = newArray(argSize);
     if (stack != null) {
       // TODO: array copy
       Vector.blit(stack, 0, newStack, 0, size);
@@ -53,7 +53,7 @@ class MutableStack<E> implements IDynamicStack<E> {
     size = newStack.length;
   }
 
-  public function pop() : E {
+  public function pop() : Dynamic {
     if (index >= size) {
       extendStack(size * 2);
     }
@@ -65,17 +65,17 @@ class MutableStack<E> implements IDynamicStack<E> {
     // return stack[index++];
   }
 
-  public function push(argObject : E) : Void {
+  public function push(argObject : Dynamic) : Void {
     stack[--index] = argObject;
   }
 
   /** Creates a new instance of the object contained by this stack. */
-  dynamic public function newInstance() : E {
+  dynamic public function newInstance() : Dynamic {
     return null;
   }
   
-  dynamic public function newArray<E>(size : Int) : Dynamic {
-    return cast new Vector<Dynamic>(size);
+  dynamic public function newArray(size : Int) : Dynamic {
+    return new Vector<Dynamic>(size);
   }
 }
 

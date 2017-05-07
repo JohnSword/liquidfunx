@@ -70,13 +70,14 @@ import haxe.ds.Vector;
 
   private var world : IWorldPool = this;
 
-  private var pcstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var ccstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var cpstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var ecstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var epstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var chcstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
-  private var chpstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var pcstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  // private var pcstack : MutableStack<Contact> = new MutableStack<Contact>(Settings.CONTACT_STACK_INIT_SIZE);
+  private var ccstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  private var cpstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  private var ecstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  private var epstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  private var chcstack : MutableStack= new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
+  private var chpstack : MutableStack = new MutableStack(Settings.CONTACT_STACK_INIT_SIZE);
 
   private var collision : Collision;
   private var toi : TimeOfImpact;
@@ -168,31 +169,32 @@ import haxe.ds.Vector;
     toi = new TimeOfImpact(this);
   }
 
-  public function getPolyContactStack() : IDynamicStack<Contact> {
+  public function getPolyContactStack() : IDynamicStack {
+  // public function getPolyContactStack() : IDynamicStack<Contact> {
     return pcstack;
   }
 
-  public function getCircleContactStack() : IDynamicStack<Contact> {
+  public function getCircleContactStack() : IDynamicStack {
     return ccstack;
   }
 
-  public function getPolyCircleContactStack() : IDynamicStack<Contact> {
+  public function getPolyCircleContactStack() : IDynamicStack {
     return cpstack;
   }
 
-  public function getEdgeCircleContactStack() : IDynamicStack<Contact> {
+  public function getEdgeCircleContactStack() : IDynamicStack {
     return ecstack;
   }
 
-  public function getEdgePolyContactStack() : IDynamicStack<Contact> {
+  public function getEdgePolyContactStack() : IDynamicStack {
     return epstack;
   }
 
-  public function getChainCircleContactStack() : IDynamicStack<Contact> {
+  public function getChainCircleContactStack() : IDynamicStack {
     return chcstack;
   }
 
-  public function getChainPolyContactStack() : IDynamicStack<Contact> {
+  public function getChainPolyContactStack() : IDynamicStack {
     return chpstack;
   }
 
