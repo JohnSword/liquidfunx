@@ -16,7 +16,7 @@ class OBBViewportTransform implements IViewportTransform {
 
     public function new() {
         box.R.setIdentity();
-        yFlipMat = new Mat22()
+        yFlipMat = new Mat22();
         yFlipMat.fromFloats(1, 0, 0, -1);
     }
 
