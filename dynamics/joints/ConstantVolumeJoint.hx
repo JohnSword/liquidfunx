@@ -33,9 +33,10 @@ import box2d.dynamics.contacts.Position;
 import box2d.dynamics.contacts.Velocity;
 import haxe.ds.Vector;
 
- class ConstantVolumeJoint extends Joint {
 
-  private var bodies : Vector<Body>;
+class ConstantVolumeJoint extends Joint {
+
+  private var bodies : Array<Body>;
   private var targetLengths : Vector<Float>;
   private var targetVolume : Float = 0;
 
@@ -44,13 +45,13 @@ import haxe.ds.Vector;
 
   private var world : World;
 
-  private var distanceJoints : Vector<DistanceJoint>;
+  private var distanceJoints : Array<DistanceJoint>;
 
-  public function getBodies() : Vector<Body> {
+  public function getBodies() : Array<Body> {
     return bodies;
   }
 
-  public function getJoints() : Vector<DistanceJoint> {
+  public function getJoints() : Array<DistanceJoint> {
     return distanceJoints;
   }
 
@@ -61,11 +62,10 @@ import haxe.ds.Vector;
   public function new(argWorld : World, def : ConstantVolumeJointDef) {
     super(argWorld.getPool(), def);
     world = argWorld;
-    if (def.bodies.length <= 2) {
+    if (def.bodies.size <= 2) {
       throw "You cannot create a constant volume joint with less than three bodies.";
     }
-    // TODO: list to Array?
-    // bodies = def.bodies.toArray(new Array<Body>());
+    bodies = def.bodies.toArray();
 
     targetLengths = new Vector<Float>(bodies.length);
     for (i in 0 ... targetLengths.length) {
@@ -76,12 +76,12 @@ import haxe.ds.Vector;
     }
     targetVolume = getBodyArea();
 
-    if (def.joints != null && def.joints.length != def.bodies.length) {
+    if (def.joints != null && def.joints.size != def.bodies.size) {
       throw "Incorrect joint definition.  Joints have to correspond to the bodies";
     }
     if (def.joints == null) {
       var djd : DistanceJointDef = new DistanceJointDef();
-      distanceJoints = new Vector<DistanceJoint>(bodies.length);
+      distanceJoints = new Array<DistanceJoint>();
       for (i in 0 ... targetLengths.length) {
       // for (int i = 0; i < targetLengths.length; ++i) {
         var next : Int = (i == targetLengths.length - 1) ? 0 : i + 1;

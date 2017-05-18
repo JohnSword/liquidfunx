@@ -101,13 +101,10 @@ import haxe.ds.Vector;
 
       switch (simplex.m_count) {
       case 1:
-        break;
       case 2:
         simplex.solve2();
-        break;
       case 3:
         simplex.solve3();
-        break;
       default:
       }
 
@@ -166,13 +163,12 @@ import haxe.ds.Vector;
       // Check for duplicate support points. This is the main termination criteria.
       var duplicate : Bool = false;
       var i:Int = 0;
-      while(i < saveCount) {
+      for(i in 0 ... saveCount) {
       // for (int i = 0; i < saveCount; ++i) {
         if (vertex.indexA == saveA[i] && vertex.indexB == saveB[i]) {
           duplicate = true;
           break;
         }
-        ++i;
       }
 
       // If we found a duplicate support point we must exit to avoid cycling.

@@ -3,6 +3,7 @@ package box2d.common;
 class Settings {
 
      /** A "close to zero" float epsilon value for use */
+    // public static var EPSILON : Float = 1.1920928955078125E-7;
     // public static var EPSILON : Float = 1.1920928955078125E-7f;
     public static var EPSILON:Float = 0.0000001;
 
@@ -87,20 +88,21 @@ class Settings {
      * A small length used as a collision and constraint tolerance. Usually it is chosen to be
      * numerically significant, but visually insignificant.
      */
-    public static var linearSlop : Float = 0.005;
+    public static var linearSlop : Float = 0.005; // 0.5 cm
 
     /**
      * A small angle used as a collision and constraint tolerance. Usually it is chosen to be
      * numerically significant, but visually insignificant.
      */
-    public static var angularSlop : Float = (2.0 / 180 * PI);
+    public static var angularSlop : Float = 2.0 / 180 * Math.PI;
 
     /**
      * The radius of the polygon/edge shape skin. This should not be modified. Making this smaller
      * means polygons will have and insufficient for continuous collision. Making it larger may create
      * artifacts for vertex collision.
      */
-    public static var polygonRadius : Float = (2.0 * linearSlop);
+    public static var polygonRadius : Float = 2.0 * 0.005;
+    // public static var polygonRadius : Float = (2.0 * linearSlop);
 
     /** Maximum number of sub-steps per contact in continuous physics simulation. */
     public static var maxSubSteps : Int = 8;
@@ -128,21 +130,23 @@ class Settings {
      * The maximum angular position correction used when solving constraints. This helps to prevent
      * overshoot.
      */
-    public static var maxAngularCorrection : Float = (8.0 / 180.0 * PI);
+    public static var maxAngularCorrection : Float = 8.0 / 180.0 * Math.PI;
 
     /**
      * The maximum linear velocity of a body. This limit is very large and is used to prevent
      * numerical problems. You shouldn't need to adjust this.
      */
     public static var maxTranslation : Float = 2.0;
-    public static var maxTranslationSquared : Float = (maxTranslation * maxTranslation);
+    public static var maxTranslationSquared : Float = 4.0;
+    // public static var maxTranslationSquared : Float = (maxTranslation * maxTranslation);
 
     /**
      * The maximum angular velocity of a body. This limit is very large and is used to prevent
      * numerical problems. You shouldn't need to adjust this.
      */
-    public static var maxRotation : Float = (0.5 * PI);
-    public static var maxRotationSquared : Float = (maxRotation * maxRotation);
+    public static var maxRotation : Float = 0.5 * Math.PI;
+    public static var maxRotationSquared : Float = (0.5 * Math.PI) * (0.5 * Math.PI);
+    // public static var maxRotationSquared : Float = (maxRotation * maxRotation);
 
     /**
      * This scale factor controls how fast overlap is resolved. Ideally this would be 1 so that
@@ -167,7 +171,7 @@ class Settings {
     /**
      * A body cannot sleep if its angular velocity is above this tolerance.
      */
-    public static var angularSleepTolerance : Float = (2.0 / 180.0 * PI);
+    public static var angularSleepTolerance : Float = 2.0 / 180.0 * Math.PI;
 
 
     // Particle
@@ -196,7 +200,8 @@ class Settings {
      * The maximum distance between particles in a triad, divided by the particle radius.
      */
     public static var maxTriadDistance : Int = 2;
-    public static var maxTriadDistanceSquared : Int = (maxTriadDistance * maxTriadDistance);
+    public static var maxTriadDistanceSquared : Int = 4;
+    // public static var maxTriadDistanceSquared : Int = (maxTriadDistance * maxTriadDistance);
 
     /**
      * The initial size of particle data buffers.

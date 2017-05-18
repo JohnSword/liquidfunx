@@ -206,7 +206,8 @@ enum TOIOutputState {
 
         // Compute 1D root of: f(x) - target = 0
         var rootIterCount : Int = 0;
-        var a1 : Float = t1, a2 = t2;
+        var a1 : Float = t1;
+        var a2 : Float = t2;
         while (true) {
           // Use a mix of the secant rule and bisection.
           var t : Float;

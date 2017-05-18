@@ -199,6 +199,8 @@ import haxe.ds.Vector;
   }
 
   public function popVec2() : Vec2 {
+    // var v = vecs.pop();
+    // v.setZero();
     return vecs.pop();
   }
 

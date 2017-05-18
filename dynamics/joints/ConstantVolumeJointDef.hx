@@ -24,6 +24,7 @@
 package box2d.dynamics.joints;
 
 import box2d.dynamics.Body;
+import de.polygonal.ds.ArrayList;
 
 /**
  * Definition for a {@link ConstantVolumeJoint}, which connects a group a bodies together so they
@@ -33,14 +34,14 @@ import box2d.dynamics.Body;
   public var frequencyHz : Float = 0;
   public var dampingRatio : Float = 0;
 
-  public var bodies : List<Body>;
-  public var joints : List<DistanceJoint>;
+  public var bodies : ArrayList<Body>;
+  public var joints : ArrayList<DistanceJoint>;
   // ArrayList<Body> bodies;
   // ArrayList<DistanceJoint> joints;
 
   public function new() {
     super(JointType.CONSTANT_VOLUME);
-    bodies = new List<Body>();
+    bodies = new ArrayList<Body>();
     joints = null;
     collideConnected = false;
     frequencyHz = 0.0;
@@ -54,10 +55,10 @@ import box2d.dynamics.Body;
    */
   public function addBody(argBody : Body) : Void {
     bodies.add(argBody);
-    if (bodies.length== 1) {
+    if (bodies.size== 1) {
       bodyA = argBody;
     }
-    if (bodies.length == 2) {
+    if (bodies.size == 2) {
       bodyB = argBody;
     }
   }
@@ -68,7 +69,7 @@ import box2d.dynamics.Body;
   public function addBodyAndJoint(argBody : Body, argJoint : DistanceJoint) : Void {
     addBody(argBody);
     if (joints == null) {
-      joints = new List<DistanceJoint>();
+      joints = new ArrayList<DistanceJoint>();
     }
     joints.add(argJoint);
   }

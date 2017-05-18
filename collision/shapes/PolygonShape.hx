@@ -108,7 +108,7 @@ import haxe.ds.Vector;
    * @warning the points may be re-ordered, even if they form a convex polygon.
    * @warning collinear points are removed.
    */
-  public function set(vertices : Array<Vec2>, count : Int) : Void {
+  public function set(vertices : Vector<Vec2>, count : Int) : Void {
     set2(vertices, count, null, null);
   }
 
@@ -119,7 +119,7 @@ import haxe.ds.Vector;
    * @warning the points may be re-ordered, even if they form a convex polygon.
    * @warning collinear points are removed.
    */
-  public function set2(verts : Array<Vec2>, num : Int, vecPool : Vec2Array, intPool : IntArray) : Void {
+  public function set2(verts : Vector<Vec2>, num : Int, vecPool : Vec2Array, intPool : IntArray) : Void {
     if (num < 3) {
       setAsBox(1.0, 1.0);
       return;

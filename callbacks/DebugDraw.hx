@@ -60,6 +60,8 @@ class DebugDraw {
         m_drawFlags &= ~flags;
     }
 
+    private var temp : Vec2 = new Vec2();
+
     /**
    * Draw a closed polygon provided in CCW order. This implementation uses
    * {@link #drawSegment(Vec2, Vec2, Color3f)} to draw each side of the polygon.
@@ -70,15 +72,15 @@ class DebugDraw {
    */
   public function drawPolygon(vertices : Vector<Vec2>, vertexCount : Int, color : Color3f) : Void {
     if (vertexCount == 1) {
+      // getWorldToScreenToOut(vertices[i], temp);
       drawSegment(vertices[0], vertices[0], color);
       return;
     }
 
     for(i in 0 ... (vertexCount - 1)) {
-    // for (int i = 0; i < vertexCount - 1; i += 1) {
+      // getWorldToScreenToOut(vertices[i], temp);
       drawSegment(vertices[i], vertices[i + 1], color);
     }
-    // }
 
     if (vertexCount > 2) {
       drawSegment(vertices[vertexCount - 1], vertices[0], color);
@@ -177,6 +179,8 @@ class DebugDraw {
   public function drawParticlesWireframe(centers : Vector<Vec2>, radius : Float, colors : Vector<ParticleColor>, count : Int) : Void {
     
   }
+
+  public function clear() : Void {}
 
   /** Called at the end of drawing a world */
   public function flush() : Void {}
