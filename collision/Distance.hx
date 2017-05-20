@@ -162,7 +162,6 @@ import haxe.ds.Vector;
 
       // Check for duplicate support points. This is the main termination criteria.
       var duplicate : Bool = false;
-      var i:Int = 0;
       for(i in 0 ... saveCount) {
       // for (int i = 0; i < saveCount; ++i) {
         if (vertex.indexA == saveA[i] && vertex.indexB == saveB[i]) {

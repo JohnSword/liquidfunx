@@ -7,10 +7,18 @@ class Settings {
     // public static var EPSILON : Float = 1.1920928955078125E-7f;
     public static var EPSILON:Float = 0.0000001;
 
-    public static var MAX_VALUE_FLOAT:Float = 1.79e+308;
-    public static var MAX_VALUE_INT:Int = 0x7FFFFFFF;
-    public static var MIN_VALUE_FLOAT:Float = 0.0000000000000001;
-    public static var MIN_VALUE_INT:Int = -MAX_VALUE_INT;
+    /** The lowest float value in Flash and JS. */
+    public static inline var MIN_VALUE_FLOAT = -1.79769313486231e+308;
+    // public static var MIN_VALUE_FLOAT:Float = 0.0000000000000001;
+
+    /** The highest float value in Flash and JS. */
+    public static inline var MAX_VALUE_FLOAT = 1.79769313486231e+308;
+    // public static var MAX_VALUE_FLOAT:Float = 1.79e+308;
+
+    public static var MAX_VALUE_INT:Int = 2147483647;
+    // public static var MAX_VALUE_INT:Int = 0x7FFFFFFF;
+    public static var MIN_VALUE_INT:Int = -2147483647;
+    
     public static var SQUARE_ROOT_OF_TWO:Float = 1.41421356237;
 
     /** Pi. */
