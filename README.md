@@ -27,3 +27,6 @@ Dynamic, Kinematic, and Static bodies<br>
 Liquid particle simulation from Google's LiquidFun <br>
 
 Feel free to contribute.
+
+Check the examples here: https://github.com/JohnSword/liquidfunx-examples
+(not all of them are working at the moment)
