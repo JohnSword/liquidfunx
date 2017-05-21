@@ -1,4 +1,4 @@
-# liquidFunx
+# LiquidFunx
 LiquidFun physics library port for haxe
 (http://google.github.io/liquidfun/)
 
@@ -10,20 +10,20 @@ Needs optimization to allow for better performance in Flash but runs fine in cpp
 Features (as taken from from jbox2d)
 
 Rigid body physics<br>
-Stable stacking
-Gravity
-Fast persistent contact solver
-Dynamic tree broadphase
-Sliding friction
-Boxes, circles, edges and polygons
-Several joint types: distance, revolute, prismatic, pulley, gear, mouse
-Motors
-Sleeping (removes motionless bodies from simulation until touched)
-Continuous collision detection (accurate solving of fast bodies)
-Ray casts
-Sensors
-Serialization
-Dynamic, Kinematic, and Static bodies
-Liquid particle simulation from Google's LiquidFun 
+Stable stacking<br>
+Gravity<br>
+Fast persistent contact solver<br>
+Dynamic tree broadphase<br>
+Sliding friction<br>
+Boxes, circles, edges and polygons<br>
+Several joint types: distance, revolute, prismatic, pulley, gear, mouse<br>
+Motors<br>
+Sleeping (removes motionless bodies from simulation until touched)<br>
+Continuous collision detection (accurate solving of fast bodies)<br>
+Ray casts<br>
+Sensors<br>
+Serialization<br>
+Dynamic, Kinematic, and Static bodies<br>
+Liquid particle simulation from Google's LiquidFun <br>
 
 Feel free to contribute.
