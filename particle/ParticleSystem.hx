@@ -232,7 +232,7 @@ import haxe.ds.Vector;
       m_depthBuffer[index] = 0;
     }
     if (m_colorBuffer.data != null || def.color != null) {
-      m_colorBuffer.data = cast requestParticleBuffer(m_colorBuffer.dataClass, m_colorBuffer.data);
+      m_colorBuffer.data = requestParticleColorBuffer(ParticleColor, m_colorBuffer.data);
       m_colorBuffer.data[index].setParticleColor(def.color);
     }
     if (m_userDataBuffer.data != null || def.userData != null) {
@@ -267,7 +267,7 @@ import haxe.ds.Vector;
   public function destroyParticlesInShape(shape : Shape, xf : Transform, callDestructionListener : Bool) : Int {
     dpcallback.init(this, shape, xf, callDestructionListener);
     shape.computeAABB(temp, xf, 0);
-    m_world.queryAABB(cast dpcallback, temp);
+    m_world.queryParticleAABB2(dpcallback, temp);
     return dpcallback.destroyed;
   }
 
@@ -1014,7 +1014,7 @@ import haxe.ds.Vector;
   }
 
   private function solveTensile(step : TimeStep) {
-    m_accumulation2Buffer = cast requestParticleBuffer(Vec2, m_accumulation2Buffer);
+    m_accumulation2Buffer = requestParticleVec2Buffer(Vec2, m_accumulation2Buffer);
     for(i in 0 ... m_count) {
       m_accumulationBuffer[i] = 0;
       m_accumulation2Buffer[i].setZero();
@@ -1551,7 +1551,7 @@ import haxe.ds.Vector;
   }
 
   public function getParticleColorBuffer() : Vector<ParticleColor> {
-    m_colorBuffer.data = cast requestParticleBuffer(ParticleColor, m_colorBuffer.data);
+    m_colorBuffer.data = requestParticleColorBuffer(ParticleColor, m_colorBuffer.data);
     return m_colorBuffer.data;
   }
 
@@ -1781,10 +1781,39 @@ import haxe.ds.Vector;
         newCapacity, deferred);
   }
 
+  private function requestParticleVec2Buffer(klass : Class<Vec2>, buffer : Vector<Vec2>) : Vector<Vec2> {
+    if (buffer == null) {
+      // buffer = cast Array.newInstance(klass, m_internalAllocatedCapacity);
+      buffer = new Vector<Vec2>(m_internalAllocatedCapacity);
+      for(i in 0 ... m_internalAllocatedCapacity) {
+        try {
+          buffer[i] = Type.createInstance( klass, [] );
+        } catch (e : Dynamic) {
+          throw Std.string(e);
+        }
+      }
+    }
+    return buffer;
+  }
+
   private function requestParticleBuffer(klass : Class<Dynamic>, buffer : Vector<Dynamic>) : Vector<Dynamic> {
     if (buffer == null) {
       // buffer = cast Array.newInstance(klass, m_internalAllocatedCapacity);
       buffer = new Vector<Dynamic>(m_internalAllocatedCapacity);
+      for(i in 0 ... m_internalAllocatedCapacity) {
+        try {
+          buffer[i] = Type.createInstance( klass, [] );
+        } catch (e : Dynamic) {
+          throw Std.string(e);
+        }
+      }
+    }
+    return buffer;
+  }
+
+  private function requestParticleColorBuffer(klass : Class<ParticleColor>, buffer : Vector<ParticleColor>) : Vector<ParticleColor> {
+    if (buffer == null) {
+      buffer = new Vector<ParticleColor>(m_internalAllocatedCapacity);
       for(i in 0 ... m_internalAllocatedCapacity) {
         try {
           buffer[i] = Type.createInstance( klass, [] );

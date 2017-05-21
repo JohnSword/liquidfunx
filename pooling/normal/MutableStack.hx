@@ -46,7 +46,8 @@ class MutableStack implements IDynamicStack {
       Vector.blit(stack, 0, newStack, 0, size);
       // System.arraycopy(stack, 0, newStack, 0, size);
     }
-    for(i in 0 ... newStack.length) {
+    for(i in size ... newStack.length) {
+    // for(i in 0 ... newStack.length) {
       newStack[i] = newInstance();
     }
     stack = newStack;
