@@ -9,7 +9,7 @@ Needs optimization to allow for better performance in Flash but runs fine in cpp
 
 Features (as taken from from jbox2d)
 
-Rigid body physics
+Rigid body physics<br>
 Stable stacking
 Gravity
 Fast persistent contact solver
@@ -25,3 +25,5 @@ Sensors
 Serialization
 Dynamic, Kinematic, and Static bodies
 Liquid particle simulation from Google's LiquidFun 
+
+Feel free to contribute.
