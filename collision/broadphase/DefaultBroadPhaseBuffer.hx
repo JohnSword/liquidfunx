@@ -7,6 +7,7 @@ import box2d.callbacks.PairCallback;
 import box2d.callbacks.TreeRayCastCallback;
 
 import haxe.ds.Vector;
+import de.polygonal.ds.tools.ArrayTools;
 
 /**
  * The broad-phase is used for computing pairs and performing volume queries and ray casts. This
@@ -138,16 +139,8 @@ class DefaultBroadPhaseBuffer implements TreeCallback implements BroadPhase {
 
     // Sort the pair buffer to expose duplicates.
     // m_pairBuffer.sort(function(a : Pair, b : Pair) : Int {
-    //     var result:Int = a.compareTo(b);
-    //     if (a. < b) {
-    //         result = -1;
-    //     } else if (a > b) {
-    //         result =  1;    
-    //     } else {
-    //         result 0;
-    //     }
-    //     return result;
-    //     });
+    //     return a.compareTo(b);
+    // });
     // TODO: Vector sort
     // Arrays.sort(m_pairBuffer, 0, m_pairCount);
 

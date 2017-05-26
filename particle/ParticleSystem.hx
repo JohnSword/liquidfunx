@@ -26,8 +26,9 @@ import box2d.particle.buffers.ParticleBufferVec2;
 import box2d.particle.buffers.ParticleBufferParticleColor;
 
 import haxe.ds.Vector;
+import haxe.ds.ArraySort;
 
- class ParticleSystem {
+class ParticleSystem {
   /** All particle types that require creating pairs */
   public static var k_pairFlags : Int = ParticleType.b2_springParticle;
   /** All particle types that require creating triads */
@@ -210,7 +211,7 @@ import haxe.ds.Vector;
             BufferUtils.reallocateBufferFloatDeffered(m_depthBuffer, 0, m_internalAllocatedCapacity, capacity,
                 true);
         m_colorBuffer.data =
-            reallocateBuffer(m_colorBuffer, m_internalAllocatedCapacity, capacity, true);
+            reallocateParticleColorBuffer(m_colorBuffer, m_internalAllocatedCapacity, capacity, true);
         m_groupBuffer =
            cast BufferUtils.reallocateParticleGroupBufferDeffered(ParticleGroup, m_groupBuffer, 0,
                 m_internalAllocatedCapacity, capacity, false);
@@ -404,7 +405,7 @@ import haxe.ds.Vector;
 
   public function joinParticleGroups(groupA : ParticleGroup, groupB : ParticleGroup) : Void {
     RotateBuffer(groupB.m_firstIndex, groupB.m_lastIndex, m_count);
-    RotateBuffer(groupA.m_firstIndex, groupA.m_lastIndex, groupB.m_firstIndex);
+    // RotateBuffer(groupA.m_firstIndex, groupA.m_lastIndex, groupB.m_firstIndex);
 
     var particleFlags : Int = 0;
     for(i in groupA.m_firstIndex ... groupB.m_lastIndex) {
@@ -587,25 +588,28 @@ import haxe.ds.Vector;
       var i : Int = proxy.index;
       var pos : Vec2 = m_positionBuffer.data[i];
       proxy.tag = computeTag(m_inverseDiameter * pos.x, m_inverseDiameter * pos.y);
-    }
+    } 
+    
     // TODO: array sort
-    // Arrays.sort(m_proxyBuffer, 0, m_proxyCount);
-    m_proxyBuffer.sort(function (a:Proxy, b:Proxy) : Int {
+    // ArraySort.sort(m_proxyBuffer, 0, m_proxyCount);
+    // m_proxyBuffer.sort(function (a:Proxy, b:Proxy) : Int {
+    //   return a.compareTo(b);
+    // });
+    ArraySort.sort(m_proxyBuffer, function(a:Proxy, b:Proxy):Int {
       return a.compareTo(b);
     });
+
     m_contactCount = 0;
     var c_index : Int = 0;
     for(i in 0 ... m_proxyCount) {
       var a : Proxy = m_proxyBuffer[i];
       var rightTag : Int = computeRelativeTag(a.tag, 1, 0);
-      var j : Int = i + 1;
-      while ( j < m_proxyCount) {
+      for(j in (i+1) ... m_proxyCount) {
         var b : Proxy = m_proxyBuffer[j];
         if (rightTag < b.tag) {
           break;
         }
         addContact(a.index, b.index);
-        j++;
       }
       var bottomLeftTag : Int = computeRelativeTag(a.tag, -1, 1);
       while (c_index < m_proxyCount) {
@@ -617,12 +621,14 @@ import haxe.ds.Vector;
       }
       var bottomRightTag : Int = computeRelativeTag(a.tag, 1, 1);
 
-      for (b_index in c_index ... m_proxyCount) {
+      var b_index : Int = c_index;
+      while (b_index < m_proxyCount) {
         var b : Proxy = m_proxyBuffer[b_index];
         if (bottomRightTag < b.tag) {
           break;
         }
         addContact(a.index, b.index);
+        b_index ++;
       }
     }
     if (exceptZombie) {
@@ -1260,6 +1266,7 @@ import haxe.ds.Vector;
         var temp : Proxy = m_proxyBuffer[j];
         m_proxyBuffer[j] = m_proxyBuffer[i];
         m_proxyBuffer[i] = temp;
+        m_proxyBuffer.pop();
         --i;
       }
       i++;
@@ -1396,7 +1403,7 @@ import haxe.ds.Vector;
     m_count = newCount;
     // m_world.m_stackAllocator.Free(newIndices);
 
-    // destroy bodies with no particles
+    // TODO: destroy bodies with no particles
     var group : ParticleGroup = m_groupList;
     while (group != null) {
       var next : ParticleGroup = group.getNext();
@@ -1768,6 +1775,11 @@ import haxe.ds.Vector;
   // reallocate a buffer
   static private function reallocateBuffer(buffer : Dynamic, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
     return BufferUtils.reallocateBufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
+        oldCapacity, newCapacity, deferred);
+  }
+
+   static private function reallocateParticleColorBuffer(buffer : Dynamic, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<ParticleColor> {
+    return BufferUtils.reallocateParticleColorBufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
         oldCapacity, newCapacity, deferred);
   }
 

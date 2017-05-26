@@ -1,5 +1,7 @@
 package box2d.common;
 
+import box2d.particle.Pair;
+import box2d.particle.ParticleColor;
 import box2d.particle.ParticleBodyContact;
 import box2d.particle.ParticleContact;
 import box2d.particle.Proxy;
@@ -10,6 +12,23 @@ class BufferUtils {
 
     public static function reallocateBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Dynamic>, oldCapacity : Int, newCapacity : Int) : Dynamic {
         var newBuffer : Vector<Dynamic> = new Vector<Dynamic>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+    public static function reallocatePairBuffer(klass : Class<Dynamic>, oldBuffer : Vector<Pair>, oldCapacity : Int, newCapacity : Int) : Dynamic {
+        var newBuffer : Vector<Pair> = new Vector<Pair>(newCapacity);
         if (oldBuffer != null) {
             // TODO: array copy
             Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
@@ -110,6 +129,29 @@ class BufferUtils {
         return newBuffer;
     }
 
+    public static function reallocateParticleColorBuffer(klass : Class<Dynamic>, oldBuffer : Vector<ParticleColor>, oldCapacity : Int, newCapacity : Int) : Vector<ParticleColor> {
+        var newBuffer : Vector<ParticleColor> = new Vector<ParticleColor>(newCapacity);
+        if (oldBuffer != null) {
+            // TODO: array copy
+            Vector.blit(oldBuffer, 0, newBuffer, 0, oldCapacity);
+            // System.arraycopy(oldBuffer, 0, newBuffer, 0, oldCapacity);
+        }
+        for (i in oldCapacity ... newCapacity) {
+            try {
+                newBuffer[i] = Type.createInstance(klass, []);
+            } catch (e : Dynamic) {
+                throw e;
+            }
+        }
+        return newBuffer;
+    }
+
+
+
+
+
+
+
     /** Reallocate a buffer. */
     public static function reallocateBufferInt(oldBuffer : Vector<Int>, oldCapacity : Int, newCapacity : Int) : Vector<Int> {
         var newBuffer : Vector<Int> = new Vector<Int>(newCapacity);
@@ -144,6 +186,14 @@ class BufferUtils {
         return buffer;
     }
 
+    public static function reallocateColorBufferDeffered<T>(klass : Class<Dynamic>, buffer : Vector<ParticleColor>, userSuppliedCapacity : Int,
+         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<ParticleColor> {
+        if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
+            buffer = reallocateParticleColorBuffer(klass, buffer, oldCapacity, newCapacity);
+        }
+        return buffer;
+    }
+
      public static function reallocateVec2BufferDeffered<T>(klass : Class<Dynamic>, buffer : Vector<Vec2>, userSuppliedCapacity : Int,
          oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<Vec2> {
         if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
@@ -159,6 +209,15 @@ class BufferUtils {
         }
         return buffer;
     }
+
+    public static function reallocateParticleColorBufferDeffered(klass : Class<Dynamic>, buffer : Vector<ParticleColor>, userSuppliedCapacity : Int,
+         oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<ParticleColor> {
+        if ((!deferred || buffer != null) && userSuppliedCapacity == 0) {
+            buffer = reallocateParticleColorBuffer(klass, buffer, oldCapacity, newCapacity);
+        }
+        return buffer;
+    }
+
 
     /**
      * Reallocate an int buffer. A 'deferred' buffer is reallocated only if it is not NULL. If
@@ -189,6 +248,9 @@ class BufferUtils {
         var next : Int = new_first;
         while (next != first) {
             var temp : Int = ray[first];
+            // if(first >= ray.length || next >= ray.length) {
+            //     break;
+            // }
             ray[first] = ray[next];
             ray[next] = temp;
             first++;
@@ -206,6 +268,9 @@ class BufferUtils {
         var next : Int = new_first;
         while (next != first) {
             var temp : Float = ray[first];
+            // if(first >= ray.length || next >= ray.length) {
+            //     break;
+            // }
             ray[first] = ray[next];
             ray[next] = temp;
             first++;
@@ -218,10 +283,13 @@ class BufferUtils {
         }
     }
 
-    public static function rotateDynamic(ray : Vector<Dynamic>, first : Int, new_first : Int, last : Int) : Void {
+    public static function rotateDynamic(ray : Dynamic, first : Int, new_first : Int, last : Int) : Void {
         var next : Int = new_first;
         while (next != first) {
             var temp : Dynamic = ray[first];
+            if(first >= ray.length || next >= ray.length) {
+                break;
+            }
             ray[first] = ray[next];
             ray[next] = temp;
             first++;

@@ -187,7 +187,7 @@ class Settings {
     /**
      * A symbolic constant that stands for particle allocation error.
      */
-    public static var invalidParticleIndex : Int = (-1);
+    public static var invalidParticleIndex : Int = -1;
 
     /**
      * The standard distance between particles, divided by the particle radius.
