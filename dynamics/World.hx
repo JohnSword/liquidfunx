@@ -272,6 +272,7 @@ import haxe.ds.Vector;
 
     var reg : ContactRegister = contactStacks[type1.getIndex()][type2.getIndex()];
     if (reg != null) {
+      if(reg.creator == null) return null;
       if (reg.primary) {
         var c : Contact = reg.creator.pop();
         c.init(fixtureA, indexA, fixtureB, indexB);
