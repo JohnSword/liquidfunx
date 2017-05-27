@@ -2,7 +2,7 @@
 LiquidFun physics library port for haxe
 (http://google.github.io/liquidfun/)
 
-Port based on the jbox2d java port by Daniel Murphy (for more info: http://www.jbox2d.org/)
+Port based on the jbox2d java port by Daniel Murphy using Box2D 2.2.1 and LiquidFun 1.0 (for more info visit: http://www.jbox2d.org/).
 
 Compiles for Flash, HTML5 and C++ targets (haven't tested any other targets).
 Also runs in Android and iOS but is extremely slow, unfortunetly.
