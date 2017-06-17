@@ -94,8 +94,8 @@ import box2d.particle.VoronoiDiagramTask;
       Vec2.minToOut(lower, g.center, lower);
       Vec2.maxToOut(upper, g.center, upper);
     }
-    m_countX = 1 + cast (inverseRadius * (upper.x - lower.x));
-    m_countY = 1 + cast (inverseRadius * (upper.y - lower.y));
+    m_countX = 1 + Std.int(inverseRadius * (upper.x - lower.x));
+    m_countY = 1 + Std.int(inverseRadius * (upper.y - lower.y));
     m_diagram = new Vector<Generator>(m_countX * m_countY);
     queue.reset(new Vector<VoronoiDiagramTask>(4 * m_countX * m_countX));
     // queue.reset(new VoronoiDiagramTask[4 * m_countX * m_countX]);

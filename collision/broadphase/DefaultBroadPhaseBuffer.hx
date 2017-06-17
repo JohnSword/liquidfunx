@@ -7,7 +7,6 @@ import box2d.callbacks.PairCallback;
 import box2d.callbacks.TreeRayCastCallback;
 
 import haxe.ds.Vector;
-import de.polygonal.ds.tools.ArrayTools;
 
 /**
  * The broad-phase is used for computing pairs and performing volume queries and ray casts. This

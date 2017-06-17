@@ -40,9 +40,7 @@ class JoinParticleGroupsCallback implements VoronoiDiagramCallback {
                   system.m_triadCount != 0
                       ? 2 * system.m_triadCount
                       : Settings.minParticleBufferCapacity;
-              system.m_triadBuffer =
-                  cast BufferUtils.reallocateBuffer(Triad, system.m_triadBuffer, oldCapacity,
-                      newCapacity);
+              system.m_triadBuffer = BufferUtils.reallocateTriadBuffer(system.m_triadBuffer, oldCapacity, newCapacity);
               system.m_triadCapacity = newCapacity;
             }
             var triad : Triad = system.m_triadBuffer[system.m_triadCount];

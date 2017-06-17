@@ -205,16 +205,14 @@ class ParticleSystem {
             BufferUtils.reallocateBufferFloatDeffered(m_accumulationBuffer, 0, m_internalAllocatedCapacity,
                 capacity, false);
         m_accumulation2Buffer =
-            BufferUtils.reallocateBufferDeffered(Vec2, m_accumulation2Buffer, 0,
-                m_internalAllocatedCapacity, capacity, true);
+            BufferUtils.reallocateVec2BufferDeffered(m_accumulation2Buffer, 0,m_internalAllocatedCapacity, capacity, true);
         m_depthBuffer =
             BufferUtils.reallocateBufferFloatDeffered(m_depthBuffer, 0, m_internalAllocatedCapacity, capacity,
                 true);
         m_colorBuffer.data =
             reallocateParticleColorBuffer(m_colorBuffer, m_internalAllocatedCapacity, capacity, true);
         m_groupBuffer =
-           cast BufferUtils.reallocateParticleGroupBufferDeffered(ParticleGroup, m_groupBuffer, 0,
-                m_internalAllocatedCapacity, capacity, false);
+            BufferUtils.reallocateParticleGroupBufferDeffered(m_groupBuffer, 0, m_internalAllocatedCapacity, capacity, false);
         m_userDataBuffer.data =
             reallocateBuffer(m_userDataBuffer, m_internalAllocatedCapacity, capacity, true);
         m_internalAllocatedCapacity = capacity;
@@ -233,7 +231,7 @@ class ParticleSystem {
       m_depthBuffer[index] = 0;
     }
     if (m_colorBuffer.data != null || def.color != null) {
-      m_colorBuffer.data = requestParticleColorBuffer(ParticleColor, m_colorBuffer.data);
+      m_colorBuffer.data = requestParticleColorBuffer(m_colorBuffer.data);
       m_colorBuffer.data[index].setParticleColor(def.color);
     }
     if (m_userDataBuffer.data != null || def.userData != null) {
@@ -372,7 +370,7 @@ class ParticleSystem {
             var oldCapacity : Int = m_pairCapacity;
             var newCapacity : Int =
                 m_pairCount != 0 ? 2 * m_pairCount : Settings.minParticleBufferCapacity;
-            m_pairBuffer = cast BufferUtils.reallocateBuffer(Pair, m_pairBuffer, oldCapacity, newCapacity);
+            m_pairBuffer = BufferUtils.reallocatePairBuffer(m_pairBuffer, oldCapacity, newCapacity);
             m_pairCapacity = newCapacity;
           }
           var pair : Pair = m_pairBuffer[m_pairCount];
@@ -429,7 +427,7 @@ class ParticleSystem {
             var oldCapacity : Int = m_pairCapacity;
             var newCapacity : Int =
                 m_pairCount != 0 ? 2 * m_pairCount : Settings.minParticleBufferCapacity;
-            m_pairBuffer = cast BufferUtils.reallocateBuffer(Pair, m_pairBuffer, oldCapacity, newCapacity);
+            m_pairBuffer = BufferUtils.reallocatePairBuffer(m_pairBuffer, oldCapacity, newCapacity);
             m_pairCapacity = newCapacity;
           }
           var pair : Pair = m_pairBuffer[m_pairCount];
@@ -566,8 +564,7 @@ class ParticleSystem {
         var newCapacity : Int =
             m_contactCount != 0 ? 2 * m_contactCount : Settings.minParticleBufferCapacity;
         m_contactBuffer =
-            BufferUtils.reallocateParticleContactBuffer(ParticleContact, m_contactBuffer, oldCapacity,
-                newCapacity);
+            BufferUtils.reallocateParticleContactBuffer(m_contactBuffer, oldCapacity, newCapacity);
         m_contactCapacity = newCapacity;
       }
       var invD : Float = d2 != 0 ? MathUtils.sqrt(1 / d2) : MathUtils.MAX_VALUE;
@@ -1190,7 +1187,7 @@ class ParticleSystem {
 
   private function solveColorMixing(step : TimeStep) : Void {
     // mixes color between contacting particles
-    m_colorBuffer.data = cast requestParticleBuffer(ParticleColor, m_colorBuffer.data);
+    m_colorBuffer.data = requestParticleColorBuffer(m_colorBuffer.data);
     var colorMixing256 : Int = Std.int(256 * m_colorMixingStrength);
     for (k in 0 ... m_contactCount) {
       var contact : ParticleContact = m_contactBuffer[k];
@@ -1199,10 +1196,10 @@ class ParticleSystem {
       if ((m_flagsBuffer.data[a] & m_flagsBuffer.data[b] & ParticleType.b2_colorMixingParticle) != 0) {
         var colorA : ParticleColor = m_colorBuffer.data[a];
         var colorB : ParticleColor = m_colorBuffer.data[b];
-        var dr : Int = (colorMixing256 * (colorB.r - colorA.r)) >> 8;
-        var dg : Int = (colorMixing256 * (colorB.g - colorA.g)) >> 8;
-        var db : Int = (colorMixing256 * (colorB.b - colorA.b)) >> 8;
-        var da : Int = (colorMixing256 * (colorB.a - colorA.a)) >> 8;
+        var dr : Int = (colorMixing256 * ((colorB.r & 0xFF) - (colorA.r & 0xFF))) >> 8;
+        var dg : Int = (colorMixing256 * ((colorB.g & 0xFF) - (colorA.g & 0xFF))) >> 8;
+        var db : Int = (colorMixing256 * ((colorB.b & 0xFF) - (colorA.b & 0xFF))) >> 8;
+        var da : Int = (colorMixing256 * ((colorB.a & 0xFF) - (colorA.a & 0xFF))) >> 8;
         colorA.r += dr;
         colorA.g += dg;
         colorA.b += db;
@@ -1558,7 +1555,7 @@ class ParticleSystem {
   }
 
   public function getParticleColorBuffer() : Vector<ParticleColor> {
-    m_colorBuffer.data = requestParticleColorBuffer(ParticleColor, m_colorBuffer.data);
+    m_colorBuffer.data = requestParticleColorBuffer(m_colorBuffer.data);
     return m_colorBuffer.data;
   }
 
@@ -1779,12 +1776,12 @@ class ParticleSystem {
   }
 
    static private function reallocateParticleColorBuffer(buffer : Dynamic, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Vector<ParticleColor> {
-    return BufferUtils.reallocateParticleColorBufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
+    return BufferUtils.reallocateParticleColorBufferDeffered(buffer.data, buffer.userSuppliedCapacity,
         oldCapacity, newCapacity, deferred);
   }
 
   static private function reallocateVec2Buffer(buffer : ParticleBufferVec2, oldCapacity : Int, newCapacity : Int, deferred : Bool) : Dynamic {
-    return BufferUtils.reallocateVec2BufferDeffered(buffer.dataClass, buffer.data, buffer.userSuppliedCapacity,
+    return BufferUtils.reallocateVec2BufferDeffered(buffer.data, buffer.userSuppliedCapacity,
         oldCapacity, newCapacity, deferred);
   }
 
@@ -1798,11 +1795,7 @@ class ParticleSystem {
       // buffer = cast Array.newInstance(klass, m_internalAllocatedCapacity);
       buffer = new Vector<Vec2>(m_internalAllocatedCapacity);
       for(i in 0 ... m_internalAllocatedCapacity) {
-        try {
-          buffer[i] = Type.createInstance( klass, [] );
-        } catch (e : Dynamic) {
-          throw Std.string(e);
-        }
+        buffer[i] = new Vec2();
       }
     }
     return buffer;
@@ -1813,25 +1806,17 @@ class ParticleSystem {
       // buffer = cast Array.newInstance(klass, m_internalAllocatedCapacity);
       buffer = new Vector<Dynamic>(m_internalAllocatedCapacity);
       for(i in 0 ... m_internalAllocatedCapacity) {
-        try {
           buffer[i] = Type.createInstance( klass, [] );
-        } catch (e : Dynamic) {
-          throw Std.string(e);
-        }
       }
     }
     return buffer;
   }
 
-  private function requestParticleColorBuffer(klass : Class<ParticleColor>, buffer : Vector<ParticleColor>) : Vector<ParticleColor> {
+  private function requestParticleColorBuffer(buffer : Vector<ParticleColor>) : Vector<ParticleColor> {
     if (buffer == null) {
       buffer = new Vector<ParticleColor>(m_internalAllocatedCapacity);
       for(i in 0 ... m_internalAllocatedCapacity) {
-        try {
-          buffer[i] = Type.createInstance( klass, [] );
-        } catch (e : Dynamic) {
-          throw Std.string(e);
-        }
+          buffer[i] = new ParticleColor();
       }
     }
     return buffer;
@@ -1841,11 +1826,7 @@ class ParticleSystem {
     if (buffer == null) {
       buffer = new Vector<Dynamic>(m_internalAllocatedCapacity);
       for(i in 0 ... m_internalAllocatedCapacity) {
-        try {
           buffer[i] = {};
-        } catch (e : Dynamic) {
-          throw Std.string(e);
-        }
       }
     }
     return buffer;
